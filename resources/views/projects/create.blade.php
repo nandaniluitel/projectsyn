@@ -899,15 +899,18 @@
 
 
                                 <!-- Initial email field -->
+                                <hr>
                                 <div class="form-group row" id="emailFields">
                                     <label for="inputEmail1" class="col-sm-2 col-form-label">TEAM MEMBER EMAIL</label>
                                     <div class="col-sm-10">
                                         <input type="email" class="form-control mb-2" name="emails[]" placeholder="Email">
                                     </div>
+                                    <label for="inputCRN1" class="col-sm-2 col-form-label">TEAM MEMBER CRN:</label>
                                     <div class="col-sm-10">
                                         <input type="number" class="form-control mb-2" name="emails[]" placeholder="CRN(eg:020319)">
                                     </div>
                                 </div>
+                                <hr>
 
                                 <!-- Button to add more email fields -->
                                
@@ -946,15 +949,18 @@
         $(function() {
             // Function to add email field
             $('.addEmailField').click(function() {
-                var newField = '<div class="form-group row" id="emailFields">'+
+                var newField = '<hr>'+
+                                '<div class="form-group row" id="emailFields">'+
                                     '<label for="inputEmail1" class="col-sm-2 col-form-label">TEAM MEMBER EMAIL</label>'+
                                     '<div class="col-sm-10">'+
                                        ' <input type="email" class="form-control mb-2" name="emails[]" placeholder="Email">'+
                                     '</div>'+
+                                    '<label for="inputCRN1" class="col-sm-2 col-form-label">TEAM MEMBER CRN:</label>'+
                                     '<div class="col-sm-10">'+
                                         '<input type="number" class="form-control mb-2" name="emails[]" placeholder="CRN(eg:020319)">'+
                                     '</div>'+
-                                '</div>';
+                                '</div>'+
+                                '<hr>';
 
                 $('#maincard').append(newField);
             });

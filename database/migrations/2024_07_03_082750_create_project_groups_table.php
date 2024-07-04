@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('project_groups', function (Blueprint $table) {
             $table->id();
-            $table->string('coordinatorId')->foreign('coordinatorId')->references('id')->on('teachers');
             $table->string('name');
             $table->string('project_description');
             $table->timestamps();
