@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\McqController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\UploadfilesController;
 use App\Models\Category;
 use App\Models\McqResponse;
 use Illuminate\Support\Facades\Auth;
@@ -127,6 +128,9 @@ Route::get('/chart', function () {
 // });
 
 Route::resource('mcqs', McqController::class);
+
+Route::get('projects/uploadfiles', [UploadfilesController::class, 'showUploadForm'])->name('projects.uploadfiles.form');
+Route::post('projects/uploadfiles', [UploadfilesController::class, 'handleFileUpload'])->name('projects.uploadfiles.upload');
 Route::resource('projects', ProjectController::class);
 Route::get('/{categoryName}/mcqs/', [McqController::class, 'indexCategory']);
 
