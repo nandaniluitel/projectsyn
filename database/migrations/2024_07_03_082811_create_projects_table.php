@@ -20,9 +20,9 @@ return new class extends Migration
             $table->string('slides_file');
             $table->string('report_file');
             
-            $table->string('supervisor_id')->nullable();
+            
 
-            $table->foreign('supervisor_id')->references('id')->on('supervisors')->onDelete('cascade');
+            $table->string('supervisor_id')->foreign('supervisor_id')->references('id')->on('supervisors');
             $table->timestamps();
         });
     }
