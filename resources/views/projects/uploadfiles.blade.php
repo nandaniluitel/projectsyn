@@ -855,61 +855,93 @@
             <!-- Horizontal Form -->
             <div class="card card-info">
               <div class="card-header">
-                <h3 class="card-title">New Quiz Question</h3>
+                <h3 class="card-title">Upload Files Form</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-              <form method="POST" action="{{ route('mcqs.store') }}" class="form-horizontal">
-                        @csrf
-                <div class="card-body">
-                  <div class="form-group row">
-                    <label for="question" class="col-sm-2 col-form-label">Question</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="question" placeholder="Question" name="question">
-                    </div>
-                    @if ($errors->any())
-                    session_abort
-                    @endif
-                    @error('question')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{ $message }}</strong>
-                    </span>
-                    @enderror
-                  </div>
-                  <div class="form-group row">
-                    <label for="option1" class="col-sm-2 col-form-label">Option1</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="option1" placeholder="Option1" name="option1">
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
-                    <div class="col-sm-10">
-                      <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
-                    <div class="col-sm-10">
-                      <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <div class="offset-sm-2 col-sm-10">
-                      <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck2">
-                        <label class="form-check-label" for="exampleCheck2">Remember me</label>
-                      </div>
-                    </div>
-                  </div>
+              <form method="POST" action="{{ route('mcqs.store') }}" class="form-horizontal" enctype="multipart/form-data">
+    @csrf
+    <div class="card-body" id="maincard">
+        <!-- Upload Report -->
+        <div class="form-group row">
+            <label for="reportType" class="col-sm-2 col-form-label">Report Type</label>
+            <div class="col-sm-10">
+                <select class="form-control" id="reportType" name="reportType">
+                    <option value="proposal">Proposal</option>
+                    <option value="midterm">Midterm</option>
+                    <option value="final">Final</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="form-group row">
+            <label for="reportFile" class="col-sm-2 col-form-label">Report File</label>
+            <div class="col-sm-10">
+                <input type="file" class="form-control" id="reportFile" name="reportFile" required>
+            </div>
+        </div>
+        
+        <!-- Optional Slide Section -->
+        <div id="slideSection" style="display: none;">
+            <div class="form-group row">
+                <label for="slideType" class="col-sm-2 col-form-label">Slide Type</label>
+                <div class="col-sm-10">
+                    <select class="form-control" id="slideType" name="slideType">
+                        <option value="proposal">Proposal</option>
+                        <option value="midterm">Midterm</option>
+                        <option value="final">Final</option>
+                    </select>
                 </div>
-                <!-- /.card-body -->
-                <div class="card-footer">
-                  <button type="submit" class="btn btn-info">Add</button>
-                  <button type="submit" class="btn btn-default float-right">Cancel</button>
+            </div>
+            
+            <div class="form-group row">
+                <label for="slideFile" class="col-sm-2 col-form-label">Slide File</label>
+                <div class="col-sm-10">
+                    <input type="file" class="form-control" id="slideFile" name="slideFile">
                 </div>
-                <!-- /.card-footer -->
-              </form>
+            </div>
+        </div>
+
+        <!-- Button to show optional slide section -->
+        <div class="form-group row">
+            <div class="col-sm-10 offset-sm-2">
+                <button type="button" class="btn btn-primary" id="addSlideButton" onclick="showSlideSection()">Add Slide</button>
+            </div>
+        </div>
+        
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+        @error('file')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+        @enderror
+    </div>
+    <!-- /.card-body -->
+    <div class="card-footer">
+        <button type="submit" class="btn btn-info">Submit</button>
+        <button type="reset" class="btn btn-default float-right">Cancel</button>
+    </div>
+    <!-- /.card-footer -->
+</form>
+
+<script>
+    function showSlideSection() {
+        var slideSection = document.getElementById('slideSection');
+        slideSection.style.display = 'block';
+        var addSlideButton = document.getElementById('addSlideButton');
+        addSlideButton.style.display = 'none';
+    }
+</script>
+
+
             </div>
             <!-- /.card -->
 

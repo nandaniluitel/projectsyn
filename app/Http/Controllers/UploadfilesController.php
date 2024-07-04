@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Mcq;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class UploadfilesController extends Controller
 {
@@ -30,16 +31,27 @@ class UploadfilesController extends Controller
     }
     public function handleFileUpload(Request $request)
     {
-        // echo $request['question'];
         // Validate the incoming request data
         $validatedData = $request->validate([
-            'question' => 'required',
-            // 'option1' => 'required',
-            // 'option2' => 'required',
-            // 'option3' => 'required',
-            // 'option4' => 'required',
-            // 'correct_answer' => 'required',
+            'reportType' => 'required|string',
+            'reportFile' => 'required|file|mimes:pdf,doc,docx', // Adjust mime types as needed
+            'slideType' => 'nullable|string',
+            'slideFile' => 'nullable|file|mimes:ppt,pptx',
         ]);
-        echo $validatedData['question'];
+
+        // Handle the report file upload
+        if ($request->hasFile('reportFile')) {
+            $reportPath = $request->file('reportFile')->store('reports', 'public');
+            // Save the report path to the database or process it as needed
+        }
+
+        // Handle the optional slide file upload
+        if ($request->hasFile('slideFile')) {
+            $slidePath = $request->file('slideFile')->store('slides', 'public');
+            // Save the slide path to the database or process it as needed
+        }
+
+        // Redirect or respond as needed
+        return redirect()->route('some.route')->with('success', 'Files uploaded successfully');
     }
 }
