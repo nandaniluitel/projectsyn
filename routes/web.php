@@ -5,6 +5,7 @@ use App\Models\Mcq;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\McqController;
+use App\Http\Controllers\ProjectController;
 use App\Models\Category;
 use App\Models\McqResponse;
 use Illuminate\Support\Facades\Auth;
@@ -126,6 +127,7 @@ Route::get('/chart', function () {
 // });
 
 Route::resource('mcqs', McqController::class);
+Route::resource('projects', ProjectController::class);
 Route::get('/{categoryName}/mcqs/', [McqController::class, 'indexCategory']);
 
 Route::get('/notice', function () {
