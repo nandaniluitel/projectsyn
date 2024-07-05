@@ -46,7 +46,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h1>Student Dashboard</h1>
+                <h1>Teacher Dashboard</h1>
                 <div id="notifications">
                     @foreach ($notifications as $notification)
                         <div class="alert alert-info" role="alert">
