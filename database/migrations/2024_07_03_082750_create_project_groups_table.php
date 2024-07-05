@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::create('project_groups', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('project_description');
+            $table->string('description');
+            $table->string('level');
             $table->timestamps();
         });
     }

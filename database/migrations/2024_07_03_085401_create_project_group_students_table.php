@@ -21,6 +21,10 @@ return new class extends Migration
             $table->foreign('project_group_id')->references('id')->on('project_groups')->onDelete('cascade');
             $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
             $table->timestamps();
+
+            // Ensure these columns are indexed
+            $table->index('project_group_id');
+            $table->index('student_id');
         });
     }
 

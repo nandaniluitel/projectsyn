@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('evaluators', function (Blueprint $table) {
             $table->id();
             $table->string('teacherId')->foreign('teacherId')->references('id')->on('teachers');
-            $table->string('groupId')->foreign('groupId')->references('id')->on('project_groups');
             $table->timestamps();
         });
     }
