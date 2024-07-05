@@ -133,7 +133,7 @@ Route::get('/chart', function () {
 Route::resource('mcqs', McqController::class);
 
 Route::get('/dashboard/create', [App\Http\Controllers\DashboardController::class, 'create'])->name('dashboard.create');
-
+Route::get('/teacherdashboard/create', [App\Http\Controllers\DashboardController::class, 'create'])->name('teacherdashboard.create');
 
 Route::get('/evaluations/create', [EvaluationController::class, 'create']);
 Route::post('/evaluations', [EvaluationController::class, 'store']);
