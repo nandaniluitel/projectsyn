@@ -53,58 +53,54 @@
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form method="POST" action="{{ route('mcqs.store') }}" class="form-horizontal">
-                            @csrf
-                            <div class="container">
-       
+                        <form method="POST" action="{{ route('evaluations.store') }}" class="form-horizontal">
+    @csrf
+    <div class="container">
         @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
             </div>
         @endif
-        <form action="/evaluations" method="POST">
-            @csrf
-            <div class="form-group">
-                <label for="id">ID:</label>
-                <input type="text" class="form-control" id="id" name="id" required>
-            </div>
-            <div class="form-group">
-                <label for="ProjectID">Project ID:</label>
-                <input type="text" class="form-control" id="ProjectID" name="ProjectID" required>
-            </div>
-            <div class="form-group">
-                <label for="Phase">Phase:</label>
-                <select class="form-control" id="Phase" name="Phase" required>
-                    <option value="" disabled selected>Select Phase</option>
-                    <option value="proposal">Proposal</option>
-                    <option value="midterm">Mid Term</option>
-                    <option value="final">Final</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="reportMarks">Report Marks:</label>
-                <input type="number" class="form-control" id="reportMarks" name="reportMarks" required>
-            </div>
-            <div class="form-group">
-                <label for="presentationMarks">Presentation Marks:</label>
-                <input type="number" class="form-control" id="presentationMarks" name="presentationMarks" required>
-            </div>
-            <div class="form-group">
-                <label for="qaMarks">Q&A Marks:</label>
-                <input type="number" class="form-control" id="qaMarks" name="qaMarks" required>
-            </div>
-            <div class="form-group">
-                <label for="demoMarks">Demo Marks:</label>
-                <input type="number" class="form-control" id="demoMarks" name="demoMarks" required>
-            </div>
-            <div class="form-group">
-                <label for="feedback">Feedback:</label>
-                <textarea class="form-control" id="feedback" name="feedback" required></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+        <div class="form-group">
+            <label for="id">Evaluator ID:</label>
+            <input type="text" class="form-control" id="evaluatorId" name="evaluatorId" required>
+        </div>
+        <div class="form-group">
+            <label for="ProjectID">Project ID:</label>
+            <input type="text" class="form-control" id="ProjectID" name="ProjectID" required>
+        </div>
+        <div class="form-group">
+            <label for="Phase">Phase:</label>
+            <select class="form-control" id="Phase" name="Phase" required>
+                <option value="" disabled selected>Select Phase</option>
+                <option value="proposal">Proposal</option>
+                <option value="midterm">Mid Term</option>
+                <option value="final">Final</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="reportMarks">Report Marks:</label>
+            <input type="number" class="form-control" id="reportMarks" name="reportMarks" required>
+        </div>
+        <div class="form-group">
+            <label for="presentationMarks">Presentation Marks:</label>
+            <input type="number" class="form-control" id="presentationMarks" name="presentationMarks" required>
+        </div>
+        <div class="form-group">
+            <label for="qaMarks">Q&A Marks:</label>
+            <input type="number" class="form-control" id="qaMarks" name="qaMarks" required>
+        </div>
+        <div class="form-group">
+            <label for="demoMarks">Demo Marks:</label>
+            <input type="number" class="form-control" id="demoMarks" name="demoMarks" required>
+        </div>
+        <div class="form-group">
+            <label for="feedback">Feedback:</label>
+            <textarea class="form-control" id="feedback" name="feedback" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
     </div>
-                            <
+</form>                     
 </section>
 </body>
 </html>

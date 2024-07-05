@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\evaluations;
+use App\Models\Evaluation;
 
 class EvaluationController extends Controller
 {
@@ -14,11 +14,11 @@ class EvaluationController extends Controller
 
     public function store(Request $request)
     {
+        \Log::info($request->all());
         $request->validate([
-            'SN' => 'required',
+            'evaluatorId' => 'required',
             'ProjectID' => 'required',
-            'collegeRollNo' => 'required',
-            'name' => 'required',
+            'Phase' => 'required',
             'reportMarks' => 'required|integer',
             'presentationMarks' => 'required|integer',
             'qaMarks' => 'required|integer',
@@ -26,8 +26,18 @@ class EvaluationController extends Controller
             'feedback' => 'required',
         ]);
 
-        evaluations::create($request->all());
+        Evaluation::create([
+            'evaluatorId' => $request->evaluatorId, // Assuming id is the evaluatorId
+            'projectId' => $request->ProjectID,
+            'phase' => $request->Phase,
+            'reportMarks' => $request->reportMarks,
+            'presentationMarks' => $request->presentationMarks,
+            'qaMarks' => $request->qaMarks,
+            'demoMarks' => $request->demoMarks,
+            'feedback' => $request->feedback,
+        ]);
 
-        return redirect()->back()->with('success', 'Evaluation submitted successfully');
+        // Redirect back with a success message
+        return redirect()->back()->with('success', 'Evaluation submitted successfully.');
     }
 }
