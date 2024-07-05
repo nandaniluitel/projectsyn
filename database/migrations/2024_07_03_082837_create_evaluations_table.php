@@ -14,15 +14,16 @@ return new class extends Migration
     public function up()
     {
         Schema::create('evaluations', function (Blueprint $table) {
-            $table->string('id');
+            $table->increments('id');
             $table->string('evaluatorId')->foreign('evaluatorId')->references('id')->on('evaluators');
             $table->string('projectId')->foreign('projectId')->references('id')->on('projects');
-            $table->integer('phase');
+            $table->string('phase');
             $table->string('reportMarks')->nullable();
             $table->string('presentationMarks')->nullable();
             $table->string('qaMarks')->nullable();
             $table->string('demoMarks')->nullable();
             $table->string('feedback')->nullable();
+            $table->timestamps();
         });
     }
 
