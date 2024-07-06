@@ -15,8 +15,10 @@ return new class extends Migration
     {
         Schema::create('evaluations', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('evaluatorId')->foreign('evaluatorId')->references('id')->on('evaluators');
-            $table->string('projectId')->foreign('projectId')->references('id')->on('projects');
+            $table->unsignedBigInteger('evaluatorId');
+            $table->unsignedBigInteger('projectId');
+            $table->foreign('evaluatorId')->references('id')->on('evaluators');
+            $table->foreign('projectId')->references('id')->on('projects');
             $table->string('phase');
             $table->string('reportMarks')->nullable();
             $table->string('presentationMarks')->nullable();

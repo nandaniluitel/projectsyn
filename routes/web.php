@@ -152,8 +152,8 @@ Route::post('/evaluations', [EvaluationController::class, 'store'])->name('evalu
 Route::get('uploadfiles/create', [UploadfilesController::class, 'showUploadForm'])->name('uploadfiles.create');
 Route::post('uploadfiles/create', [UploadfilesController::class, 'handleFileUpload'])->name('uploadfiles.store');
 
-
-
+Route::get('/evaluations', [EvaluationController::class, 'index'])->name('evaluations.index');
+Route::get('/uploadfiles', [UploadfilesController::class, 'index'])->name('uploadfiles.index1');
 Route::get('/projects', [ProjectController::class, 'index'])->name('project.index');
 Route::resource('projects', ProjectController::class);
 Route::get('/{categoryName}/mcqs/', [McqController::class, 'indexCategory']);

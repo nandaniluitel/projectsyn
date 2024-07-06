@@ -13,12 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('supervisors', function (Blueprint $table) {
+        Schema::create('coordinator', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('teacherId');
-            $table->unsignedBigInteger('groupId');
-            $table->foreign('teacherId')->references('id')->on('teachers');
-            $table->foreign('groupId')->references('id')->on('project_groups');
+            $table->foreign('teacherId')->references('id')->on('teachers')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('supervisors');
+        Schema::dropIfExists('coordinator');
     }
 };

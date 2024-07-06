@@ -10,18 +10,21 @@ use Illuminate\Support\Facades\Storage;
 
 class UploadfilesController extends Controller
 {
-    //
+    // Existing methods...
+
     public function index()
     {
-        $mcqs = Mcq::all();
-        return view('mcqs.index', compact('mcqs'));
+        $projects = Project::all();
+        return view('uploadfiles.index1', compact('projects'));
     }
-    public function indexCategory($cname){
+
+    public function indexCategory($cname)
+    {
         $category = Category::where('title', 'like', $cname)->first();
-        if ($category){
+        if ($category) {
             $mcqs = Mcq::where('category', $category->id)->get();
             return view('mcqs.index', compact('mcqs'));
-        }else{
+        } else {
             abort(404);
         }
     }
@@ -30,6 +33,12 @@ class UploadfilesController extends Controller
     {
         return view('uploadfiles.create');
     }
+
+    public function view()
+    {
+        return view('uploadfiles.view');
+    }
+
     public function handleFileUpload(Request $request)
     {
         // Validate the incoming request data
@@ -41,7 +50,6 @@ class UploadfilesController extends Controller
 
             'groupId' => 'nullable|exists:project_groups,id',
             'supervisor_id' => 'nullable|exists:supervisors,id',
-
         ]);
 
         // Handle the report file upload
@@ -59,7 +67,6 @@ class UploadfilesController extends Controller
         ]);
 
         // Redirect or respond as needed
-        return redirect()->back()->with('success', 'Files uploaded successfully.');
-        
+        return redirect()->route('uploadfiles.index1')->with('success', 'Files uploaded successfully.');
     }
 }
