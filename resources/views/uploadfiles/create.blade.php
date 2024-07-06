@@ -52,10 +52,33 @@
                 <h3 class="card-title">Upload Files Form</h3>
               </div>
               <!-- /.card-header -->
-              <!-- form start -->
-              <form method="POST" action="{{ route('mcqs.store') }}" class="form-horizontal" enctype="multipart/form-data">
+            <!-- Form start -->
+<form method="POST" action="{{ route('uploadfiles.store') }}" class="form-horizontal" enctype="multipart/form-data">
     @csrf
     <div class="card-body" id="maincard">
+
+    @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        <!-- Group ID -->
+        <div class="form-group row">
+            <label for="groupId" class="col-sm-2 col-form-label">Group ID</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="groupId" name="groupId" required>
+            </div>
+        </div>
+
+        <!-- Supervisor ID -->
+        <div class="form-group row">
+            <label for="supervisor_id" class="col-sm-2 col-form-label">Supervisor ID</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="supervisor_id" name="supervisor_id" required>
+            </div>
+        </div>
+        
         <!-- Upload Report -->
         <div class="form-group row">
             <label for="reportType" class="col-sm-2 col-form-label">Report Type</label>
@@ -67,14 +90,14 @@
                 </select>
             </div>
         </div>
-        
+
         <div class="form-group row">
             <label for="reportFile" class="col-sm-2 col-form-label">Report File</label>
             <div class="col-sm-10">
                 <input type="file" class="form-control" id="reportFile" name="reportFile" required>
             </div>
         </div>
-        
+
         <!-- Optional Slide Section -->
         <div id="slideSection" style="display: none;">
             <div class="form-group row">
@@ -87,7 +110,7 @@
                     </select>
                 </div>
             </div>
-            
+
             <div class="form-group row">
                 <label for="slideFile" class="col-sm-2 col-form-label">Slide File</label>
                 <div class="col-sm-10">
@@ -102,7 +125,7 @@
                 <button type="button" class="btn btn-primary" id="addSlideButton" onclick="showSlideSection()">Add Slide</button>
             </div>
         </div>
-        
+
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>

@@ -15,15 +15,14 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
-            $table->string('groupId')->foreign('groupId')->references('id')->on('project_groups');
-            $table->string('proposal_file');
-            $table->string('slides_file');
-            $table->string('report_file');
-            
-            
-
-            $table->string('supervisor_id')->foreign('supervisor_id')->references('id')->on('supervisors');
+            $table->unsignedBigInteger('groupId');
+            $table->string('slides_file')->nullable();;
+            $table->string('report_file')->nullable();;
+            $table->unsignedBigInteger('supervisor_id');
             $table->timestamps();
+
+            $table->foreign('groupId')->references('id')->on('project_groups');
+            $table->foreign('supervisor_id')->references('id')->on('supervisors');
         });
     }
 
