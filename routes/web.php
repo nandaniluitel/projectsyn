@@ -132,12 +132,15 @@ Route::get('/chart', function () {
 
 Route::resource('mcqs', McqController::class);
 
-Route::get('/evaluator/index', function () {
+Route::get('/Evaluator/index', function () {
     return view('Evaluator.index');
 });
 
-Route::get('/supervisor/index', function () {
+Route::get('/Supervisor/index', function () {
     return view('Supervisor.index');
+});
+Route::get('/Coordinator/index', function () {
+    return view('Coordinator.index');
 });
 
 Route::get('/dashboard/create', [App\Http\Controllers\DashboardController::class, 'create'])->name('dashboard.create');
@@ -149,6 +152,9 @@ Route::post('/evaluations', [EvaluationController::class, 'store'])->name('evalu
 Route::get('uploadfiles/create', [UploadfilesController::class, 'showUploadForm'])->name('uploadfiles.create');
 Route::post('uploadfiles/create', [UploadfilesController::class, 'handleFileUpload'])->name('uploadfiles.store');
 
+
+
+Route::get('/projects', [ProjectController::class, 'index'])->name('project.index');
 Route::resource('projects', ProjectController::class);
 Route::get('/{categoryName}/mcqs/', [McqController::class, 'indexCategory']);
 
