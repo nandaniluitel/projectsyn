@@ -56,7 +56,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="/adminlte/index3.html" class="nav-link">
+                <a href="{{ url('/supervisor/index') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Supervisor</p>
                 </a>
@@ -225,6 +225,18 @@
             </a>
           </li> --> 
         <!-- </ul> -->
+        <div class="mt-3 pb-3 mb-3 d-flex"></div>
+        <div class="mt-3 pb-3 mb-3 d-flex"></div>
+        <div class="mt-3 pb-3 mb-3 d-flex"></div>
+        <div class="mt-3 pb-3 mb-3 d-flex"></div>
+        <div class="mt-3 pb-3 mb-3 d-flex"></div>
+        <div class="mt-3 pb-3 mb-3 d-flex"></div>
+        <div class="mt-3 pb-3 mb-3 d-flex"></div>
+        <div class="mt-3 pb-3 mb-3 d-flex"></div>
+        <div class="mt-3 pb-3 mb-3 d-flex"></div>
+        <div class="mt-3 pb-3 mb-3 d-flex"></div>
+        <div class="mt-3 pb-3 mb-3 d-flex"></div>
+        <div class="mt-3 pb-3 mb-3 d-flex"></div>
         <div class="mt-3 pb-3 mb-3 d-flex"></div>
         <div class="mt-3 pb-3 mb-3 d-flex"></div>
         <div class="mt-3 pb-3 mb-3 d-flex"></div>
