@@ -55,11 +55,11 @@ class ProjectController extends Controller
         }
         return redirect()->route('projects.index')->with('success', 'Project created successfully.');
     }
-    // public function destroy($id)
-    // {
-    //     $project_groups = project_groups::findOrFail($id);
-    //     $project_groups->delete();
+    public function destroy($id)
+    {
+        $project_groups = project_groups::findOrFail($id);
+        $project_groups->delete();
 
-    //     return redirect()->route('projects.index');
+        return redirect()->route('projects.index');
 }
-
+}
