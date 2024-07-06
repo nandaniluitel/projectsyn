@@ -1,0 +1,156 @@
+.fontforhead{
+    text-align: center;
+    margin:50px;
+}
+.landingCard {
+    display: flex;
+}
+
+.container {
+    display: flex;
+    height: 45vh;
+}
+
+.mainContent {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.mainContent::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 0;
+}
+
+.hero {
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    color: white;
+}
+
+.heroTitle {
+    color: #ffffff;
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.heroText {
+    color: #fbfbfb;
+    margin-bottom: 30px;
+}
+
+.heroBtn {
+    background-color: #005A87;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.heroBtn:hover {
+    background-color: #004466;
+}
+
+.landingCard {
+    margin-top: 50px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.card {
+    max-width: 345px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display:flex;
+}
+
+.cardMedia {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+}
+
+.cardContent {
+    padding: 16px;
+}
+
+.cardTitle {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.cardText {
+    font-size: 14px;
+    color: #666;
+}
+
+.cardActions {
+    display: flex;
+    justify-content: flex-end;
+    padding: 8px;
+}
+
+.cardBtn {
+    background-color: #005A87;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.cardBtn:hover {
+    background-color: #004466;
+}
+
+.aboutUsContainer {
+    text-align: left;
+    margin: 60px 0 80px;
+}
+
+.aboutUsContainer p {
+    color: #555;
+    font-size: 16px;
+    line-height: 1.6;
+    width: 80%;
+    margin: auto;
+    text-align: center;
+}
+
+.featuredSchoolsHeader {
+    text-align: center;
+    margin: 40px 0 20px;
+    padding: 10px;
+}
+
+.featuredSchoolsHeader h3 {
+    position: relative;
+    display: inline-block;
+    font-size: 24px;
+    color: #222;
+    padding-bottom: 10px;
+}
+
+.featuredSchoolsHeader h3::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+}

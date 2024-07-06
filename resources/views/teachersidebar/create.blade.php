@@ -13,7 +13,7 @@
           <img src="/adminlte/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Alexander Pierce</a>
+          <a href="#" class="d-block">Profile</a>
         </div>
       </div>
 
@@ -44,19 +44,19 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ url('/evaluator/index') }}" class="nav-link">
+                <a href="{{ url('/Evaluator/index') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Evaluator</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="/adminlte/index2.html" class="nav-link">
+              <a href="{{ url('/Coordinator/index') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Coordinator</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ url('/supervisor/index') }}" class="nav-link">
+                <a href="{{ url('/Supervisor/index') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Supervisor</p>
                 </a>
