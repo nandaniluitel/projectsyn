@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Project;
 use App\Models\Category;
 use App\Models\Mcq;
 use Illuminate\Http\Request;
@@ -27,7 +28,7 @@ class UploadfilesController extends Controller
 
     public function showUploadForm()
     {
-        return view('projects.uploadfiles');
+        return view('uploadfiles.create');
     }
     public function handleFileUpload(Request $request)
     {
@@ -37,21 +38,28 @@ class UploadfilesController extends Controller
             'reportFile' => 'required|file|mimes:pdf,doc,docx', // Adjust mime types as needed
             'slideType' => 'nullable|string',
             'slideFile' => 'nullable|file|mimes:ppt,pptx',
+
+            'groupId' => 'nullable|exists:project_groups,id',
+            'supervisor_id' => 'nullable|exists:supervisors,id',
+
         ]);
 
         // Handle the report file upload
-        if ($request->hasFile('reportFile')) {
-            $reportPath = $request->file('reportFile')->store('reports', 'public');
-            // Save the report path to the database or process it as needed
-        }
+        $reportPath = $request->file('reportFile')->store('reports', 'public');
 
         // Handle the optional slide file upload
-        if ($request->hasFile('slideFile')) {
-            $slidePath = $request->file('slideFile')->store('slides', 'public');
-            // Save the slide path to the database or process it as needed
-        }
+        $slidePath = $request->hasFile('slideFile') ? $request->file('slideFile')->store('slides', 'public') : null;
+
+        // Save to the projects table
+        Project::create([
+            'groupId' => $request->input('groupId'),
+            'report_file' => $reportPath,
+            'slides_file' => $slidePath,
+            'supervisor_id' => $request->input('supervisor_id'),
+        ]);
 
         // Redirect or respond as needed
-        return redirect()->route('some.route')->with('success', 'Files uploaded successfully');
+        return redirect()->back()->with('success', 'Files uploaded successfully.');
+        
     }
 }

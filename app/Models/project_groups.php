@@ -13,17 +13,17 @@ class project_groups extends Model
 
     public function students()
     {
-        return $this->belongsToMany(Student::class, 'project_group_student', 'project_group_id', 'student_id');
+        return $this->belongsToMany(Students::class, 'project_group_student', 'project_group_id', 'student_id');
     }
 
 
     public function evaluators()
     {
-        return $this->hasMany(Evaluator::class, 'groupId');
+        return $this->hasMany(Evaluators::class, 'groupId');
     }
     public function projects()
     {
-        return $this->hasMany(Project::class, 'groupId');
+        return $this->hasMany(Projects::class, 'groupId');
     }
     use HasFactory;
 }
