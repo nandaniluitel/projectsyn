@@ -3,8 +3,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Students;
-use App\Models\Evaluators;
+use App\Models\Student;
+use App\Models\Evaluator;
 use App\Models\Project;
 
 class ProjectGroup extends Model
@@ -16,13 +16,13 @@ class ProjectGroup extends Model
 
     public function students()
     {
-        return $this->belongsToMany(Students::class, 'project_group_students', 'project_group_id', 'student_id');
+        return $this->belongsToMany(Student::class, 'project_group_students', 'project_group_id', 'student_id');
     }
 
 
     public function evaluators()
     {
-        return $this->hasMany(Evaluators::class, 'groupId');
+        return $this->hasMany(Evaluator::class, 'groupId');
     }
     public function projects()
     {

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Supervisor;
 
 class project extends Model
 {
@@ -24,7 +25,7 @@ public function group()
 
 public function supervisor()
 {
-    return $this->belongsTo(Supervisors::class, 'supervisor_id');
+    return $this->belongsTo(Supervisor::class, 'supervisor_id');
 }
 }
 

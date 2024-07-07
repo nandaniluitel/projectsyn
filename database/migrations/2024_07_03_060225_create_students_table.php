@@ -15,11 +15,6 @@ return new class extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->id(); // Big integer auto-incrementing primary key
-            $table->string('name');
-            $table->string('picture')->nullable();
-            $table->string('semester');
-            $table->string('email')->unique();
-            $table->string('phone_number');
             $table->unsignedBigInteger('userId');
             $table->foreign('userId')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();

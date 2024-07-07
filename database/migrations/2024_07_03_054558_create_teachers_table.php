@@ -20,14 +20,6 @@ return new class extends Migration
             ->references('id')
             ->on('users')
             ->onDelete('cascade');
-            $table->string('Name'); 
-            $table->string('Photo')->nullable(); 
-            $table->string('Email')->unique(); 
-            $table->string('Phone_number')->nullable();
-            $table->string('Password');
-          
-
-           
             $table->timestamps();
         });
     }
