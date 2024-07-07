@@ -15,13 +15,19 @@ return new class extends Migration
     {
         Schema::create('teachers', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('userId');
+            $table->foreign('userId')
+            ->references('id')
+            ->on('users')
+            ->onDelete('cascade');
             $table->string('Name'); 
             $table->string('Photo')->nullable(); 
-            $table->string('type');//supervisor or evaluator or both
             $table->string('Email')->unique(); 
             $table->string('Phone_number')->nullable();
-            $table->string('Faculty')->nullable();
             $table->string('Password');
+          
+
+           
             $table->timestamps();
         });
     }
