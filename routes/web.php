@@ -9,9 +9,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\UploadfilesController;
 use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\SupervisorController;
-
-
-
+use App\Http\Controllers\CoordinatorController;
 use App\Models\Category;
 use App\Models\McqResponse;
 use Illuminate\Support\Facades\Auth;
@@ -28,7 +26,7 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/', function () {
-    return redirect('/quiz');
+    return redirect('/frontpage/index');
     // return view('welcome');
 });
 // Route::get('/dashboard', function () {
@@ -145,6 +143,7 @@ Route::get('/Coordinator/index', function () {
     return view('Coordinator.index');
 });
 
+
 Route::get('/dashboard/create', [App\Http\Controllers\DashboardController::class, 'create'])->name('dashboard.create');
 Route::get('/teacherdashboard/create', [App\Http\Controllers\teacherDashboardController::class, 'create'])->name('teacherdashboard.create');
 
@@ -158,12 +157,39 @@ Route::post('uploadfiles/create', [UploadfilesController::class, 'handleFileUplo
 Route::get('/assignsupervisor', [SupervisorController::class, 'create'])->name('assignsupervisor.create');
 Route::post('/assignsupervisor', [SupervisorController::class, 'assign'])->name('assignsupervisor.assign');
 
+Route::get('/login', function () {
+    return view('auth.login');
+});
+
+Route::get('/frontpage/index', function () {
+    return view('frontpage.index');
+});
+
 
 Route::get('/evaluations', [EvaluationController::class, 'index'])->name('evaluations.index');
 Route::get('/uploadfiles', [UploadfilesController::class, 'index'])->name('uploadfiles.index1');
 Route::get('/projects', [ProjectController::class, 'index'])->name('project.index');
 Route::resource('projects', ProjectController::class);
 Route::get('/{categoryName}/mcqs/', [McqController::class, 'indexCategory']);
+
+Route::middleware('student')->group(function () {
+    Route::get('/student-dashboard', 'StudentController@index')->name('student.dashboard');
+});
+
+
+
+Route::middleware('coordinator')->group(function () {
+    Route::get('/assign-roles', [CoordinatorController::class, 'showAssignRolesForm'])->name('coordinator.assignRolesForm');
+    Route::post('/assign-roles', [CoordinatorController::class, 'assignRoles'])->name('coordinator.assignRoles');
+});
+
+// Route::middleware('supervisor')->group(function () {
+//     Route::get('/supervisor-dashboard', 'SupervisorController@index')->name('supervisor.dashboard');
+// });
+
+// Route::middleware('evaluator')->group(function () {
+//     Route::get('/evaluator-dashboard', 'EvaluatorController@index')->name('evaluator.dashboard');
+// });
 
 Route::get('/notice', function () {
     return view('notice');
