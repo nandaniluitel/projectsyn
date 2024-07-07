@@ -8,6 +8,8 @@ use App\Http\Controllers\McqController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\UploadfilesController;
 use App\Http\Controllers\EvaluationController;
+use App\Http\Controllers\SupervisorController;
+
 
 
 use App\Models\Category;
@@ -152,6 +154,10 @@ Route::post('/evaluations', [EvaluationController::class, 'store'])->name('evalu
 
 Route::get('uploadfiles/create', [UploadfilesController::class, 'showUploadForm'])->name('uploadfiles.create');
 Route::post('uploadfiles/create', [UploadfilesController::class, 'handleFileUpload'])->name('uploadfiles.store');
+
+Route::get('/assignsupervisor', [SupervisorController::class, 'create'])->name('assignsupervisor.create');
+Route::post('/assignsupervisor', [SupervisorController::class, 'assign'])->name('assignsupervisor.assign');
+
 
 Route::get('/evaluations', [EvaluationController::class, 'index'])->name('evaluations.index');
 Route::get('/uploadfiles', [UploadfilesController::class, 'index'])->name('uploadfiles.index1');

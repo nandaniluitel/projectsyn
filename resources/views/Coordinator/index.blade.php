@@ -156,7 +156,7 @@
           <p class="cardText">Assign supervisor to the registered groups.</p>
         </div>
         <div class="cardActions">
-        <a href="{{ route('projects.index') }}" class="cardBtn">Navigate</a>
+        <a href="{{ route('assignsupervisor.create') }}" class="cardBtn">Navigate</a>
         </div>
       </div>
       <div class="card">
