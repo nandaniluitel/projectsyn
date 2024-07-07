@@ -20,7 +20,7 @@
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
-  @include('sidebar.create')
+  @include('teachersidebar.create')
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">

@@ -67,6 +67,6 @@ class UploadfilesController extends Controller
         ]);
 
         // Redirect or respond as needed
-        return redirect()->route('uploadfiles.index1')->with('success', 'Files uploaded successfully.');
+        return redirect()->back()->with('success', 'Project registered successfully.');
     }
 }

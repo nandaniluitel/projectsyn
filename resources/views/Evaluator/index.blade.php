@@ -136,7 +136,7 @@
           <p class="cardText">View Registered groups with their Project names. </p>
         </div>
         <div class="cardActions">
-          <button class="cardBtn">Navigate</button>
+        <a href="{{ route('projects.index') }}" class="cardBtn">Navigate</a>
         </div>
       </div>
       <div class="card">
@@ -146,7 +146,7 @@
           <p class="cardText">View the necessary files uploaded by respective groups including proposal,slides and reports.</p>
         </div>
         <div class="cardActions">
-          <button class="cardBtn">Navigate</button>
+        <a href="{{ route('uploadfiles.index1') }}" class="cardBtn">Navigate</a>
         </div>
       </div>
       <div class="card">
@@ -156,7 +156,7 @@
           <p class="cardText">Fill out the Evaluation Form and submit it to the coordinator.</p>
         </div>
         <div class="cardActions">
-          <button class="cardBtn">Navigate</button>
+        <a href="{{ route('evaluations.create') }}" class="cardBtn">Navigate</a>
         </div>
       </div>
      

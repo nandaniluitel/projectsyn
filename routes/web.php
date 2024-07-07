@@ -146,7 +146,8 @@ Route::get('/Coordinator/index', function () {
 Route::get('/dashboard/create', [App\Http\Controllers\DashboardController::class, 'create'])->name('dashboard.create');
 Route::get('/teacherdashboard/create', [App\Http\Controllers\teacherDashboardController::class, 'create'])->name('teacherdashboard.create');
 
-Route::get('/evaluations/create', [EvaluationController::class, 'create']);
+Route::get('/evaluations/create', [EvaluationController::class, 'create'])->name('evaluations.create');
+
 Route::post('/evaluations', [EvaluationController::class, 'store'])->name('evaluations.store');
 
 Route::get('uploadfiles/create', [UploadfilesController::class, 'showUploadForm'])->name('uploadfiles.create');

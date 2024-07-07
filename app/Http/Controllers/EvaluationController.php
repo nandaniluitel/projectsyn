@@ -37,12 +37,8 @@ class EvaluationController extends Controller
             'feedback' => $request->feedback,
         ]);
 
-        return redirect()->route('evaluations.index')->with('success', 'Evaluation submitted successfully.');
+        return redirect()->back()->with('success', 'Project registered successfully.');
     }
 
-    public function index()
-    {
-        $evaluations = Evaluation::all();
-        return view('evaluations.index', compact('evaluations'));
-    }
+    
 }

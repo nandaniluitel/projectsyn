@@ -53,13 +53,7 @@ class ProjectController extends Controller
                 return redirect()->back()->withErrors(['crns' => 'Student with CRN ' . $crn . ' not found.']);
             }
         }
-        return redirect()->route('projects.index')->with('success', 'Project created successfully.');
+    
+        return redirect()->back()->with('success', 'Project registered successfully.');
     }
-    public function destroy($id)
-    {
-        $project_groups = project_groups::findOrFail($id);
-        $project_groups->delete();
-
-        return redirect()->route('projects.index');
-}
 }
