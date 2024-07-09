@@ -10,22 +10,22 @@ class CoordinatorController extends Controller
     public function assignRoles(Request $request)
     {
         $request->validate([
-            'teacher_id' => 'required|exists:teachers,id',
+            'teacherId' => 'required|exists:teachers,id',
             'role' => 'required|in:supervisor,evaluator,coordinator',
             'groupId' => 'required_if:role,supervisor|exists:project_groups,id',
         ]);
 
-        $teacher = Teacher::find($request->teacher_id);
+        $teacher = Teacher::find($request->teacherId);
 
         switch ($request->role) {
             case 'coordinator':
-                $teacher->coordinators()->syncWithoutDetaching([$teacher->id]);
+                $teacher->coordinator()->create([]);
                 break;
             case 'evaluator':
-                $teacher->evaluators()->syncWithoutDetaching([$teacher->id]);
+                $teacher->evaluator()->create([]);
                 break;
             case 'supervisor':
-                $teacher->supervisors()->syncWithoutDetaching([$request->groupId]);
+                $teacher->supervisors()->create(['groupId' => $request->groupId]);
                 break;
         }
 

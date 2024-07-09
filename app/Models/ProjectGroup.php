@@ -12,7 +12,7 @@ class ProjectGroup extends Model
     use HasFactory;
 
     protected $table = 'project_groups';
-    protected $fillable = ['title', 'description', 'level'];
+    protected $fillable = ['title', 'description', 'level','supervisor_id'];
 
     public function students()
     {
@@ -28,5 +28,8 @@ class ProjectGroup extends Model
     {
         return $this->hasMany(Project::class, 'groupId');
     }
-    use HasFactory;
+    public function supervisor()
+    {
+        return $this->belongsTo(Supervisor::class, 'groupId');
+    }
 }

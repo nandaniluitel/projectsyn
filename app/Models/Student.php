@@ -12,7 +12,7 @@ class Student extends Model
 {
     use HasFactory;
     protected $table = 'students';
-    protected $fillable = ['userId'];
+    protected $fillable = ['id','userId'];
 
     public function project_groups()
     {
@@ -20,6 +20,6 @@ class Student extends Model
     }
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'userId');
     }
 }

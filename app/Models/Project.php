@@ -20,7 +20,7 @@ class project extends Model
 // Define the relationships
 public function group()
 {
-    return $this->belongsTo(project_groups::class, 'groupId');
+    return $this->belongsTo(ProjectGroup::class, 'groupId');
 }
 
 public function supervisor()

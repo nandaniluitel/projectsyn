@@ -16,21 +16,21 @@ class Teacher extends Model
     protected $fillable = [ 'userId'];
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'userId');
     }
 
     public function coordinator()
     {
-        return $this->hasMany(Coordinator::class);
+        return $this->hasMany(Coordinator::class, 'teacherId');
     }
 
     public function evaluator()
     {
-        return $this->hasMany(Evaluator::class);
+        return $this->hasMany(Evaluator::class, 'teacherId');
     }
 
     public function supervisors()
     {
-        return $this->hasMany(Supervisor::class);
+        return $this->hasMany(Supervisor::class, 'teacherId');
     }
 }

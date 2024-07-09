@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\project_group_student;
-use App\Models\Students;
+use App\Models\Student;
 use App\Models\projects;
 use App\Http\Requests\Storeproject_group_studentRequest;
 use App\Http\Requests\Updateproject_group_studentRequest;

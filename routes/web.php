@@ -139,13 +139,11 @@ Route::get('/Evaluator/index', function () {
 Route::get('/Supervisor/index', function () {
     return view('Supervisor.index');
 });
-Route::get('/Coordinator/index', function () {
-    return view('Coordinator.index');
-});
+
 
 
 Route::get('/dashboard/create', [App\Http\Controllers\DashboardController::class, 'create'])->name('dashboard.create');
-Route::get('/teacherdashboard/create', [App\Http\Controllers\teacherDashboardController::class, 'create'])->name('teacherdashboard.create');
+
 
 Route::get('/evaluations/create', [EvaluationController::class, 'create'])->name('evaluations.create');
 
@@ -181,6 +179,10 @@ Route::middleware('student')->group(function () {
 Route::middleware('coordinator')->group(function () {
     Route::get('/assign-roles', [CoordinatorController::class, 'showAssignRolesForm'])->name('coordinator.assignRolesForm');
     Route::post('/assign-roles', [CoordinatorController::class, 'assignRoles'])->name('coordinator.assignRoles');
+    Route::get('/teacherdashboard/create', [App\Http\Controllers\teacherDashboardController::class, 'create'])->name('teacherdashboard.create');
+    Route::get('/Coordinator/index', function () {
+        return view('Coordinator.index');
+    });
 });
 
 // Route::middleware('supervisor')->group(function () {

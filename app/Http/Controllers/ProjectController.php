@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ProjectGroup;
 use App\Models\ProjectGroupStudent;
-use App\Models\Students;
+use App\Models\Student;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -17,7 +17,7 @@ class ProjectController extends Controller
 
     public function create()//left to see
     {
-        $students = Students::all();
+        $students = Student::all();
         return view('projects.create', compact('students'));
     }
 
@@ -41,7 +41,7 @@ class ProjectController extends Controller
          //Add students to the project group
          foreach ($request->crns as $crn) {
             // Find the student by ID (CRN)
-            $student = Students::find($crn);
+            $student = Student::find($crn);
             if ($student) {
                 // Create the project group student relationship
                 ProjectGroupStudent::create([
@@ -50,8 +50,8 @@ class ProjectController extends Controller
                 ]);
             } else {
                 // Handle the case where a student with the given CRN doesn't exist
-                return redirect()->back()->withErrors(['crns' => 'Student with CRN ' . $crn . ' not found.']);
-            }
+                return redirect()->route('projects.index')->with('success', 'Project created successfully.');
+    }
         }
     
         return redirect()->back()->with('success', 'Project registered successfully.');

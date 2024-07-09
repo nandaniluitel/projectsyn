@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('evaluations', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->unsignedBigInteger('evaluatorId');
             $table->unsignedBigInteger('projectId');
             $table->foreign('evaluatorId')->references('id')->on('evaluators');
@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('qaMarks')->nullable();
             $table->string('demoMarks')->nullable();
             $table->string('feedback')->nullable();
+
             $table->timestamps();
         });
     }

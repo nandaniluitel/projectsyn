@@ -11,6 +11,11 @@ class EvaluationController extends Controller
     {
         return view('evaluations.create');
     }
+    public function index()
+    {
+        $evaluations = Evaluation::all();
+        return view('evaluations.index', compact('evaluations'));
+    }
 
     public function store(Request $request)
     {
