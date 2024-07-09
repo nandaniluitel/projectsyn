@@ -1,4 +1,3 @@
-{{-- resources/views/assignsupervisor/create.blade.php --}}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -79,7 +78,7 @@
                                     <select name="supervisorId" class="form-control">
                                         <option value="" disabled selected>Choose</option>
                                         @foreach($supervisors as $supervisor)
-                                            <option value="{{ $supervisor->id }}">{{ $supervisor->Name }}</option>
+                                            <option value="{{ $supervisor->teacherId }}">{{ $supervisor->supervisorName }}</option>
                                         @endforeach
                                     </select>
                                 </div>
