@@ -10,6 +10,29 @@ class LoginController extends Controller
 {
     use AuthenticatesUsers;
 
+    /**
+     * Where to redirect users after login.
+     *
+     * @return string
+     */
+    protected function redirectTo()
+    {
+        $role = auth()->user()->role;
+
+    if ($role === 'student') {
+        return route('dashboard.create');
+    } else {
+        return route('teacherdashboard.create');
+    }
+        return RouteServiceProvider::HOME; // Default redirection
+    }
+
+
+    /**
+     * The path to redirect after login.
+     *
+     * @var string
+     */
     protected $redirectTo = RouteServiceProvider::HOME;
 
     public function __construct()
@@ -17,6 +40,12 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
+    /**
+     * Send the failed login response.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     protected function sendFailedLoginResponse(\Illuminate\Http\Request $request)
     {
         Log::info('Login failed', ['email' => $request->email]);

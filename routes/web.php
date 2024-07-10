@@ -13,6 +13,9 @@ use App\Http\Controllers\CoordinatorController;
 use App\Models\Category;
 use App\Models\McqResponse;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\teacherDashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -155,9 +158,11 @@ Route::post('uploadfiles/create', [UploadfilesController::class, 'handleFileUplo
 Route::get('/assignsupervisor', [SupervisorController::class, 'create'])->name('assignsupervisor.create');
 Route::post('/assignsupervisor', [SupervisorController::class, 'assign'])->name('assignsupervisor.assign');
 
-Route::get('/login', function () {
-    return view('auth.login');
-});
+// Route::get('/login', function () {
+//     return view('auth.login');
+// });
+Route::get('/student/dashboard', [DashboardController::class, 'create'])->name('dashboard.create');
+Route::get('/teacher/dashboard', [teacherDashboardController::class, 'create'])->name('teacherdashboard.create');
 
 Route::get('/frontpage/index', function () {
     return view('frontpage.index');

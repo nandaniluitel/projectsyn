@@ -16,9 +16,14 @@ class SupervisorMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!$request->user() || !$request->user()->teacher || !$request->user()->teacher->supervisors) {
-            abort(403, 'Unauthorized action.');
+        $user = Auth::user();
+
+        if ($user && $user->teacher && $user->teacher->supervisor) {
+            // User is a supervisor, allow the request to proceed
+            return $next($request);
         }
-        return $next($request);
+
+        // User is not a supervisor, abort with 403
+        abort(403, 'Unauthorized action.');
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CoordinatorMiddleware
 {
@@ -16,9 +17,21 @@ class CoordinatorMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!$request->user() || !$request->user()->teacher || !$request->user()->teacher->coordinator) {
-            abort(403, 'Unauthorized action.');
-        }
         return $next($request);
+        // $user = Auth::user();
+
+        // if ($user && $user->teacher->isNotEmpty()) {
+        //     // Access the first teacher in the collection (assuming only one teacher per user)
+        //     $teacher = $user->teacher->first();
+    
+        //     // Check if the teacher is a coordinator
+        //     if ($teacher->coordinator) {
+        //         // User is a coordinator, allow the request to proceed
+        //         return $next($request);
+        //     }
+        // }
+
+        // User is not a coordinator, abort with 403
+        abort(403, 'Unauthorized action.');
     }
 }

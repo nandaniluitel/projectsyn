@@ -9,7 +9,8 @@ class teacherDashboardController extends Controller
 {
     public function __construct()
     {
-        // $this->middleware('auth');
+        $this->middleware('auth');
+        $this->middleware('role:coordinator|supervisor|evaluator');
     }
     public function create()
     {
