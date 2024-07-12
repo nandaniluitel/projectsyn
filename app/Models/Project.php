@@ -15,6 +15,7 @@ class project extends Model
         'groupId',
         'report_file',
         'slides_file',
+        'report_type',
         'supervisor_id',
     ];
 // Define the relationships

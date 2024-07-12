@@ -22,91 +22,101 @@
   @include('teachersidebar.create')
 
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
+<div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>Assign Supervisor</h1>
-          </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Assign Supervisor</li>
-            </ol>
-          </div>
-        </div>
-      </div><!-- /.container-fluid -->
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Assign Supervisor</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Assign Supervisor</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
     </section>
 
     <!-- Main content -->
     <section class="content">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">List of Project Groups</h3>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                @if (session('success'))
-                  <div class="alert alert-success">
-                    {{ session('success') }}
-                  </div>
-                @endif
-
-                <table class="table table-bordered">
-                  <thead>
-                    <tr>
-                      <th>Group ID</th>
-                      <th>Title</th>
-                      <th>Assign Supervisor</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @foreach ($groups as $group)
-                      <tr>
-                        <td>{{ $group->id }}</td>
-                        <td>{{ $group->title }}</td>
-                        <td>
-                            <form action="{{ route('assignsupervisor.assign') }}" method="POST">
-                                @csrf
-                                <div class="form-group">
-                                    <select name="supervisorId" class="form-control">
-                                        <option value="" disabled selected>Choose</option>
-                                        @foreach($supervisors as $supervisor)
-                                            <option value="{{ $supervisor->teacherId }}">{{ $supervisor->supervisorName }}</option>
-                                        @endforeach
-                                    </select>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">List of Project Groups</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            @if (session('success'))
+                                <div class="alert alert-success">
+                                    {{ session('success') }}
                                 </div>
-                                <input type="hidden" name="groupId" value="{{ $group->id }}">
-                            </td>
-                        <td>
-                            <!-- Action Buttons or Links -->
-                            <button type="submit" class="btn btn-primary">Assign</button>
-                        </form>
-                    </td>
-                      </tr>
-                    @endforeach
-                  </tbody>
-                </table>
-              </div>
-              <!-- /.card-body -->
+                            @endif
+
+                            @if (session('error'))
+                                <div class="alert alert-danger">
+                                    {{ session('error') }}
+                                </div>
+                            @endif
+
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Group ID</th>
+                                        <th>Title</th>
+                                        <th>Assign Supervisor</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($groups as $group)
+                                        <tr>
+                                            <td>{{ $group->id }}</td>
+                                            <td>{{ $group->title }}</td>
+                                            <td>
+                                                <form action="{{ route('assignsupervisor.assign') }}" method="POST">
+                                                    @csrf
+                                                    <div class="form-group">
+                                                        <select name="supervisorId" class="form-control">
+                                                            <option value="" disabled selected>Choose</option>
+                                                            @foreach($supervisors as $supervisor)
+                                                                <option value="{{ $supervisor->teacherId }}">{{ $supervisor->supervisorName }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <input type="hidden" name="groupId" value="{{ $group->id }}">
+                                                </td>
+                                            <td>
+                                                <!-- Action Buttons or Links -->
+                                                <button type="submit" class="btn btn-primary">Assign</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+
+                            <a href="{{ route('assignsupervisor.index') }}" class="btn btn-info">View Assigned Groups</a>
+
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
             </div>
-            <!-- /.card -->
-          </div>
-          <!-- /.col -->
+            <!-- /.row -->
         </div>
-        <!-- /.row -->
-      </div>
-      <!-- /.container-fluid -->
+        <!-- /.container-fluid -->
     </section>
     <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
+</div>
+<!-- /.content-wrapper -->
+
 
   <!-- Main Footer -->
   <footer class="main-footer">

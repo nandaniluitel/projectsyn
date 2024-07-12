@@ -83,7 +83,7 @@
         <div class="form-group row">
             <label for="reportType" class="col-sm-2 col-form-label">Report Type</label>
             <div class="col-sm-10">
-                <select class="form-control" id="reportType" name="reportType">
+                <select class="form-control" id="reportType" name="reportType" onchange="toggleSupervisorField()">
                     <option value="proposal">Proposal</option>
                     <option value="midterm">Midterm</option>
                     <option value="final">Final</option>
@@ -150,12 +150,28 @@
 </form>
 
 <script>
-    function showSlideSection() {
-        var slideSection = document.getElementById('slideSection');
-        slideSection.style.display = 'block';
-        var addSlideButton = document.getElementById('addSlideButton');
-        addSlideButton.style.display = 'none';
-    }
+                function showSlideSection() {
+                  var slideSection = document.getElementById('slideSection');
+                  slideSection.style.display = 'block';
+                  var addSlideButton = document.getElementById('addSlideButton');
+                  addSlideButton.style.display = 'none';
+                }
+
+                function toggleSupervisorField() {
+                  var reportType = document.getElementById('reportType').value;
+                  var supervisorField = document.getElementById('supervisor_id');
+
+                  if (reportType === 'proposal') {
+                    supervisorField.required = false;
+                    supervisorField.parentNode.parentNode.style.display = 'none';
+                  } else {
+                    supervisorField.required = true;
+                    supervisorField.parentNode.parentNode.style.display = 'flex';
+                  }
+                }
+
+                // Call toggleSupervisorField on page load to set initial state
+                window.onload = toggleSupervisorField;
 </script>
 
 

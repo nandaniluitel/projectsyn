@@ -40,33 +40,48 @@ class UploadfilesController extends Controller
     }
 
     public function handleFileUpload(Request $request)
-    {
-        // Validate the incoming request data
-        $validatedData = $request->validate([
-            'reportType' => 'required|string',
-            'reportFile' => 'required|file|mimes:pdf,doc,docx', // Adjust mime types as needed
-            'slideType' => 'nullable|string',
-            'slideFile' => 'nullable|file|mimes:ppt,pptx',
+{
+    // Define base validation rules
+    $rules = [
+        'reportType' => 'required|string',  // Adjust as needed
+        'reportFile' => 'required|file|mimes:pdf,doc,docx', // Adjust mime types as needed
+        'slideType' => 'nullable|string',
+        'slideFile' => 'nullable|file|mimes:ppt,pptx,pdf,doc,docx',
+        'groupId' => 'nullable|exists:project_groups,id',
 
-            'groupId' => 'nullable|exists:project_groups,id',
-            'supervisor_id' => 'nullable|exists:supervisors,id',
-        ]);
+    ];
 
-        // Handle the report file upload
-        $reportPath = $request->file('reportFile')->store('reports', 'public');
-
-        // Handle the optional slide file upload
-        $slidePath = $request->hasFile('slideFile') ? $request->file('slideFile')->store('slides', 'public') : null;
-
-        // Save to the projects table
-        Project::create([
-            'groupId' => $request->input('groupId'),
-            'report_file' => $reportPath,
-            'slides_file' => $slidePath,
-            'supervisor_id' => $request->input('supervisor_id'),
-        ]);
-
-        // Redirect or respond as needed
-        return redirect()->back()->with('success', 'Project registered successfully.');
+    // Add conditional rule for supervisor_id based on reportType
+    if ($request->input('reportType') !== 'proposal') {
+        $rules['supervisor_id'] = 'required|exists:supervisors,id';
+    } else {
+        $rules['supervisor_id'] = 'nullable|exists:supervisors,id';
     }
+
+ 
+
+    // Validate the incoming request data
+    $request->validate($rules);
+
+    // Handle the report file upload
+    $reportPath = $request->file('reportFile')->store('reports', 'public');
+
+    // Handle the optional slide file upload
+    $slidePath = $request->hasFile('slideFile') ? $request->file('slideFile')->store('slides', 'public') : null;
+
+  
+    // Save to the projects table
+    Project::create([
+        'groupId' => $request->input('groupId'),
+        'report_type' => $request->input('reportType'), // Retrieve report type from form input
+        'report_file' => $reportPath,
+        'slides_file' => $slidePath,
+        'supervisor_id' => $request->input('supervisor_id'),
+    ]);
+
+    // Redirect or respond as needed
+    return redirect()->back()->with('success', 'Project registered successfully.');
+}
+
+
 }

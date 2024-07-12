@@ -17,8 +17,9 @@ return new class extends Migration
             $table->id();
             $table->string('slides_file')->nullable();
             $table->string('report_file')->nullable();
+           
             $table->unsignedBigInteger('groupId');
-            $table->unsignedBigInteger('supervisor_id');
+            $table->unsignedBigInteger('supervisor_id')->nullable();
             $table->foreign('groupId')->references('id')->on('project_groups');
             $table->foreign('supervisor_id')->references('id')->on('supervisors');
             $table->timestamps();

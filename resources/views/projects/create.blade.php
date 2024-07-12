@@ -18,8 +18,6 @@
   @include('nav.create')
   @include('sidebar.create')
 
- 
-
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -36,11 +34,10 @@
                         <div class="card-body" id="maincard">
                             <div class="form-group row">
                                 <label for="title" class="col-sm-2 col-form-label">Project Title</label>
-                                
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" id="title" placeholder="Project Title" name="title" required>
                                     @error('title')
-                                    <span class="invalid-feedback alert alert-success" role="alert">
+                                    <span class="invalid-feedback alert alert-danger" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror
@@ -73,17 +70,24 @@
                                 </div>
                             </div>
                             <hr>
-                            <div class="form-group row" id="crnFields">
-                                <label for="crn-0" class="col-sm-2 col-form-label">TEAM MEMBER CRN:</label>
-                                <div class="col-sm-10">
-                                    <input type="number" class="form-control mb-2" name="crns[]" id="crn-0" placeholder="CRN (e.g., 020319)" required>
-                                    @error('crns.*')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
+                            <div id="crnFields">
+                                <div class="form-group row" id="crn-0-group">
+                                    <label for="crn-0" class="col-sm-2 col-form-label">TEAM MEMBER CRN:</label>
+                                    <div class="col-sm-10">
+                                        <input type="number" class="form-control mb-2 crn-input" name="crns[]" id="crn-0" placeholder="CRN (e.g., 020319)" required>
+                                        @error('crns.*')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
                                 </div>
                             </div>
+                            @if ($errors->has('crns'))
+                            <div class="alert alert-danger">
+                                <strong>{{ $errors->first('crns') }}</strong>
+                            </div>
+                            @endif
                             <hr>
                         </div>
                         <div class="form-group row">
@@ -100,7 +104,9 @@
             </div>
         </div>
       </div>
-</section>
+    </section>
+  </div>
+</div>
 
 <!-- jQuery -->
 <script src="/adminlte/plugins/jquery/jquery.min.js"></script>
@@ -114,28 +120,27 @@
         $('#submitBtn').click(function() {
             alert('Submitting form...'); // You can replace alert with any other method
         });
+
+        var maxCrns = 3; // Maximum number of CRNs allowed
+        var crnIndex = 1; // To ensure unique IDs for dynamically added fields
+
+        // Function to add CRN field
+        $('.addCrnField').click(function() {
+            if (crnIndex < maxCrns) {
+                var newField = '<div class="form-group row" id="crn-' + crnIndex + '-group">'+
+                               '<label for="crn-' + crnIndex + '" class="col-sm-2 col-form-label">TEAM MEMBER CRN:</label>'+
+                               '<div class="col-sm-10">'+
+                               '<input type="number" class="form-control mb-2 crn-input" name="crns[]" id="crn-' + crnIndex + '" placeholder="CRN (e.g., 020319)" required>'+
+                               '</div>'+
+                               '</div>';
+
+                $('#crnFields').append(newField);
+                crnIndex++;
+            } else {
+                alert('You can only add up to ' + maxCrns + ' CRNs.');
+            }
+        });
     });
 </script>
-<script>
-    $(function() {
-    var crnIndex = 1; // To ensure unique IDs for dynamically added fields
-
-    // Function to add CRN field
-    $('.addCrnField').click(function() {
-        var newField = '<hr>'+
-                       '<div class="form-group row">'+
-                       '<label for="crn-' + crnIndex + '" class="col-sm-2 col-form-label">TEAM MEMBER CRN:</label>'+
-                       '<div class="col-sm-10">'+
-                       '<input type="number" class="form-control mb-2" name="crns[]" id="crn-' + crnIndex + '" placeholder="CRN (e.g., 020319)" required>'+
-                       '</div>'+
-                       '</div>'+
-                       '<hr>';
-
-        $('#maincard').append(newField);
-        crnIndex++;
-    });
-});
-
-</script>
-  </body>
-  </html>
+</body>
+</html>
