@@ -15,19 +15,19 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
     use Notifiable;
-    public function hasRole($role)
-    {
-        switch ($role) {
-            case 'admin':
-                return $this->is_admin; // Assuming you have an `is_admin` column
-            case 'teacher':
-                return $this->teachers()->exists(); // Check if the user has any related teachers
-            case 'student':
-                return $this->students()->exists(); // Check if the user has any related students
-            default:
-                return false;
-        }
-    }
+    // public function hasRole($role)
+    // {
+    //     switch ($role) {
+    //         case 'admin':
+    //             return $this->is_admin; // Assuming you have an `is_admin` column
+    //         case 'teacher':
+    //             return $this->teachers()->exists(); // Check if the user has any related teachers
+    //         case 'student':
+    //             return $this->students()->exists(); // Check if the user has any related students
+    //         default:
+    //             return false;
+    //     }
+    // }
 
     public function teacher()
     {
@@ -46,9 +46,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password','semester','photo','phone_number'
+        'name', 'Photo', 'Phone_number', 'semester', 'email', 'password',
     ];
 
     /**

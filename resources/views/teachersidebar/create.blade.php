@@ -13,7 +13,7 @@
           <img src="/adminlte/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Profile</a>
+          <a href="{{ url('/profile') }}" class="d-block">{{ Auth::user()->name }}</a>
         </div>
       </div>
 
@@ -74,6 +74,14 @@
               </p>
             </a>
           </li>
+      <div class="form-inline">
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+          @csrf
+        </form>
+        <button class="btn btn-sidebar">
+          <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
+        </button>
+      </div>
            <!-- <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-chart-pie"></i>

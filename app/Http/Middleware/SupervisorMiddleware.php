@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SupervisorMiddleware
 {
@@ -18,12 +19,13 @@ class SupervisorMiddleware
     {
         $user = Auth::user();
 
-        if ($user && $user->teacher && $user->teacher->supervisor) {
-            // User is a supervisor, allow the request to proceed
-            return $next($request);
+        if ($user && $user->teacher->isNotEmpty()) {
+            $teacher = $user->teacher->first();
+            if ($teacher->supervisors()->exists()) {
+                return $next($request);
+            }
         }
-
-        // User is not a supervisor, abort with 403
-        abort(403, 'Unauthorized action.');
+         // User is not a supervisor, abort with 403
+         abort(403, 'Unauthorized action.');
     }
 }

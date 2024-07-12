@@ -15,10 +15,13 @@ class StudentMiddleware
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
     public function handle(Request $request, Closure $next)
-    {
-        if (!$request->user() || !$request->user()->student) {
-            abort(403, 'Unauthorized action.');
-        }
-        return $next($request);
+{
+    \Log::info('Checking if user is a student', ['user' => $request->user()]);
+    if (!$request->user() || !$request->user()->student()->exists()) {
+        \Log::warning('User is not a student', ['user' => $request->user()]);
+        abort(403, 'Unauthorized action.');
     }
+    return $next($request);
+}
+
 }

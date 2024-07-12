@@ -10,7 +10,7 @@ class DashboardController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:student');
+        $this->middleware('student');
     }
     public function create()
     {

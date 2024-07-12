@@ -17,14 +17,15 @@ class LoginController extends Controller
      */
     protected function redirectTo()
     {
-        $role = auth()->user()->role;
+        $user = auth()->user();
 
-    if ($role === 'student') {
+        // Check if the user has a related teacher record
+        if ($user->teacher->isNotEmpty()) {
+            return route('teacherdashboard.create');
+        }
+
+        // Default redirection for students
         return route('dashboard.create');
-    } else {
-        return route('teacherdashboard.create');
-    }
-        return RouteServiceProvider::HOME; // Default redirection
     }
 
 
@@ -33,7 +34,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    // protected $redirectTo = RouteServiceProvider::HOME;
 
     public function __construct()
     {

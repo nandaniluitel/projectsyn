@@ -17,19 +17,19 @@ class CoordinatorMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        return $next($request);
-        // $user = Auth::user();
+        $user = Auth::user();
 
-        // if ($user && $user->teacher->isNotEmpty()) {
-        //     // Access the first teacher in the collection (assuming only one teacher per user)
-        //     $teacher = $user->teacher->first();
+        if ($user && $user->teacher->isNotEmpty()) {
+            // Access the first teacher in the collection (assuming only one teacher per user)
+            $teacher = $user->teacher->first();
     
-        //     // Check if the teacher is a coordinator
-        //     if ($teacher->coordinator) {
-        //         // User is a coordinator, allow the request to proceed
-        //         return $next($request);
-        //     }
-        // }
+            // Check if the teacher is a coordinator
+            if ($teacher->coordinator()->exists()) {
+                // User is a coordinator, allow the request to proceed
+                // dd( $next($request));
+                return $next($request);
+            }
+        }
 
         // User is not a coordinator, abort with 403
         abort(403, 'Unauthorized action.');
