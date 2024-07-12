@@ -66,6 +66,7 @@
                         <th>Group ID</th>
                         <th>Report File</th>
                         <th>Slides File</th>
+                        <th>Report Type</th>
                         <th>Supervisor ID</th>
                         <th>Uploaded At</th>
                       </tr>
@@ -85,6 +86,7 @@
                               No Slides
                             @endif
                           </td>
+                          <td>{{ $project->report_type }}</td>
                           <td>{{ $project->supervisor_id }}</td>
                           <td>{{ $project->created_at }}</td>
                         </tr>
@@ -95,7 +97,7 @@
                   <p>No files uploaded yet.</p>
                 @endif
 
-                <a href="{{ route('uploadfiles.create') }}">Upload New Files</a>
+                
               </div>
               <!-- /.card-body -->
             </div>
