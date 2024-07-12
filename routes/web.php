@@ -190,6 +190,12 @@ Route::middleware(['auth','coordinator'])->group(function () {
     Route::post('/evaluations', [EvaluationController::class, 'store'])->name('evaluations.store');
 
     Route::get('projects', [ProjectController::class, 'index'])->name('projects.index');
+     
+    Route::get('/assignsupervisor/index', [SupervisorController::class, 'showAssignedGroups'])->name('assignsupervisor.index');
+    Route::delete('/assignsupervisor/remove/{groupId}', [SupervisorController::class, 'removeSupervisor'])->name('assignsupervisor.remove');
+
+    Route::get('/projects/{id}/edit', [ProjectController::class, 'edit'])->name('projects.edit');
+    Route::put('/projects/{id}', [ProjectController::class, 'update'])->name('projects.update');
 
     Route::get('/Coordinator/index', function () {
         return view('Coordinator.index');
@@ -205,6 +211,8 @@ Route::middleware(['auth','supervisor'])->group(function () {
  Route::middleware(['auth','evaluator'])->group(function () {
      
     Route::get('/evaluations/create', [EvaluationController::class, 'create'])->name('evaluations.create');
+
+    Route::get('projects', [ProjectController::class, 'index'])->name('projects.index');
 
     Route::get('/Evaluator/index', function () {
         return view('Evaluator.index');
