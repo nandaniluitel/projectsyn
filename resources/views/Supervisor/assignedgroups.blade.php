@@ -79,7 +79,9 @@
                         <td><a href="{{ route('Supervisor.assignedgroups.reports', ['groupId' => $group->id]) }}">{{ $group->title }}</a></td>
                         <td>{{ $group->description }}</td>
                         <td>{{ $group->level }}</td>
-
+                        <td>
+                        <a href="{{ route('feedback.create', ['groupId' => $group->id]) }}" class="btn btn-primary">Feedback</a>
+                        </td>
 
                       </tr>
                     @empty

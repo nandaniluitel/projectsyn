@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Notification;
+use Illuminate\Support\Facades\Storage;
 
 class NotificationsController extends Controller
 {
@@ -22,25 +23,23 @@ class NotificationsController extends Controller
     {
         $request->validate([
             'message' => 'required|string',
-            'file' => 'nullable|file|max:10240', // Example validation for file upload (10MB limit)
+            'file' => 'nullable|file|max:10240|mimes:pdf,jpg,jpeg,png,doc,docx,txt', // Example validation for file upload (10MB limit)
         ]);
 
-        $fileName = null;
+       
+        $notification = new Notification();
+        $notification->user_id = auth()->id();
+        $notification->message = $request->message;
 
         if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $file->storeAs('public/notifications', $fileName); // Store file in storage/app/public/notifications directory
+            $path = $request->file('file')->store('notifications');
+            $notification->file = $path;
+        }
 
-        Notification::create([
-            'user_id' => auth()->id(),
-            'message' => $request->message,
-            'file' => $fileName, // Save file name to database
-        ]);
+        $notification->save();
 
         return redirect()->back()->with('success', 'Notification published successfully.');
     }
-}
     public function edit(Notification $notification)
     {
         return view('notification.edit', compact('notification'));

@@ -56,7 +56,7 @@
             
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="/supervisor/profile" class="nav-link">
               <i class="nav-icon fas fa-chart-pie"></i>
               <p>
                 View Supervisor Info
@@ -64,10 +64,10 @@
             </a>
               </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="/feedback/index" class="nav-link">
               <i class="nav-icon fas fa-tree"></i>
               <p>
-                Defence Feedback 
+               Feedback 
               </p>
             </a>
           </li>

@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Teacher;
 use App\Models\Student;
-
+use App\Models\ProjectGroup;
 
 class User extends Authenticatable
 {
@@ -39,6 +39,10 @@ class User extends Authenticatable
         return $this->hasOne(Student::class,'userId');
     }
 
+    public function supervisorProjects()
+    {
+        return $this->hasMany(Project::class, 'supervisor_id');
+    }
 
     /**
      * The attributes that are mass assignable.

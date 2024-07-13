@@ -52,10 +52,15 @@
                         <div class="alert alert-info" role="alert">
                             <h4 class="alert-heading">{{ $notification->title }}</h4>
                             <p>{{ $notification->message }}</p>
+                            <!-- Display the file if necessary -->
+                            @if (!empty($notification->file))
+                                <a href="{{ asset('storage/' . $notification->file) }}" download>Download File</a>
+                            @endif
+
                         </div>
                     @endforeach
 
-                    @if (empty($notifications))
+                    @if ($notifications->isEmpty())
                         <p>No notifications found.</p>
                     @endif
                 </div>

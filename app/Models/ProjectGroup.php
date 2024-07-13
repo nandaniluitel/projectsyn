@@ -18,9 +18,14 @@ class ProjectGroup extends Model
     protected $fillable = ['title', 'description', 'level'];
 
     // Relationship with students (many-to-many)
+
+    public function projectGroupStudents()
+    {
+        return $this->hasMany(ProjectGroupStudent::class, 'project_group_id');
+    }
     public function students()
     {
-        return $this->belongsToMany(Student::class, 'project_group_students', 'project_group_id', 'student_id');
+        return $this->hasMany(ProjectGroupStudent::class, 'project_group_id');
     }
 
     // Relationship with evaluators (one-to-many)
@@ -32,7 +37,7 @@ class ProjectGroup extends Model
     // Relationship with projects (one-to-many)
     public function projects()
     {
-        return $this->hasMany(Project::class, 'groupId');
+        return $this->hasMany(Project::class, 'group_id');
     }
 
     // Relationship with supervisors (many-to-many through User model)
@@ -46,4 +51,10 @@ class ProjectGroup extends Model
     {
         return $this->hasMany(Supervisor::class, 'groupId');
     }
+
+    public function feedbacks()
+    {
+    return $this->hasMany(Feedback::class, 'group_id');
+    }
+
 }

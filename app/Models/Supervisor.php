@@ -31,4 +31,10 @@ class Supervisor extends Model
     {
         return $this->belongsTo(ProjectGroup::class, 'groupId');
     }
+    
+    public function feedback()
+    {
+    return $this->hasMany(Feedback::class);
+    }
+
 }

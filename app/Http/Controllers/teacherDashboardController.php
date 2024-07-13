@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Notification; // Import Notification model
 
 class teacherDashboardController extends Controller
 {
@@ -14,7 +15,7 @@ class teacherDashboardController extends Controller
      }
     public function create()
     {
-        $notifications = [];
+        $notifications = Notification::all(); // Fetch notifications 
         return view('teacherdashboard.create', compact('notifications'));
     }
 }
