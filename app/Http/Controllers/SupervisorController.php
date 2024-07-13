@@ -1,11 +1,13 @@
 <?php
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Teacher;
 use App\Models\ProjectGroup;
 use App\Models\User;
 use App\Models\Supervisor;
+use App\Models\Project;
 
 class SupervisorController extends Controller
 {
@@ -68,6 +70,29 @@ public function removeSupervisor($groupId)
         return redirect()->route('assignsupervisor.index')->with('error', 'Supervisor not found.');
     }
 }
+public function viewAssignedGroups()
+{
+    // Get the currently authenticated supervisor
+    $supervisor = Auth::user();
+    $teacherId = $supervisor->id;
+    // Join the projects and project_groups tables to get the groups assigned to this supervisor
+    $assignedGroups = ProjectGroup::whereHas('supervisors', function ($query) use ($teacherId) {
+        $query->where('teacherId', $teacherId);
+    })->get();
 
+    return view('Supervisor.assignedgroups', compact('assignedGroups'));
+}
+
+public function viewGroupReports($groupId)
+{
+    $group = ProjectGroup::where('id', $groupId)->first();
+    if (!$group) {
+        return redirect()->route('Supervisor.assignedgroups')->with('error', 'Group not found.');
+    }
+
+    $reports = Project::where('groupId', $groupId)->get();
+
+    return view('Supervisor.reports', compact('group', 'reports'));
+}
 
 }

@@ -11,13 +11,15 @@ use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\SupervisorController;
 use App\Http\Controllers\CoordinatorController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\NotificationsController;
+use App\Http\Controllers\SupervisorProfileController;
 use App\Models\Category;
 use App\Models\McqResponse;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\teacherDashboardController;
-use App\Http\Controllers\SupervisorProfileController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -157,9 +159,6 @@ Route::get('/uploadfiles', [UploadfilesController::class, 'index'])->name('uploa
 Route::get('projects', [ProjectController::class, 'index'])->name('projects.index');
 
 
-
-
-
 //students
 Route::middleware(['auth', 'student'])->group(function () {
     Route::get('/dashboard/create', [App\Http\Controllers\DashboardController::class, 'create'])->name('dashboard.create');
@@ -193,13 +192,21 @@ Route::middleware(['auth','coordinator'])->group(function () {
 
     Route::post('/evaluations', [EvaluationController::class, 'store'])->name('evaluations.store');
 
-    
      
     Route::get('/assignsupervisor/index', [SupervisorController::class, 'showAssignedGroups'])->name('assignsupervisor.index');
     Route::delete('/assignsupervisor/remove/{groupId}', [SupervisorController::class, 'removeSupervisor'])->name('assignsupervisor.remove');
 
+    
     Route::get('/projects/{id}/edit', [ProjectController::class, 'edit'])->name('projects.edit');
     Route::put('/projects/{id}', [ProjectController::class, 'update'])->name('projects.update');
+
+    Route::get('/notification/index', [NotificationsController::class, 'index'])->name('notification.index');
+    Route::get('/notification/create', [NotificationsController::class, 'create'])->name('notification.create');
+    Route::post('/notification', [NotificationsController::class, 'store'])->name('notification.store');
+    Route::get('/notification/{notification}/edit', [NotificationsController::class, 'edit'])->name('notification.edit');
+    Route::put('/notification/{notification}', [NotificationsController::class, 'update'])->name('notification.update');
+    Route::delete('/notification/{notification}', [NotificationsController::class, 'destroy'])->name('notification.destroy');
+
 
     Route::get('/Coordinator/index', function () {
         return view('Coordinator.index');
@@ -210,6 +217,10 @@ Route::middleware(['auth','supervisor'])->group(function () {
     Route::get('/Supervisor/index', function () {
         return view('Supervisor.index');
     });
+    Route::get('/Supervisor/assignedgroups', [SupervisorController::class, 'viewAssignedGroups'])->name('Supervisor.assignedgroups');
+    Route::get('/Supervisor/assignedgroups/{groupId}/reports', 'App\Http\Controllers\SupervisorController@viewGroupReports')->name('Supervisor.assignedgroups.reports');
+    Route::get('/Supervisor/assignedgroups/{groupId}/reports', [SupervisorController::class, 'viewGroupReports'])->name('Supervisor.assignedgroups.reports');
+
  });
 //evaluator
  Route::middleware(['auth','evaluator'])->group(function () {
@@ -221,7 +232,6 @@ Route::middleware(['auth','supervisor'])->group(function () {
         return view('Evaluator.index');
     });
  });
-
 
 Route::get('/notice', function () {
     return view('notice');
@@ -367,3 +377,4 @@ Auth::routes();
 
 // Route::get('/login/google', [GoogleController::class, 'redirect']);
 // Route::get('/login/google/callback', [GoogleController::class, 'login']);
+

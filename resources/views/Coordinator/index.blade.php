@@ -166,7 +166,7 @@
           <p class="cardText">Notify users about the upcoming events.</p>
         </div>
         <div class="cardActions">
-        <a href="{{ route('projects.index') }}" class="cardBtn">Navigate</a>
+        <a href="{{ route('notification.create') }}" class="cardBtn">Navigate</a>
         </div>
       </div>
       <div class="card">

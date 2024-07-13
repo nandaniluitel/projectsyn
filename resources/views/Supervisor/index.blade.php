@@ -122,7 +122,7 @@
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="header">
-    <h1>Evaluator Page</h1>
+    <h1>Supervisor Page</h1>
   </div>
 <div class="wrapper">
 <div class="content-wrapper">
@@ -136,9 +136,10 @@
           <p class="cardText">View Assigned groups with their Project names. </p>
         </div>
         <div class="cardActions">
-          <button class="cardBtn">Navigate</button>
+        <a href="{{ route('Supervisor.assignedgroups') }}" class="cardBtn">Navigate</a>
         </div>
       </div>
+
       <div class="card">
         <img height="150px" width="200px" src="https://img.freepik.com/free-vector/online-image-upload-landing-page_23-2148282428.jpg?size=626&ext=jpg&ga=GA1.1.1700460183.1713398400&semt=ais" alt="Project Upload" class="cardMedia">
         <div class="cardContent">
@@ -146,7 +147,7 @@
           <p class="cardText">View the necessary files uploaded by respective groups including proposal,slides and reports.</p>
         </div>
         <div class="cardActions">
-          <button class="cardBtn">Navigate</button>
+        <button class="cardBtn">Navigate</button>
         </div>
       </div>
       <div class="card">
