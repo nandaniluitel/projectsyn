@@ -166,6 +166,12 @@ Route::delete('/notification/{notification}', [NotificationsController::class, '
 Route::get('/feedback/create/{groupId}', [FeedbackController::class, 'create'])->name('feedback.create');
 Route::post('/feedback/store', [FeedbackController::class, 'store'])->name('feedback.store');
 Route::get('/feedback/index', [FeedbackController::class, 'index'])->name('feedback.index');
+Route::get('/coordinator/accepted-projects', [UploadfilesController::class, 'CoordinatorView'])->name('coordinator.accepted-projects');
+// Define routes for reports
+Route::get('/reports', [UploadfilesController::class, 'viewAcceptedProjects'])->name('reports.index');
+Route::post('/reports/{id}/update-status', [UploadfilesController::class, 'updateStatus'])->name('report.update-status');
+Route::get('/reports/{id}', [UploadfilesController::class, 'view'])->name('report.view');
+Route::post('/teacher/update-status/{id}', [UploadfilesController::class, 'updateStatus'])->name('teacher.update-status');
 
 
 //students
@@ -223,6 +229,8 @@ Route::middleware(['auth','coordinator'])->group(function () {
     // Route::get('/notification/{notification}/edit', [NotificationsController::class, 'edit'])->name('notification.edit');
     // Route::put('/notification/{notification}', [NotificationsController::class, 'update'])->name('notification.update');
     // Route::delete('/notification/{notification}', [NotificationsController::class, 'destroy'])->name('notification.destroy');
+
+
 
 
     Route::get('/Coordinator/index', function () {

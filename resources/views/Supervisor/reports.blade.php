@@ -62,6 +62,8 @@
                       <th>Slides File</th>
                       <th>Supervisor</th>
                       <th>Uploaded At</th>
+                      <th>Status</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -78,10 +80,27 @@
                           @endif
                         </td>
                         <td>{{ $report->created_at }}</td>
+                        <td>
+                          <form action="{{ route('report.update-status', $report->id) }}" method="POST">
+                            @csrf
+                            <select name="status" onchange="this.form.submit()" class="form-control">
+                              <option value="pending" {{ $report->status == 'pending' ? 'selected' : '' }}>Pending</option>
+                              <option value="accept" {{ $report->status == 'accept' ? 'selected' : '' }}>Accept</option>
+                              <option value="reject" {{ $report->status == 'reject' ? 'selected' : '' }}>Reject</option>
+                            </select>
+                          </form>
+                        </td>
+                        <td>
+                          @if ($report->status == 'accept')
+                            <a href="{{ route('report.view', $report->id) }}" class="btn btn-primary">View</a>
+                          @else
+                            <span class="text-muted">Not available</span>
+                          @endif
+                        </td>
                       </tr>
                     @empty
                       <tr>
-                        <td colspan="5">No reports found for this group.</td>
+                        <td colspan="7">No reports found for this group.</td>
                       </tr>
                     @endforelse
                   </tbody>

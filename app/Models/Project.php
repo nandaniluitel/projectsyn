@@ -18,6 +18,7 @@ class project extends Model
         'slides_file',
         'report_type',
         'supervisor_id',
+        'status'
     ];
 // Define the relationships
 public function group()
