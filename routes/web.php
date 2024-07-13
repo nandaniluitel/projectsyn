@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\teacherDashboardController;
-
+use App\Http\Controllers\FeedbackController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -157,11 +157,20 @@ Route::get('/frontpage/index', function () {
 
 Route::get('/uploadfiles', [UploadfilesController::class, 'index'])->name('uploadfiles.index1');
 Route::get('projects', [ProjectController::class, 'index'])->name('projects.index');
+Route::get('/notification/index', [NotificationsController::class, 'index'])->name('notification.index');
+Route::get('/notification/create', [NotificationsController::class, 'create'])->name('notification.create');
+Route::post('/notification', [NotificationsController::class, 'store'])->name('notification.store');
+Route::get('/notification/{notification}/edit', [NotificationsController::class, 'edit'])->name('notification.edit');
+Route::put('/notification/{notification}', [NotificationsController::class, 'update'])->name('notification.update');
+Route::delete('/notification/{notification}', [NotificationsController::class, 'destroy'])->name('notification.destroy');
+Route::get('/feedback/create/{groupId}', [FeedbackController::class, 'create'])->name('feedback.create');
+Route::post('/feedback/store', [FeedbackController::class, 'store'])->name('feedback.store');
+Route::get('/feedback/index', [FeedbackController::class, 'index'])->name('feedback.index');
 
 
 //students
 Route::middleware(['auth', 'student'])->group(function () {
-    Route::get('/dashboard/create', [App\Http\Controllers\DashboardController::class, 'create'])->name('dashboard.create');
+    Route::get('/dashboard/create', [DashboardController::class, 'create'])->name('dashboard.create');
     Route::get('projects/create', [ProjectController::class, 'create'])->name('projects.create');
     Route::post('projects', [ProjectController::class, 'store'])->name('projects.store');
     Route::get('uploadfiles/create', [UploadfilesController::class, 'showUploadForm'])->name('uploadfiles.create');
@@ -191,8 +200,16 @@ Route::middleware(['auth','coordinator'])->group(function () {
     Route::get('/evaluations', [EvaluationController::class, 'index'])->name('evaluations.index');
 
     Route::post('/evaluations', [EvaluationController::class, 'store'])->name('evaluations.store');
+    Route::get('assignroles', [CoordinatorController::class, 'showAssignRolesForm'])->name('assignroles.create');
+    Route::post('assignroles', [CoordinatorController::class, 'assignRoles'])->name('assignroles.store');
+    Route::get('assignroles/evaluators', [CoordinatorController::class, 'showEvaluators'])->name('assignroles.evaluators');
 
-     
+    Route::get('assignroles/coordinators', [CoordinatorController::class, 'showCoordinators'])->name('assignroles.coordinators');
+    Route::delete('/coordinators/{id}', [App\Http\Controllers\CoordinatorController::class, 'removeCoordinator'])->name('remove.coordinator');
+    Route::delete('/evaluators/{id}', [App\Http\Controllers\CoordinatorController::class, 'removeEvaluator'])->name('remove.evaluator');
+
+    Route::view('/assignroles/index', 'assignroles.index')->name('assignroles.index');
+
     Route::get('/assignsupervisor/index', [SupervisorController::class, 'showAssignedGroups'])->name('assignsupervisor.index');
     Route::delete('/assignsupervisor/remove/{groupId}', [SupervisorController::class, 'removeSupervisor'])->name('assignsupervisor.remove');
 
@@ -200,12 +217,12 @@ Route::middleware(['auth','coordinator'])->group(function () {
     Route::get('/projects/{id}/edit', [ProjectController::class, 'edit'])->name('projects.edit');
     Route::put('/projects/{id}', [ProjectController::class, 'update'])->name('projects.update');
 
-    Route::get('/notification/index', [NotificationsController::class, 'index'])->name('notification.index');
-    Route::get('/notification/create', [NotificationsController::class, 'create'])->name('notification.create');
-    Route::post('/notification', [NotificationsController::class, 'store'])->name('notification.store');
-    Route::get('/notification/{notification}/edit', [NotificationsController::class, 'edit'])->name('notification.edit');
-    Route::put('/notification/{notification}', [NotificationsController::class, 'update'])->name('notification.update');
-    Route::delete('/notification/{notification}', [NotificationsController::class, 'destroy'])->name('notification.destroy');
+    // Route::get('/notification/index', [NotificationsController::class, 'index'])->name('notification.index');
+    // Route::get('/notification/create', [NotificationsController::class, 'create'])->name('notification.create');
+    // Route::post('/notification', [NotificationsController::class, 'store'])->name('notification.store');
+    // Route::get('/notification/{notification}/edit', [NotificationsController::class, 'edit'])->name('notification.edit');
+    // Route::put('/notification/{notification}', [NotificationsController::class, 'update'])->name('notification.update');
+    // Route::delete('/notification/{notification}', [NotificationsController::class, 'destroy'])->name('notification.destroy');
 
 
     Route::get('/Coordinator/index', function () {

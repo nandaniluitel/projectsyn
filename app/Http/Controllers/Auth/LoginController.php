@@ -23,7 +23,7 @@ class LoginController extends Controller
         // If the user is a teacher, check specific roles
         $teacher = $user->teacher;
 
-        if ($teacher->coordinator()->exists() || $teacher->supervisor()->exists() || $teacher->evaluator()->exists()) {
+        if ($teacher->coordinator()->exists() || $teacher->supervisors()->exists() || $teacher->evaluator()->exists()) {
             return route('teacherdashboard.create'); // Redirect coordinator, supervisor, and evaluator
         } else {
             return route('dashboard.create'); // Default redirect for other teachers

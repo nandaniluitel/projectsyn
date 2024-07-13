@@ -129,6 +129,17 @@
   <div class="fullContainer">
     
     <div class="landingCard">
+    <div class="card">
+        <img height="150px" width="200px" src="https://img.freepik.com/free-vector/online-image-upload-landing-page_23-2148282428.jpg?size=626&ext=jpg&ga=GA1.1.1700460183.1713398400&semt=ais" alt="Project Upload" class="cardMedia">
+        <div class="cardContent">
+          <h5 class="cardTitle">Assign Roles </h5>
+          <p class="cardText">Assign roles to the teachers.</p>
+        </div>
+        <div class="cardActions">
+        <a href="{{ route('assignroles.index') }}" class="cardBtn">Navigate</a>
+        </div>
+      </div>
+
       <div class="card">
         <img height="150px" width="200px" src="https://img.freepik.com/free-vector/online-image-upload-landing-page_23-2148282428.jpg?size=626&ext=jpg&ga=GA1.1.1700460183.1713398400&semt=ais" alt="Project Upload" class="cardMedia">
         <div class="cardContent">
@@ -149,6 +160,27 @@
         <a href="{{ route('uploadfiles.index1') }}" class="cardBtn">Navigate</a>
         </div>
       </div>
+      <div class="card">
+        <img height="150px" width="200px" src="https://img.freepik.com/free-vector/online-image-upload-landing-page_23-2148282428.jpg?size=626&ext=jpg&ga=GA1.1.1700460183.1713398400&semt=ais" alt="Project Upload" class="cardMedia">
+        <div class="cardContent">
+          <h5 class="cardTitle">View evaluators</h5>
+          <p class="cardText">View the respective evaluators.</p>
+        </div>
+        <div class="cardActions">
+        <a href="{{ route('assignroles.evaluators') }}" class="cardBtn">Navigate</a>
+        </div>
+      </div>
+      <div class="card">
+        <img height="150px" width="200px" src="https://img.freepik.com/free-vector/online-image-upload-landing-page_23-2148282428.jpg?size=626&ext=jpg&ga=GA1.1.1700460183.1713398400&semt=ais" alt="Project Upload" class="cardMedia">
+        <div class="cardContent">
+          <h5 class="cardTitle">View Coordinators</h5>
+          <p class="cardText">View the respective Coordinators.</p>
+        </div>
+        <div class="cardActions">
+        <a href="{{ route('assignroles.coordinators') }}" class="cardBtn">Navigate</a>
+        </div>
+      </div>
+
       <div class="card">
         <img height="150px" width="200px" src="https://img.freepik.com/free-vector/online-image-upload-landing-page_23-2148282428.jpg?size=626&ext=jpg&ga=GA1.1.1700460183.1713398400&semt=ais" alt="Project Upload" class="cardMedia">
         <div class="cardContent">

@@ -1,41 +1,69 @@
 <?php
+
 namespace App\Http\Controllers;
 
-use App\Models\Teacher;
-use App\Models\ProjectGroup;
 use Illuminate\Http\Request;
+use App\Models\Teacher;
+use App\Models\Evaluator;
+use App\Models\Coordinator;
 
 class CoordinatorController extends Controller
 {
-    public function assignRoles(Request $request)
-    {
-        $request->validate([
-            'teacherId' => 'required|exists:teachers,id',
-            'role' => 'required|in:supervisor,evaluator,coordinator',
-            'groupId' => 'required_if:role,supervisor|exists:project_groups,id',
-        ]);
-
-        $teacher = Teacher::find($request->teacherId);
-
-        switch ($request->role) {
-            case 'coordinator':
-                $teacher->coordinator()->create([]);
-                break;
-            case 'evaluator':
-                $teacher->evaluator()->create([]);
-                break;
-            case 'supervisor':
-                $teacher->supervisors()->create(['groupId' => $request->groupId]);
-                break;
-        }
-
-        return redirect()->route('coordinator.assignRolesForm')->with('success', 'Role assigned successfully.');
-    }
-
     public function showAssignRolesForm()
     {
         $teachers = Teacher::all();
-        $projectGroups = ProjectGroup::all();
-        return view('coordinator.assign_roles', compact('teachers', 'projectGroups'));
+
+        return view('assignroles.create', compact('teachers'));
     }
+
+    public function assignRoles(Request $request)
+    {
+        $request->validate([
+            'evaluator_id' => 'nullable|exists:teachers,id',
+            'coordinator_id' => 'nullable|exists:teachers,id',
+        ]);
+
+        if ($request->has('evaluator_id')) {
+            // Logic to assign evaluator
+            $teacher = Teacher::findOrFail($request->evaluator_id);
+            Evaluator::firstOrCreate(['teacherId' => $teacher->id]);
+        }
+
+        if ($request->has('coordinator_id')) {
+            // Logic to assign coordinator
+            $teacher = Teacher::findOrFail($request->coordinator_id);
+            Coordinator::firstOrCreate(['teacherId' => $teacher->id]);
+        }
+
+        return redirect()->route('assignroles.create')->with('success', 'Roles assigned successfully.');
+    }
+    public function showEvaluators()
+    {
+        $evaluators = Evaluator::with('teacher.user')->get();
+        return view('assignroles.show_evaluators', compact('evaluators'));
+    }
+
+    public function showCoordinators()
+    {
+        $coordinators = Coordinator::with('teacher.user')->get();
+        return view('assignroles.show_coordinators', compact('coordinators'));
+    }
+    // CoordinatorController.php
+
+    public function removeCoordinator($id)
+    {
+        $coordinator = Coordinator::findOrFail($id);
+        $coordinator->delete();
+        
+        return redirect()->back()->with('success', 'Coordinator removed successfully.');
+    }
+
+    public function removeEvaluator($id)
+    {
+        $evaluator = Evaluator::findOrFail($id);
+        $evaluator->delete();
+        
+        return redirect()->back()->with('success', 'Evaluator removed successfully.');
+    }
+
 }
