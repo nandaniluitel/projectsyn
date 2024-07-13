@@ -31,12 +31,12 @@ class User extends Authenticatable
 
     public function teacher()
     {
-        return $this->hasMany(Teacher::class, 'userId');
+        return $this->hasOne(Teacher::class, 'userId');
     }
 
     public function student()
     {
-        return $this->hasMany(Student::class,'userId');
+        return $this->hasOne(Student::class,'userId');
     }
 
 

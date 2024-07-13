@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\teacherDashboardController;
-
+use App\Http\Controllers\SupervisorProfileController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -154,6 +154,9 @@ Route::get('/frontpage/index', function () {
 });
 
 Route::get('/uploadfiles', [UploadfilesController::class, 'index'])->name('uploadfiles.index1');
+Route::get('projects', [ProjectController::class, 'index'])->name('projects.index');
+
+
 
 
 
@@ -164,6 +167,7 @@ Route::middleware(['auth', 'student'])->group(function () {
     Route::post('projects', [ProjectController::class, 'store'])->name('projects.store');
     Route::get('uploadfiles/create', [UploadfilesController::class, 'showUploadForm'])->name('uploadfiles.create');
     Route::post('uploadfiles/create', [UploadfilesController::class, 'handleFileUpload'])->name('uploadfiles.store');
+    Route::get('/supervisor/profile', [SupervisorProfileController::class, 'index'])->name('supervisor.profile');
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -189,7 +193,7 @@ Route::middleware(['auth','coordinator'])->group(function () {
 
     Route::post('/evaluations', [EvaluationController::class, 'store'])->name('evaluations.store');
 
-    Route::get('projects', [ProjectController::class, 'index'])->name('projects.index');
+    
      
     Route::get('/assignsupervisor/index', [SupervisorController::class, 'showAssignedGroups'])->name('assignsupervisor.index');
     Route::delete('/assignsupervisor/remove/{groupId}', [SupervisorController::class, 'removeSupervisor'])->name('assignsupervisor.remove');
@@ -212,12 +216,12 @@ Route::middleware(['auth','supervisor'])->group(function () {
      
     Route::get('/evaluations/create', [EvaluationController::class, 'create'])->name('evaluations.create');
 
-    Route::get('projects', [ProjectController::class, 'index'])->name('projects.index');
 
     Route::get('/Evaluator/index', function () {
         return view('Evaluator.index');
     });
  });
+
 
 Route::get('/notice', function () {
     return view('notice');

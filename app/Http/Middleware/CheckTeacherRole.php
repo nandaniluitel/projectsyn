@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Middleware;
 
 use Closure;
@@ -11,10 +10,11 @@ class CheckTeacherRole
     {
         $user = Auth::user();
 
-        if ($user && $user->teacher->isNotEmpty()) {
-            $teacher = $user->teacher->first();
+        if ($user && $user->teacher) {
+            $teacher = $user->teacher;
 
-            if ($teacher->coordinator || $teacher->supervisor || $teacher->evaluator) {
+            // Check if the teacher has any roles
+            if ($teacher->coordinator || $teacher->supervisors()->exists() || $teacher->evaluators()->exists()) {
                 return $next($request);
             }
         }

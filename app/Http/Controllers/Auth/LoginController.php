@@ -16,17 +16,23 @@ class LoginController extends Controller
      * @return string
      */
     protected function redirectTo()
-    {
-        $user = auth()->user();
+{
+    $user = auth()->user();
 
-        // Check if the user has a related teacher record
-        if ($user->teacher->isNotEmpty()) {
-            return route('teacherdashboard.create');
+    if ($user->teacher) {
+        // If the user is a teacher, check specific roles
+        $teacher = $user->teacher;
+
+        if ($teacher->coordinator()->exists() || $teacher->supervisor()->exists() || $teacher->evaluator()->exists()) {
+            return route('teacherdashboard.create'); // Redirect coordinator, supervisor, and evaluator
+        } else {
+            return route('dashboard.create'); // Default redirect for other teachers
         }
-
-        // Default redirection for students
-        return route('dashboard.create');
     }
+
+    // Default redirection for students or users without a teacher record
+    return route('dashboard.create');
+}
 
 
     /**

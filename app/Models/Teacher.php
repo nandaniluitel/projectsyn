@@ -31,6 +31,6 @@ class Teacher extends Model
 
     public function supervisors()
     {
-        return $this->hasMany(Supervisor::class, 'teacherId');
+        return $this->hasMany(Supervisor::class, 'teacherId','id');
     }
 }

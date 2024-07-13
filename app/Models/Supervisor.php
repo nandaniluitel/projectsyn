@@ -22,8 +22,13 @@ class Supervisor extends Model
     {
         return $this->hasMany(Project::class, 'supervisor_id');
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'userId');
+    }
+
     public function projectGroup()
     {
-        return $this->hasMany(ProjectGroup::class, 'groupId');
+        return $this->belongsTo(ProjectGroup::class, 'groupId');
     }
 }

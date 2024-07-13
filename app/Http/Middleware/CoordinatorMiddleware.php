@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Middleware;
 
 use Closure;
@@ -19,14 +18,11 @@ class CoordinatorMiddleware
     {
         $user = Auth::user();
 
-        if ($user && $user->teacher->isNotEmpty()) {
-            // Access the first teacher in the collection (assuming only one teacher per user)
-            $teacher = $user->teacher->first();
-    
+        if ($user && $user->teacher) {
+            $teacher = $user->teacher;
+
             // Check if the teacher is a coordinator
             if ($teacher->coordinator()->exists()) {
-                // User is a coordinator, allow the request to proceed
-                // dd( $next($request));
                 return $next($request);
             }
         }

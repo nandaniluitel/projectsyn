@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Middleware;
 
 use Closure;
@@ -19,13 +18,16 @@ class SupervisorMiddleware
     {
         $user = Auth::user();
 
-        if ($user && $user->teacher->isNotEmpty()) {
-            $teacher = $user->teacher->first();
+        if ($user && $user->teacher) {
+            $teacher = $user->teacher;
+
+            // Check if the teacher is a supervisor of any project group
             if ($teacher->supervisors()->exists()) {
                 return $next($request);
             }
         }
-         // User is not a supervisor, abort with 403
-         abort(403, 'Unauthorized action.');
+
+        // User is not a supervisor, abort with 403
+        abort(403, 'Unauthorized action.');
     }
 }
