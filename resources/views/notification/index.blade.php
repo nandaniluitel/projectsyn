@@ -84,7 +84,6 @@
                           </td>
                           <td>{{ $notification->created_at->format('Y-m-d H:i:s') }}</td>
                           <td>
-                            <a href="{{ route('notification.edit', $notification->id) }}" class="btn btn-sm btn-primary">Edit</a>
                             <form action="{{ route('notification.destroy', $notification->id) }}" method="POST" style="display: inline;">
                               @csrf
                               @method('DELETE')

@@ -61,14 +61,17 @@
                 {{ session('success') }}
             </div>
         @endif
+        <input type="hidden" name="evaluatorId" value="{{ $evaluatorId }}">
         <div class="form-group">
-            <label for="id">Evaluator ID:</label>
-            <input type="text" class="form-control" id="evaluatorId" name="evaluatorId" required>
-        </div>
-        <div class="form-group">
-            <label for="ProjectID">Project ID:</label>
-            <input type="text" class="form-control" id="ProjectID" name="ProjectID" required>
-        </div>
+                                    <label for="ProjectID">Project Title:</label>
+                                    <select class="form-control" id="ProjectID" name="ProjectID" required>
+                                        <option value="" disabled selected>Select Project Title</option>
+                                        @foreach($projects as $project)
+                                            <option value="{{ $project->id }}">{{ $project->title }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
         <div class="form-group">
             <label for="Phase">Phase:</label>
             <select class="form-control" id="Phase" name="Phase" required>

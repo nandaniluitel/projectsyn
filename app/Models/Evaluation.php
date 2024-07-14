@@ -21,4 +21,14 @@ class Evaluation extends Model
         'demoMarks',
         'feedback',
     ];
+
+    public function project()
+{
+    return $this->belongsTo(Project::class, 'projectId');
+}
+
+public function evaluator()
+{
+    return $this->belongsTo(Evaluator::class, 'evaluatorId');
+}
 }

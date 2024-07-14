@@ -61,8 +61,8 @@
                 <table class="table table-bordered">
                   <thead>
                     <tr>
-                      <th>Evaluator ID</th>
-                      <th>Project ID</th>
+                      <th>Evaluator Name</th>
+                      <th>Project Title</th>
                       <th>Phase</th>
                       <th>Report Marks</th>
                       <th>Presentation Marks</th>
@@ -75,8 +75,17 @@
                   <tbody>
                     @foreach ($evaluations as $evaluation)
                       <tr>
-                        <td>{{ $evaluation->evaluatorId }}</td>
-                        <td>{{ $evaluation->projectId }}</td>
+                      <tr>
+        <td>{{ $evaluation->evaluator->teacher->user->name }}</td>
+        <td>
+            @if ($evaluation->project && $evaluation->project->projectGroup)
+                {{ $evaluation->project->projectGroup->title }}
+            @else
+                Project or Project Group Not Found
+            @endif
+            </td>
+                        <td>{{ $evaluation->evaluator->teacher->user->name }}</td>
+                        <td>{{ $evaluation->project->group->title }}</td>
                         <td>{{ $evaluation->phase }}</td>
                         <td>{{ $evaluation->reportMarks }}</td>
                         <td>{{ $evaluation->presentationMarks }}</td>

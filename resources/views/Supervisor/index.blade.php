@@ -147,19 +147,10 @@
           <p class="cardText">View the necessary files uploaded by respective groups including proposal,slides and reports.</p>
         </div>
         <div class="cardActions">
-        <button class="cardBtn">Navigate</button>
+        <a href="{{ route('Supervisor.assignedgroups') }}" class="cardBtn">Navigate</a>
         </div>
       </div>
-      <div class="card">
-        <img height="150px" width="200px" src="https://img.freepik.com/free-vector/online-image-upload-landing-page_23-2148282428.jpg?size=626&ext=jpg&ga=GA1.1.1700460183.1713398400&semt=ais" alt="Project Upload" class="cardMedia">
-        <div class="cardContent">
-          <h5 class="cardTitle">Send finalized file</h5>
-          <p class="cardText">Upload the finalized files here.This file will be sent to the coordinator ensuring that respective group is eligible for defence. Ensure all necessary documents are included before submission.</p>
-        </div>
-        <div class="cardActions">
-          <button class="cardBtn">Navigate</button>
-        </div>
-      </div>
+     
       <div class="card">
         <img height="150px" width="200px" src="https://img.freepik.com/free-vector/online-image-upload-landing-page_23-2148282428.jpg?size=626&ext=jpg&ga=GA1.1.1700460183.1713398400&semt=ais" alt="Project Upload" class="cardMedia">
         <div class="cardContent">
@@ -170,16 +161,7 @@
         <a href="{{ route('Supervisor.assignedgroups') }}" class="cardBtn">Navigate</a>
         </div>
       </div>
-      <div class="card">
-        <img height="150px" width="200px" src="https://img.freepik.com/free-vector/online-image-upload-landing-page_23-2148282428.jpg?size=626&ext=jpg&ga=GA1.1.1700460183.1713398400&semt=ais" alt="Project Upload" class="cardMedia">
-        <div class="cardContent">
-          <h5 class="cardTitle">Upload Evaluation marks</h5>
-          <p class="cardText">Upload your Evaluated marks of your respective group to Coordinator . Ensure all necessary documents are included before submission.</p>
-        </div>
-        <div class="cardActions">
-          <button class="cardBtn">Navigate</button>
-        </div>
-      </div>
+    
       <!-- <div class="card">
         <img height="150px" width="200px" src="https://img.freepik.com/free-vector/online-image-upload-landing-page_23-2148282428.jpg?size=626&ext=jpg&ga=GA1.1.1700460183.1713398400&semt=ais" alt="Project Upload" class="cardMedia">
         <div class="cardContent">

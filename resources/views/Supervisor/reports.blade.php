@@ -91,8 +91,8 @@
                           </form>
                         </td>
                         <td>
-                          @if ($report->status == 'accept')
-                            <a href="{{ route('report.view', $report->id) }}" class="btn btn-primary">View</a>
+                          @if ($report->status == 'reject')
+                            <a href="{{ route('feedback.create', ['groupId' => $group->id]) }}" class="btn btn-primary">Feedback</a>
                           @else
                             <span class="text-muted">Not available</span>
                           @endif

@@ -82,6 +82,8 @@
                     <input type="text" name="level" id="level" class="form-control" value="{{ $project_group->level }}" required>
                   </div>
 
+                   
+
                   <button type="submit" class="btn btn-primary">Update</button>
                 </form>
               </div>
@@ -119,5 +121,7 @@
 <script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="/adminlte/dist/js/adminlte.min.js"></script>
+
+
 </body>
 </html>

@@ -78,7 +78,7 @@
                         <td>
                           <ul>
                             @forelse ($project_group->students as $student)
-                              <li>{{ $student->name }} ({{ $student->id }})</li>
+                              <li>{{ $student->name }}  ({{ $student->id }})</li>
                             @empty
                               <li>No students assigned</li>
                             @endforelse

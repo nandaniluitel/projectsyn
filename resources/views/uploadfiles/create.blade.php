@@ -63,21 +63,33 @@
             </div>
         @endif
 
-        <!-- Group ID -->
-        <div class="form-group row">
-            <label for="groupId" class="col-sm-2 col-form-label">Group ID</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="groupId" name="groupId" required>
-            </div>
-        </div>
+       <!-- Project Title Dropdown -->
+       <div class="form-group row">
+                    <label for="projectTitle" class="col-sm-2 col-form-label">Select Your Project Title</label>
+                    <div class="col-sm-10">
+                      <select class="form-control" id="projectTitle" name="projectTitle" required>
+                      <option value="" disabled selected>Select Your Project Title</option>
 
-        <!-- Supervisor ID -->
-        <div class="form-group row">
-            <label for="supervisor_id" class="col-sm-2 col-form-label">Supervisor ID</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="supervisor_id" name="supervisor_id" required>
+                        @foreach($projectGroups as $group)
+                          <option value="{{ $group->id }}">{{ $group->title }}</option>
+                        @endforeach
+                      </select>
+                    </div>
+                  </div>
+
+                  <!-- Supervisor ID Dropdown -->
+            <div class="form-group row">
+                <label for="supervisor_id" class="col-sm-2 col-form-label">Select Your Supervisor Name</label>
+                <div class="col-sm-10">
+                    <select class="form-control" id="supervisor_id" name="supervisor_id" required>
+                        <option value="" disabled selected>Select Your Supervisor</option>
+                        @foreach($supervisors as $supervisor)
+                            <option value="{{ $supervisor->id }}">{{ $supervisor->teacher->user->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
-        </div>
+
         
         <!-- Upload Report -->
         <div class="form-group row">

@@ -26,20 +26,14 @@ class FeedbackController extends Controller
     $user = Auth::user();
     $student = Student::where('userId', $user->id)->first();
 
-     // Debug statements
-     if(!$student) {
-        return "Student not found for user ID: " . $user->id;
-    }
+    
 
     // Fetch feedbacks associated with the logged-in user
     $feedbacks = Feedback::whereHas('group.Students', function ($query) use ($student) {
         $query->where('student_id', $student->id);
     })->get();
 
-    // Another debug statement
-    if($feedbacks->isEmpty()) {
-        return "No feedbacks found for student ID: " . $student->id;
-    }
+   
 
     return view('feedback.index', compact('feedbacks'));
 }

@@ -63,7 +63,7 @@
                     <thead>
                       <tr>
                         <th>ID</th>
-                        <th>Group ID</th>
+                        <th>Project Title</th>
                         <th>Report File</th>
                         <th>Slides File</th>
                         <th>Report Type</th>
@@ -75,7 +75,7 @@
                       @foreach ($projects as $project)
                         <tr>
                           <td>{{ $project->id }}</td>
-                          <td>{{ $project->groupId }}</td>
+                          <td>{{ $project->group->title }}</td>
                           <td>
                             <a href="{{ Storage::url($project->report_file) }}" target="_blank">View Report</a>
                           </td>

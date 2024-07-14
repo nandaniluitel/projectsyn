@@ -10,7 +10,13 @@
       <!-- Sidebar user (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="/adminlte/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+        @auth
+                @if(Auth::user()->Photo)
+                <img src="{{ asset('images/' . Auth::user()->Photo) }}" class="img-circle elevation-2" alt="User Image" >
+                @else
+                <img src="{{ asset('images/images.png') }}" class="img-circle elevation-2" alt="User Image">
+                @endif
+                @endauth
         </div>
         <div class="info">
           <a href="{{ url('/profile') }}" class="d-block">{{ Auth::user()->name }}</a>
