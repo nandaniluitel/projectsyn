@@ -37,7 +37,7 @@ class ProjectGroup extends Model
     // Relationship with projects (one-to-many)
     public function projects()
     {
-        return $this->hasMany(Project::class, 'group_id');
+        return $this->hasMany(Project::class, 'groupId');
     }
 
     // Relationship with supervisors (many-to-many through User model)

@@ -254,6 +254,7 @@ Route::middleware(['auth','supervisor'])->group(function () {
     Route::get('/Supervisor/assignedgroups', [SupervisorController::class, 'viewAssignedGroups'])->name('Supervisor.assignedgroups');
     Route::get('/Supervisor/assignedgroups/{groupId}/reports', 'App\Http\Controllers\SupervisorController@viewGroupReports')->name('Supervisor.assignedgroups.reports');
     Route::get('/Supervisor/assignedgroups/{groupId}/reports', [SupervisorController::class, 'viewGroupReports'])->name('Supervisor.assignedgroups.reports');
+    Route::get('/supervisor/all-groups-with-reports', [SupervisorController::class, 'viewAllGroupsWithReports'])->name('Supervisor.allGroupsWithReports');
 
  });
 //evaluator

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->unsignedBigInteger('supervisor_id')->nullable();
             $table->foreign('groupId')->references('id')->on('project_groups');
             $table->foreign('supervisor_id')->references('id')->on('supervisors');
+            // $table->string('status')->default('pending');
             $table->timestamps();
 
         });

@@ -94,5 +94,18 @@ public function viewGroupReports($groupId)
 
     return view('Supervisor.reports', compact('group', 'reports'));
 }
+public function viewAllGroupsWithReports()
+{
+    $supervisor = Auth::user();
+    $teacherId = $supervisor->id;
+
+    // Join the projects and project_groups tables to get the groups assigned to this supervisor
+    $assignedGroups = ProjectGroup::whereHas('supervisors', function ($query) use ($teacherId) {
+        $query->where('teacherId', $teacherId);
+    })->with('projects')->get();
+
+    return view('Supervisor.allGroupsWithReports', compact('assignedGroups'));
+}
+
 
 }

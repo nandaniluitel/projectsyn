@@ -147,7 +147,7 @@
           <p class="cardText">View the necessary files uploaded by respective groups including proposal,slides and reports.</p>
         </div>
         <div class="cardActions">
-        <a href="{{ route('Supervisor.assignedgroups') }}" class="cardBtn">Navigate</a>
+        <a href="{{ route('Supervisor.allGroupsWithReports') }}" class="cardBtn">Navigate</a>
         </div>
       </div>
      
