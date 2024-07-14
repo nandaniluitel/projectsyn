@@ -154,6 +154,13 @@ Route::get('/', function () {
 Route::get('/frontpage/index', function () {
     return view('frontpage.index');
 });
+// routes/web.php
+
+
+
+Route::get('/login', [LoginController::class, 'showLoginForm'])->middleware('redirectIfAuthenticated')->name('login');
+Route::post('/login', [LoginController::class, 'login'])->middleware('redirectIfAuthenticated');
+
 
 Route::get('/uploadfiles', [UploadfilesController::class, 'index'])->name('uploadfiles.index1');
 Route::get('projects', [ProjectController::class, 'index'])->name('projects.index');
@@ -172,7 +179,8 @@ Route::get('/reports', [UploadfilesController::class, 'viewAcceptedProjects'])->
 Route::post('/reports/{id}/update-status', [UploadfilesController::class, 'updateStatus'])->name('report.update-status');
 Route::get('/reports/{id}', [UploadfilesController::class, 'view'])->name('report.view');
 Route::post('/teacher/update-status/{id}', [UploadfilesController::class, 'updateStatus'])->name('teacher.update-status');
-
+//ansa brought
+Route::post('/evaluations', [EvaluationController::class, 'store'])->name('evaluations.store');
 
 //students
 Route::middleware(['auth', 'student'])->group(function () {
@@ -205,7 +213,7 @@ Route::middleware(['auth','coordinator'])->group(function () {
 
     Route::get('/evaluations', [EvaluationController::class, 'index'])->name('evaluations.index');
 
-    Route::post('/evaluations', [EvaluationController::class, 'store'])->name('evaluations.store');
+
     Route::get('assignroles', [CoordinatorController::class, 'showAssignRolesForm'])->name('assignroles.create');
     Route::post('assignroles', [CoordinatorController::class, 'assignRoles'])->name('assignroles.store');
     Route::get('assignroles/evaluators', [CoordinatorController::class, 'showEvaluators'])->name('assignroles.evaluators');
@@ -218,7 +226,8 @@ Route::middleware(['auth','coordinator'])->group(function () {
 
     Route::get('/assignsupervisor/index', [SupervisorController::class, 'showAssignedGroups'])->name('assignsupervisor.index');
     Route::delete('/assignsupervisor/remove/{groupId}', [SupervisorController::class, 'removeSupervisor'])->name('assignsupervisor.remove');
-
+    Route::get('/coordinator/proposal-reports', [UploadfilesController::class, 'viewProposalReports'])
+    ->name('coordinator.proposal-reports');
     
     Route::get('/projects/{id}/edit', [ProjectController::class, 'edit'])->name('projects.edit');
     Route::put('/projects/{id}', [ProjectController::class, 'update'])->name('projects.update');

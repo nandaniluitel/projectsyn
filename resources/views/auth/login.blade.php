@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>QuizMe | Log in</title>
+  <title>Project Synergy | Log in</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -47,18 +47,15 @@
       </form>
 
       <div class="social-auth-links text-center mt-2 mb-3">
-        <a href="{{ url('login/google') }}" class="btn btn-block btn-danger">
+        <!-- <a href="{{ url('login/google') }}" class="btn btn-block btn-danger">
           <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
-        </a>
+        </a> -->
       </div>
       <!-- /.social-auth-links -->
 
-      <p class="mb-1">
+      <!-- <p class="mb-1">
         <a href="{{ route('password.request') }}">I forgot my password</a>
-      </p>
-      <p class="mb-0">
-        <a href="{{ route('register') }}" class="text-center">Register a new membership</a>
-      </p>
+      </p> -->
     </div>
     <!-- /.card-body -->
   </div>

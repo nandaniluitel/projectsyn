@@ -71,5 +71,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function isTeacher()
+{
+    return Teacher::where('userId', $this->id)->exists();
+}
+
+public function isStudent()
+{
+    return Student::where('userId', $this->id)->exists();
+}
 
 }

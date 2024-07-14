@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Accepted Reports</title>
+    <title>AdminLTE 3 | Proposal Reports</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -28,13 +28,13 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Accepted Reports</h1>
+                        <h1>Proposal Reports</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
                             <li class="breadcrumb-item"><a href="{{ route('Supervisor.assignedgroups') }}">Assigned Groups</a></li>
-                            <li class="breadcrumb-item active">Accepted Reports</li>
+                            <li class="breadcrumb-item active">Proposal Reports</li>
                         </ol>
                     </div>
                 </div>
@@ -62,42 +62,32 @@
                                         <th>Level</th> <!-- New column for Level -->
                                         <th>Report File</th>
                                         <th>Slides File</th>
-                                        <th>Supervisor</th>
                                         <th>Report Type</th>
                                         <th>Uploaded At</th>
-                                        <th>Status</th>
-                                        <!-- <th>Action</th> -->
+                                        <th>Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @forelse ($projects as $project)
+                                    @forelse ($proposalReports as $report)
                                         <tr>
-                                            <td>{{ $project->groupId }}</td>
-                                            <td>{{ $project->group->title }}</td>
-                                            <td>{{ $project->group->level }}</td> <!-- Display Level -->
-                                            <<td><a href="{{ asset('storage/' . $project->report_file) }}" target="_blank">View Report</a></td>
-                                            <td><a href="{{ asset('storage/' . $project->slides_file) }}" target="_blank">View Slides</a></td>
+                                            <td>{{ $report->groupId }}</td>
+                                            <td>{{ $report->group->title }}</td>
+                                            <td>{{ $report->group->level }}</td> <!-- Display Level -->
+                                            <td><a href="{{ asset('storage/' . $report->report_file) }}" target="_blank">View Report</a></td>
+                                            <td><a href="{{ asset('storage/' . $report->slides_file) }}" target="_blank">View Slides</a></td>
+                                            <td>{{ $report->report_type }}</td>
+                                            <td>{{ $report->created_at }}</td>
                                             <td>
-                                                @if ($project->supervisor && $project->supervisor->teacher && $project->supervisor->teacher->user)
-                                                    {{ $project->supervisor->teacher->user->name }}
-                                                @else
-                                                    N/A
-                                                @endif
-                                            </td>
-                                            <td>{{ $project->report_type }}</td>
-                                            <td>{{ $project->created_at }}</td>
-                                            <td>{{ $project->status }}</td>
-                                            <!-- <td>
-                                                @if ($project->status == 'accept')
-                                                    <a href="{{ route('report.view', $project->id) }}" class="btn btn-primary">View</a>
+                                                @if ($report->status == 'accept')
+                                                    <a href="{{ route('report.view', $report->id) }}" class="btn btn-primary">View</a>
                                                 @else
                                                     <span class="text-muted">Not available</span>
                                                 @endif
-                                            </td> -->
+                                            </td>
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="10">No reports found for this group.</td>
+                                            <td colspan="8">No proposal reports found.</td>
                                         </tr>
                                     @endforelse
                                     </tbody>

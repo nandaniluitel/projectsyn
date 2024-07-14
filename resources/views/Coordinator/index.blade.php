@@ -153,8 +153,18 @@
       <div class="card">
         <img height="150px" width="200px" src="https://img.freepik.com/free-vector/online-image-upload-landing-page_23-2148282428.jpg?size=626&ext=jpg&ga=GA1.1.1700460183.1713398400&semt=ais" alt="Project Upload" class="cardMedia">
         <div class="cardContent">
-          <h5 class="cardTitle">View Project Files</h5>
-          <p class="cardText">View files that has been accepted</p>
+          <h5 class="cardTitle">View Proposal and slides.</h5>
+          <p class="cardText">View Proposal ans slides.This file has directly been sent to you by students as supervisor is not assigned yet.</p>
+        </div>
+        <div class="cardActions">
+        <a href="{{ route('coordinator.proposal-reports') }}" class="cardBtn">Navigate</a>
+        </div>
+      </div>
+      <div class="card">
+        <img height="150px" width="200px" src="https://img.freepik.com/free-vector/online-image-upload-landing-page_23-2148282428.jpg?size=626&ext=jpg&ga=GA1.1.1700460183.1713398400&semt=ais" alt="Project Upload" class="cardMedia">
+        <div class="cardContent">
+          <h5 class="cardTitle">View Files that has been accepted by supervisor.</h5>
+          <p class="cardText">View midtern and final reports with slides that has been accepted by supervisor.</p>
         </div>
         <div class="cardActions">
         <a href="{{ route('coordinator.accepted-projects') }}" class="cardBtn">Navigate</a>
@@ -184,11 +194,11 @@
       <div class="card">
         <img height="150px" width="200px" src="https://img.freepik.com/free-vector/online-image-upload-landing-page_23-2148282428.jpg?size=626&ext=jpg&ga=GA1.1.1700460183.1713398400&semt=ais" alt="Project Upload" class="cardMedia">
         <div class="cardContent">
-          <h5 class="cardTitle">Assign Supervisor</h5>
-          <p class="cardText">Assign supervisor to the registered groups.</p>
+          <h5 class="cardTitle">View Supervisors</h5>
+          <p class="cardText">View Assigned supervisors.</p>
         </div>
         <div class="cardActions">
-        <a href="{{ route('assignsupervisor.create') }}" class="cardBtn">Navigate</a>
+        <a href="{{ route('assignsupervisor.index') }}" class="cardBtn">Navigate</a>
         </div>
       </div>
       <div class="card">
