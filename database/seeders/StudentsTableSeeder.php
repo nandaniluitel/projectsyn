@@ -1,5 +1,4 @@
 <?php
-
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
@@ -15,9 +14,13 @@ class StudentsTableSeeder extends Seeder
     public function run()
     {
         $students = [];
-        for ($i = 0; $i < 10; $i++) {
+        $startId = 20319; // Start ID as an integer
+        $endId = 20330;   // End ID as an integer
+
+        for ($i = $startId; $i < $endId; $i++) {
             $students[] = [
-                'userId' => 20319 + $i,
+                'id'=>$i,
+                'userId' => $i,
                 'created_at' => now(),
                 'updated_at' => now(),
             ];

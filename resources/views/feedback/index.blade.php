@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css">
 </head>
 
+
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
         @include('nav.create')

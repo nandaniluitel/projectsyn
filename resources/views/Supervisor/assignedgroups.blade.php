@@ -22,7 +22,7 @@
   @include('teachersidebar.create')
 
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
+  <div class="content-wrapper" style="width: 110%;">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">

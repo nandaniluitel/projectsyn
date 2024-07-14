@@ -10,6 +10,7 @@
 </head>
 <body style="background-color: #f4f6f9; font-family: 'Source Sans Pro', sans-serif;">
 
+
 <!-- <div class="wrapper"> -->
     @include('nav.create')
     @if($isTeacher)

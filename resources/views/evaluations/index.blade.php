@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Evaluations Index</title>
+  <title>Project Synergy | Evaluations Index</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -77,15 +77,8 @@
                       <tr>
                       <tr>
         <td>{{ $evaluation->evaluator->teacher->user->name }}</td>
-        <td>
-            @if ($evaluation->project && $evaluation->project->projectGroup)
-                {{ $evaluation->project->projectGroup->title }}
-            @else
-                Project or Project Group Not Found
-            @endif
-            </td>
-                        <td>{{ $evaluation->evaluator->teacher->user->name }}</td>
-                        <td>{{ $evaluation->project->group->title }}</td>
+        <td>{{ $evaluation->project->group->title }}</td>
+                        
                         <td>{{ $evaluation->phase }}</td>
                         <td>{{ $evaluation->reportMarks }}</td>
                         <td>{{ $evaluation->presentationMarks }}</td>
