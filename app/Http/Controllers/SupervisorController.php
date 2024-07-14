@@ -106,6 +106,85 @@ public function viewAllGroupsWithReports()
 
     return view('Supervisor.allGroupsWithReports', compact('assignedGroups'));
 }
+public function viewPendingFiles()
+    {
+        $supervisor = Auth::user();
+        $teacherId = $supervisor->id;
+    
+        // Fetch assigned groups where supervisor is assigned
+        $assignedGroups = ProjectGroup::whereHas('supervisors', function ($query) use ($teacherId) {
+            $query->where('teacherId', $teacherId);
+        })->pluck('id')->toArray();
+    
+        // Retrieve pending projects for the assigned groups
+        $pendingProjects = Project::whereIn('groupId', $assignedGroups)
+                                  ->where('status', 'pending')
+                                  ->with('projectGroup') // Eager load projectGroup relationship
+                                  ->get();
+    
+        return view('supervisor.pendingFiles', compact('pendingProjects'));
+    }
 
+    // Method to accept a project
+    public function acceptProject($id)
+    {
+        $project = Project::findOrFail($id);
+        $project->status = 'accepted';
+        $project->save();
 
+        return redirect()->back()->with('success', 'Project accepted successfully');
+    }
+
+    // Method to reject a project
+    public function rejectProject($id)
+    {
+        $project = Project::findOrFail($id);
+        $project->status = 'rejected';
+        $project->save();
+
+        return redirect()->back()->with('success', 'Project rejected successfully');
+    }
+
+    // Method to view accepted files for the supervisor
+    public function viewAcceptedFiles()
+    {
+        $supervisor = Auth::user();
+        $teacherId = $supervisor->id;
+    
+        $acceptedFiles = Project::whereHas('projectGroup.supervisors', function ($query) use ($teacherId) {
+            $query->where('teacherId', $teacherId);
+        })->where('status', 'accepted')->with('projectGroup')->get();
+    
+        return view('supervisor.acceptedFiles', compact('acceptedFiles'));
+    }
+
+    public function viewRejectedFiles()
+    {
+        $supervisor = Auth::user();
+    $teacherId = $supervisor->id;
+
+    // Fetch assigned groups where supervisor is assigned
+    $assignedGroups = ProjectGroup::whereHas('supervisors', function ($query) use ($teacherId) {
+        $query->where('teacherId', $teacherId);
+    })->pluck('id')->toArray();
+
+    // Retrieve rejected projects for the assigned groups
+    $rejectedProjects = Project::whereIn('groupId', $assignedGroups)
+                               ->where('status', 'rejected')
+                               ->with('projectGroup') // Eager load projectGroup relationship
+                               ->get();
+
+    return view('supervisor.rejectedFiles', compact('rejectedProjects'));
+    }
+    public function processReject(Request $request, $id)
+    {
+        $project = Project::findOrFail($id);
+        
+        // Perform rejection action here, e.g., update status to 'rejected'
+        $project->update(['status' => 'rejected']);
+
+        // Redirect to feedback creation page with necessary details
+        return redirect()->route('feedback.create', ['groupId' => $project->projectGroup->id])
+                         ->with('error', 'Project has been rejected. Please provide necessary feedback.');
+    }
 }

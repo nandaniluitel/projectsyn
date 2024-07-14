@@ -75,8 +75,12 @@
                                             <td>{{ $project->groupId }}</td>
                                             <td>{{ $project->group->title }}</td>
                                             <td>{{ $project->group->level }}</td> <!-- Display Level -->
-                                            <<td><a href="{{ asset('storage/' . $project->report_file) }}" target="_blank">View Report</a></td>
-                                            <td><a href="{{ asset('storage/' . $project->slides_file) }}" target="_blank">View Slides</a></td>
+                                            <<td><a href="{{ Storage::url($project->_file) }}" target="_blank">View Report</a></td>
+                                            @if ($project->slides_file)
+                                                        <a href="{{ Storage::url($project->slides_file) }}" target="_blank">View Slides</a>
+                                                    @else
+                                                      No Slides
+                                                    @endif
                                             <td>
                                                 @if ($project->supervisor && $project->supervisor->teacher && $project->supervisor->teacher->user)
                                                     {{ $project->supervisor->teacher->user->name }}

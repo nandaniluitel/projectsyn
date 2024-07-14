@@ -87,17 +87,13 @@
                                                     <td>{{ $group->description }}</td>
                                                     <td>{{ $group->level }}</td>
                                                     <td>
-                                                        @if ($report->report_file)
-                                                            <a href="{{ asset('storage/reports/' . $report->report_file) }}" target="_blank">View Report</a>
-                                                        @else
-                                                            N/A
-                                                        @endif
+                                                        <a href="{{ Storage::url($report->report_file) }}" target="_blank">View Report</a>
                                                     </td>
                                                     <td>
                                                         @if ($report->slides_file)
-                                                            <a href="{{ asset('storage/slides/' . $report->slides_file) }}" target="_blank">View Slides</a>
+                                                            <a href="{{ Storage::url($report->slides_file) }}" target="_blank">View Slides</a>
                                                         @else
-                                                            N/A
+                                                            No Slides
                                                         @endif
                                                     </td>
                                                     <td>
@@ -111,15 +107,15 @@
                                                     <td>
                                                         <form action="{{ route('report.update-status', $report->id) }}" method="POST">
                                                             @csrf
-                                                            <select name="status" onchange="this.form.submit()" class="form-control">
+                                                            <select name="status" onchange="this.form.submit()" class="form-control" {{ $report->status == 'accepted' ? 'disabled' : '' }}>
                                                                 <option value="pending" {{ $report->status == 'pending' ? 'selected' : '' }}>Pending</option>
-                                                                <option value="accept" {{ $report->status == 'accept' ? 'selected' : '' }}>Accept</option>
-                                                                <option value="reject" {{ $report->status == 'reject' ? 'selected' : '' }}>Reject</option>
+                                                                <option value="accepted" {{ $report->status == 'accepted' ? 'selected' : '' }}>Accepted</option>
+                                                                <option value="rejected" {{ $report->status == 'rejected' ? 'selected' : '' }}>Rejected</option>
                                                             </select>
                                                         </form>
                                                     </td>
                                                     <td>
-                                                        @if ($report->status == 'reject')
+                                                        @if ($report->status == 'rejected')
                                                             <a href="{{ route('feedback.create', ['groupId' => $group->id]) }}" class="btn btn-primary">Feedback</a>
                                                         @else
                                                             <span class="text-muted">Not available</span>

@@ -150,6 +150,37 @@
         <a href="{{ route('Supervisor.allGroupsWithReports') }}" class="cardBtn">Navigate</a>
         </div>
       </div>
+      <div class="card">
+        <img height="150px" width="200px" src="https://img.freepik.com/free-vector/online-image-upload-landing-page_23-2148282428.jpg?size=626&ext=jpg&ga=GA1.1.1700460183.1713398400&semt=ais" alt="Project Upload" class="cardMedia">
+        <div class="cardContent">
+          <h5 class="cardTitle">View Project Files has are in status pending to view.</h5>
+          <p class="cardText">View the  files uploaded by respective groups including proposal,slides and reports which has not been accepted or rejected after submission.</p>
+        </div>
+        <div class="cardActions">
+        <a href="{{ route('supervisor.pendingFiles') }}" class="cardBtn">Navigate</a>
+        </div>
+      </div>
+      <div class="card">
+        <img height="150px" width="200px" src="https://img.freepik.com/free-vector/online-image-upload-landing-page_23-2148282428.jpg?size=626&ext=jpg&ga=GA1.1.1700460183.1713398400&semt=ais" alt="Project Upload" class="cardMedia">
+        <div class="cardContent">
+          <h5 class="cardTitle">View Project Files has has been accepted by you.</h5>
+          <p class="cardText">View the  files uploaded by respective groups including proposal,slides and reports which has  been accepted after submission.</p>
+        </div>
+        <div class="cardActions">
+        <a href="{{ route('supervisor.acceptedFiles') }}" class="cardBtn">Navigate</a>
+        </div>
+      </div>
+      <div class="card">
+        <img height="150px" width="200px" src="https://img.freepik.com/free-vector/online-image-upload-landing-page_23-2148282428.jpg?size=626&ext=jpg&ga=GA1.1.1700460183.1713398400&semt=ais" alt="Project Upload" class="cardMedia">
+        <div class="cardContent">
+          <h5 class="cardTitle">View Project Files has has been rejected by you.</h5>
+          <p class="cardText">View the  files uploaded by respective groups including proposal,slides and reports which has  been rejected after submission.</p>
+        </div>
+        <div class="cardActions">
+        <a href="{{ route('supervisor.rejectedFiles') }}" class="cardBtn">Navigate</a>
+        </div>
+      </div>
+      
      
       <div class="card">
         <img height="150px" width="200px" src="https://img.freepik.com/free-vector/online-image-upload-landing-page_23-2148282428.jpg?size=626&ext=jpg&ga=GA1.1.1700460183.1713398400&semt=ais" alt="Project Upload" class="cardMedia">

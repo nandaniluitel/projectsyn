@@ -85,8 +85,8 @@
                             @csrf
                             <select name="status" onchange="this.form.submit()" class="form-control">
                               <option value="pending" {{ $report->status == 'pending' ? 'selected' : '' }}>Pending</option>
-                              <option value="accept" {{ $report->status == 'accept' ? 'selected' : '' }}>Accept</option>
-                              <option value="reject" {{ $report->status == 'reject' ? 'selected' : '' }}>Reject</option>
+                              <option value="accepted" {{ $report->status == 'accepted' ? 'selected' : '' }}>Accepted</option>
+                              <option value="rejected" {{ $report->status == 'rejected' ? 'selected' : '' }}>Rejected</option>
                             </select>
                           </form>
                         </td>

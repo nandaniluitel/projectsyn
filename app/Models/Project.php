@@ -25,6 +25,10 @@ public function group()
 {
     return $this->belongsTo(ProjectGroup::class, 'groupId');
 }
+public function projectGroup()
+    {
+        return $this->belongsTo(ProjectGroup::class, 'groupId');
+    }
 
 public function supervisor()
 {
