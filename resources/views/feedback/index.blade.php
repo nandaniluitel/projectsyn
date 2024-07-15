@@ -48,6 +48,7 @@
                                                 <th>#</th>
                                                 <th>Project Title</th>
                                                 <th>Feedback Text</th>
+                                                <th>Created At</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -56,6 +57,7 @@
                                                 <td>{{ $feedback->id }}</td>
                                                 <td>{{ $feedback->group->title }}</td>
                                                 <td>{{ $feedback->feedback_text }}</td>
+                                                <td>{{ $feedback->created_at->format('Y-m-d H:i:s') }}</td> <!-- Displaying created_at -->
                                             </tr>
                                             @endforeach
                                         </tbody>

@@ -55,7 +55,8 @@
                             @if (!empty($notification->file))
                                 <a href="{{ asset('storage/' . $notification->file) }}" download>Download File</a>
                             @endif
-
+                            <p class="mb-0"><small>{{ $notification->created_at->format('Y-m-d H:i:s') }}</small></p>
+                    
                         </div>
                     @endforeach
 

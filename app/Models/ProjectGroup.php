@@ -25,7 +25,7 @@ class ProjectGroup extends Model
     }
     public function students()
     {
-        return $this->hasMany(ProjectGroupStudent::class, 'project_group_id');
+        return $this->belongsToMany(Student::class, 'project_group_students', 'project_group_id', 'student_id');
     }
 
     // Relationship with evaluators (one-to-many)
