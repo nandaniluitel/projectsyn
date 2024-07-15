@@ -14,61 +14,40 @@ use Illuminate\Support\Facades\Auth;
 
 class UploadfilesController extends Controller
 {
-    // Existing methods...
-
     public function index()
     {
         $projects = Project::all();
         return view('uploadfiles.index1', compact('projects'));
     }
+
     public function create()
     {
-        // Retrieve the authenticated user
         $user = Auth::user();
-    
-        // Check if the user is authenticated
         if ($user) {
-            // Access the student record via the relationship (assuming 'student' method in User model)
             $student = $user->student;
-    
-            // Check if the student record exists
             if ($student) {
-                // Access the project groups related to this student
                 $projectGroupIds = $student->projectGroups()->pluck('project_group_id')->toArray();
-    
-                // Retrieve project titles from project_groups table based on project_group_ids
                 $projectTitles = ProjectGroup::whereIn('id', $projectGroupIds)->pluck('title', 'id');
-    
-            // Fetch all supervisors with their names
-                $supervisors = Supervisor::with('teacher.user')->get(); // Adjust relationship path as per your actual structure
-
-                // Return view with data
-                return view('uploadfiles.create', compact('projectTitles','supervisors'));
+                $supervisors = Supervisor::with('teacher.user')->get();
+                return view('uploadfiles.create', compact('projectTitles', 'supervisors'));
             } else {
-                // Handle case where student record does not exist
                 dd('Student not found for the authenticated user.');
             }
         } else {
-            // Handle case where user is not authenticated
             dd('User not authenticated.');
         }
     }
-    
-    
-
-
 
     public function viewAcceptedProjects()
     {
-        // Fetch only projects with status 'accept'
-        $reports = Project::where('status', 'accept')->get();
+        $reports = Project::where('status', 'accepted')->get();
         return view('Supervisor.reports', compact('reports'));
     }
+
     public function coordinatorView()
     {
-        $projects = Project::where('status', 'accept')->get();
-        $group = ProjectGroup::first(); // Fetch the first group as an example; adjust as per your logic
-
+        $projects = Project::where('status', 'accepted')->get();
+        $group = ProjectGroup::first();
         return view('coordinator.accepted-projects', compact('projects', 'group'));
     }
 
@@ -76,8 +55,8 @@ class UploadfilesController extends Controller
     {
         $proposalReports = Project::where('report_type', 'proposal')->get();
         return view('coordinator.proposal-reports', compact('proposalReports'));
-    } 
-    
+    }
+
     public function indexCategory($cname)
     {
         $category = Category::where('title', 'like', $cname)->first();
@@ -91,9 +70,8 @@ class UploadfilesController extends Controller
 
     public function showUploadForm()
     {
-        // Fetch all supervisors with their names
-        $supervisors = Supervisor::with('teacher.user')->get(); // Adjust relationship path as per your actual structure
-        $projectGroups = ProjectGroup::all(); // Fetch all project groups
+        $supervisors = Supervisor::with('teacher.user')->get();
+        $projectGroups = ProjectGroup::all();
         return view('uploadfiles.create', compact('projectGroups', 'supervisors'));
     }
 
@@ -104,54 +82,50 @@ class UploadfilesController extends Controller
 
     public function handleFileUpload(Request $request)
     {
-        // Define base validation rules
         $rules = [
-            'projectTitle' => 'required|exists:project_groups,id', // Validate project title
-            'reportType' => 'required|string',  // Adjust as needed
-            'reportFile' => 'required|file|mimes:pdf,doc,docx', // Adjust mime types as needed
+            'projectTitle' => 'required|exists:project_groups,id',
+            'reportType' => 'required|string',
+            'reportFile' => 'required|file|mimes:pdf,doc,docx',
             'slideType' => 'nullable|string',
             'slideFile' => 'nullable|file|mimes:ppt,pptx,pdf,doc,docx',
-            
         ];
 
-        // Add conditional rule for supervisor_id based on reportType
         if ($request->input('reportType') !== 'proposal') {
             $rules['supervisor_id'] = 'required|exists:supervisors,id';
         } else {
             $rules['supervisor_id'] = 'nullable|exists:supervisors,id';
         }
 
-        // Validate the incoming request data
         $request->validate($rules);
 
-        // Handle the report file upload
         $reportPath = $request->file('reportFile')->store('reports', 'public');
-
-        // Handle the optional slide file upload
         $slidePath = $request->hasFile('slideFile') ? $request->file('slideFile')->store('slides', 'public') : null;
 
-        // Save to the projects table
+        $status = $request->input('reportType') === 'proposal' ? 'accepted' : 'pending';
+
         Project::create([
             'groupId' => $request->input('projectTitle'),
-            'report_type' => $request->input('reportType'), // Retrieve report type from form input
+            'report_type' => $request->input('reportType'),
             'report_file' => $reportPath,
             'slides_file' => $slidePath,
             'supervisor_id' => $request->input('supervisor_id'),
-            'status' => 'pending', // default status
+            'status' => $status,
         ]);
 
-        // Redirect or respond as needed
         return redirect()->back()->with('success', 'Report registered successfully.');
     }
 
     public function updateStatus(Request $request, $id)
     {
         $report = Project::findOrFail($id);
+
+        if ($report->report_type === 'proposal') {
+            return redirect()->back()->with('error', 'Proposal status cannot be changed.');
+        }
+
         $report->status = $request->input('status');
         $report->save();
 
         return redirect()->back()->with('success', 'Report status updated successfully.');
     }
-   
-
 }

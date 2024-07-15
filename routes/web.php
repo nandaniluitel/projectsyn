@@ -261,8 +261,10 @@ Route::middleware(['auth','coordinator'])->group(function () {
     // Route::get('/notification/{notification}/edit', [NotificationsController::class, 'edit'])->name('notification.edit');
     // Route::put('/notification/{notification}', [NotificationsController::class, 'update'])->name('notification.update');
     // Route::delete('/notification/{notification}', [NotificationsController::class, 'destroy'])->name('notification.destroy');
+    
 
-
+    Route::get('/coordinator/search', [CoordinatorController::class, 'search'])->name('coordinator.search');
+    
 
 
     Route::get('/Coordinator/index', function () {
@@ -287,6 +289,10 @@ Route::middleware(['auth','supervisor'])->group(function () {
     ->name('supervisor.processReject');
 
     Route::get('/feedback/create/{groupId}', [FeedbackController::class, 'create'])->name('feedback.create');
+    Route::get('/supervisor/level-groups/{level}', [SupervisorController::class, 'viewLevelGroupsWithReports'])->name('supervisor.levelGroups');
+    Route::get('/supervisor/level-groups', [SupervisorController::class, 'viewLevelGroupsWithReports'])->name('supervisor.levelGroups');
+
+
 
  });
 //evaluator

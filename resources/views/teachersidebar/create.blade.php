@@ -251,6 +251,14 @@
         <div class="mt-3 pb-3 mb-3 d-flex"></div>
         <div class="mt-3 pb-3 mb-3 d-flex"></div>
         <div class="mt-3 pb-3 mb-3 d-flex"></div>
+        <div class="mt-3 pb-3 mb-3 d-flex"></div>
+        <div class="mt-3 pb-3 mb-3 d-flex"></div>
+        <div class="mt-3 pb-3 mb-3 d-flex"></div>
+        <div class="mt-3 pb-3 mb-3 d-flex"></div>
+        <div class="mt-3 pb-3 mb-3 d-flex"></div>
+        <div class="mt-3 pb-3 mb-3 d-flex"></div>
+        <div class="mt-3 pb-3 mb-3 d-flex"></div>
+        <div class="mt-3 pb-3 mb-3 d-flex"></div>
       </nav>
       <!-- /.sidebar-menu -->
     </div>

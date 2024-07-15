@@ -59,7 +59,7 @@
                                     <tr>
                                         <th>Group ID</th>
                                         <th>Group Title</th>
-                                        <th>Level</th> <!-- New column for Level -->
+                                        <th>Project Level</th> <!-- New column for Level -->
                                         <th>Report File</th>
                                         <th>Slides File</th>
                                         <th>Supervisor</th>
@@ -75,14 +75,16 @@
                                             <td>{{ $project->groupId }}</td>
                                             <td>{{ $project->group->title }}</td>
                                             <td>{{ $project->group->level }}</td> <!-- Display Level -->
-                                            <<td><a href="{{ Storage::url($project->_file) }}" target="_blank">View Report</a></td>
+                                            <td><a href="{{ Storage::url($project->_file) }}" target="_blank">View Report</a></td>
+                                            <td>
                                             @if ($project->slides_file)
                                                         <a href="{{ Storage::url($project->slides_file) }}" target="_blank">View Slides</a>
-                                                    @else
+                                            @else
                                                       No Slides
-                                                    @endif
+                                            @endif
+                                            </td>
                                             <td>
-                                                @if ($project->supervisor && $project->supervisor->teacher && $project->supervisor->teacher->user)
+                                                @if ($project->supervisor)
                                                     {{ $project->supervisor->teacher->user->name }}
                                                 @else
                                                     N/A

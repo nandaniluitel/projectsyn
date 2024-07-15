@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\Teacher;
 use App\Models\Evaluator;
 use App\Models\Coordinator;
+use App\Models\Student;
+use App\Models\Project;
+use App\Models\ProjectGroup;
+use App\Models\Evaluation;
 
 class CoordinatorController extends Controller
 {
@@ -65,5 +69,53 @@ class CoordinatorController extends Controller
         
         return redirect()->back()->with('success', 'Evaluator removed successfully.');
     }
+   
+    
+
+
+    public function search(Request $request)
+{
+    $studentId = $request->input('student_id');
+    $student = Student::where('id', $studentId)->first();
+
+    if ($student) {
+        // Fetching project group IDs associated with the student
+        $projectGroupIds = $student->projectGroups()->pluck('project_groups.id')->toArray();
+        $projectTitles = ProjectGroup::whereIn('id', $projectGroupIds)->pluck('title', 'id');
+
+        // Fetch IDs of projects associated with the student
+        $projects = Project::whereIn('groupId', $projectGroupIds)->get();
+
+        $evaluationIds = Evaluation::whereIn('projectId', $projects->pluck('id'))->pluck('id');
+        $evaluationDetails = [];
+
+        foreach ($evaluationIds as $evaluationId) {
+            $evaluation = Evaluation::find($evaluationId);
+            if ($evaluation) {
+                // Find the project related to this evaluation
+                $project = $projects->where('id', $evaluation->projectId)->first();
+                if ($project) {
+                    $evaluationDetails[] = [
+                        'project' => $project,
+                        'phase' => $evaluation->phase,
+                        'status' => $evaluation->status,
+                    ];
+                }
+            }
+        }
+
+        // Pass $evaluationDetails to your view along with other data
+        return view('coordinator.search_results', compact('student', 'evaluationDetails', 'projectTitles'));
+
+    } else {
+        return view('coordinator.search_results', compact('student'));
+    }
+}
+
+
+
+    
+
+    
 
 }

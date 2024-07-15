@@ -102,10 +102,38 @@ public function viewAllGroupsWithReports()
     // Join the projects and project_groups tables to get the groups assigned to this supervisor
     $assignedGroups = ProjectGroup::whereHas('supervisors', function ($query) use ($teacherId) {
         $query->where('teacherId', $teacherId);
-    })->with('projects')->get();
+    })->with(['projects' => function ($query) {
+        $query->orderBy('updated_at', 'desc'); // Sort projects by the latest date
+    }])->get();
 
     return view('Supervisor.allGroupsWithReports', compact('assignedGroups'));
 }
+public function viewLevelGroupsWithReports(Request $request)
+{
+    $level = $request->query('level');
+    $supervisor = Auth::user();
+    $teacherId = $supervisor->id;
+
+    $query = ProjectGroup::query();
+
+    if ($level) {
+        $levelString = 'level' . $level;
+        $query->where('level', $levelString);
+    }
+
+    $assignedGroups = $query->whereHas('supervisors', function ($query) use ($teacherId) {
+        $query->where('teacherId', $teacherId);
+    })->with(['projects' => function ($query) {
+        $query->orderBy('created_at', 'desc');
+    }])->get();
+
+    return view('Supervisor.levelGroupsWithReports', compact('assignedGroups', 'level'));
+}
+
+
+
+
+
 public function viewPendingFiles()
     {
         $supervisor = Auth::user();

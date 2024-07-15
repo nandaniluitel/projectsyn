@@ -127,7 +127,13 @@
 <div class="wrapper">
 <div class="content-wrapper">
   <div class="fullContainer">
-    
+  <div class="search-container">
+          <form action="{{ route('coordinator.search') }}" method="GET">
+            <input type="text" name="student_id" placeholder="Enter Student ID">
+            <button type="submit">Search</button>
+          </form>
+        </div>
+
     <div class="landingCard">
     <div class="card">
         <img height="150px" width="200px" src="https://img.freepik.com/free-vector/online-image-upload-landing-page_23-2148282428.jpg?size=626&ext=jpg&ga=GA1.1.1700460183.1713398400&semt=ais" alt="Project Upload" class="cardMedia">
