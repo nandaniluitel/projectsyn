@@ -56,5 +56,9 @@ class ProjectGroup extends Model
     {
     return $this->hasMany(Feedback::class, 'group_id');
     }
+    public function group()
+    {
+        return $this->belongsTo(Group::class);
+    }
 
 }

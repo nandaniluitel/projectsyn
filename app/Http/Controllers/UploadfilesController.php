@@ -9,7 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\ProjectGroup;
 use App\Models\Supervisor;
-
+use App\Models\Student;
+use Illuminate\Support\Facades\Auth;
 
 class UploadfilesController extends Controller
 {
@@ -20,6 +21,42 @@ class UploadfilesController extends Controller
         $projects = Project::all();
         return view('uploadfiles.index1', compact('projects'));
     }
+    public function create()
+    {
+        // Retrieve the authenticated user
+        $user = Auth::user();
+    
+        // Check if the user is authenticated
+        if ($user) {
+            // Access the student record via the relationship (assuming 'student' method in User model)
+            $student = $user->student;
+    
+            // Check if the student record exists
+            if ($student) {
+                // Access the project groups related to this student
+                $projectGroupIds = $student->projectGroups()->pluck('project_group_id')->toArray();
+    
+                // Retrieve project titles from project_groups table based on project_group_ids
+                $projectTitles = ProjectGroup::whereIn('id', $projectGroupIds)->pluck('title', 'id');
+    
+            // Fetch all supervisors with their names
+                $supervisors = Supervisor::with('teacher.user')->get(); // Adjust relationship path as per your actual structure
+
+                // Return view with data
+                return view('uploadfiles.create', compact('projectTitles','supervisors'));
+            } else {
+                // Handle case where student record does not exist
+                dd('Student not found for the authenticated user.');
+            }
+        } else {
+            // Handle case where user is not authenticated
+            dd('User not authenticated.');
+        }
+    }
+    
+    
+
+
 
     public function viewAcceptedProjects()
     {
@@ -115,4 +152,6 @@ class UploadfilesController extends Controller
 
         return redirect()->back()->with('success', 'Report status updated successfully.');
     }
+   
+
 }

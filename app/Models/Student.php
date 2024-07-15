@@ -22,4 +22,8 @@ class Student extends Model
     {
         return $this->belongsTo(User::class,'userId');
     }
+    public function projectGroups()
+    {
+        return $this->belongsToMany(ProjectGroup::class, 'project_group_students', 'student_id', 'project_group_id');
+    }
 }
