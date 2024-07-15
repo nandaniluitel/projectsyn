@@ -162,25 +162,22 @@ Route::get('/login', [LoginController::class, 'showLoginForm'])->middleware('red
 Route::post('/login', [LoginController::class, 'login'])->middleware('redirectIfAuthenticated');
 
 
-Route::get('/uploadfiles', [UploadfilesController::class, 'index'])->name('uploadfiles.index1');
-Route::get('projects', [ProjectController::class, 'index'])->name('projects.index');
-Route::get('/notification/index', [NotificationsController::class, 'index'])->name('notification.index');
-Route::get('/notification/create', [NotificationsController::class, 'create'])->name('notification.create');
-Route::post('/notification', [NotificationsController::class, 'store'])->name('notification.store');
-Route::get('/notification/{notification}/edit', [NotificationsController::class, 'edit'])->name('notification.edit');
-Route::put('/notification/{notification}', [NotificationsController::class, 'update'])->name('notification.update');
-Route::delete('/notification/{notification}', [NotificationsController::class, 'destroy'])->name('notification.destroy');
-Route::get('/feedback/create/{groupId}', [FeedbackController::class, 'create'])->name('feedback.create');
-Route::post('/feedback/store', [FeedbackController::class, 'store'])->name('feedback.store');
-Route::get('/feedback/index', [FeedbackController::class, 'index'])->name('feedback.index');
-Route::get('/coordinator/accepted-projects', [UploadfilesController::class, 'CoordinatorView'])->name('coordinator.accepted-projects');
+
+
+
+
+
+
+
+
+
+
+
+
 // Define routes for reports
-Route::get('/reports', [UploadfilesController::class, 'viewAcceptedProjects'])->name('reports.index');
-Route::post('/reports/{id}/update-status', [UploadfilesController::class, 'updateStatus'])->name('report.update-status');
-Route::get('/reports/{id}', [UploadfilesController::class, 'view'])->name('report.view');
-Route::post('/teacher/update-status/{id}', [UploadfilesController::class, 'updateStatus'])->name('teacher.update-status');
+
 //ansa brought
-Route::post('/evaluations', [EvaluationController::class, 'store'])->name('evaluations.store');
+
 
 //students
 Route::middleware(['auth', 'student'])->group(function () {
@@ -193,18 +190,31 @@ Route::middleware(['auth', 'student'])->group(function () {
     Route::get('/upload/create', [UploadfilesController::class, 'create'])->name('upload.create');
 
 
-Route::get('/uploadfiles/create', [UploadfilesController::class, 'create'])->name('uploadfiles.create');
+    Route::get('/uploadfiles/create', [UploadfilesController::class, 'create'])->name('uploadfiles.create');
+
+    Route::get('/feedback/index', [FeedbackController::class, 'index'])->name('feedback.index');
 });
 
 Route::middleware(['auth'])->group(function () {
     
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
         Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::get('/notification/index', [NotificationsController::class, 'index'])->name('notification.index');
+        Route::post('/notification', [NotificationsController::class, 'store'])->name('notification.store');
+        Route::post('/feedback/store', [FeedbackController::class, 'store'])->name('feedback.store');
+        Route::post('/evaluations', [EvaluationController::class, 'store'])->name('evaluations.store');
+
+        Route::get('/reports', [UploadfilesController::class, 'viewAcceptedProjects'])->name('reports.index');
+    Route::post('/reports/{id}/update-status', [UploadfilesController::class, 'updateStatus'])->name('report.update-status');
+    Route::get('/reports/{id}', [UploadfilesController::class, 'view'])->name('report.view');
+    Route::post('/teacher/update-status/{id}', [UploadfilesController::class, 'updateStatus'])->name('teacher.update-status');
     // Routes for coordinators, supervisors, and evaluators
     Route::middleware(['checkTeacherRole'])->group(function () {
         Route::get('/teacherdashboard', [teacherDashboardController::class, 'create'])->name('teacherdashboard.create');
         //profile
-        
+        Route::get('/uploadfiles', [UploadfilesController::class, 'index'])->name('uploadfiles.index1');
+        Route::get('projects', [ProjectController::class, 'index'])->name('projects.index');
+        Route::get('/coordinator/accepted-projects', [UploadfilesController::class, 'CoordinatorView'])->name('coordinator.accepted-projects');
     });
 });
 //coordinator
@@ -238,6 +248,11 @@ Route::middleware(['auth','coordinator'])->group(function () {
 
     Route::get('/evaluations/rejected', [EvaluationController::class, 'viewRejected'])->name('evaluations.rejected');
     Route::get('/evaluations/accepted', [EvaluationController::class, 'viewAccepted'])->name('evaluations.accepted');
+      
+    Route::get('/notification/create', [NotificationsController::class, 'create'])->name('notification.create');
+    // Route::get('/notification/{notification}/edit', [NotificationsController::class, 'edit'])->name('notification.edit');
+    // Route::put('/notification/{notification}', [NotificationsController::class, 'update'])->name('notification.update');
+    Route::delete('/notification/{notification}', [NotificationsController::class, 'destroy'])->name('notification.destroy');
 
 
     // Route::get('/notification/index', [NotificationsController::class, 'index'])->name('notification.index');
@@ -270,6 +285,8 @@ Route::middleware(['auth','supervisor'])->group(function () {
     Route::get('/supervisor/rejected-files', [SupervisorController::class, 'viewRejectedFiles'])->name('supervisor.rejectedFiles');
     Route::put('/supervisor/reject/{id}', [SupervisorController::class, 'processReject'])
     ->name('supervisor.processReject');
+
+    Route::get('/feedback/create/{groupId}', [FeedbackController::class, 'create'])->name('feedback.create');
 
  });
 //evaluator
