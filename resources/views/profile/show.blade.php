@@ -45,7 +45,7 @@
         </div>
 
         <div class="text-center" style="margin-top: 20px;">
-            <a href="{{ url('/') }}" class="btn btn-primary" style="padding: 10px 20px; font-size: 16px;">Home</a>
+            
         </div>
     </div>
 <!-- </div> -->

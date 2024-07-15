@@ -101,6 +101,15 @@
             <label for="feedback">Feedback:</label>
             <textarea class="form-control" id="feedback" name="feedback" required></textarea>
         </div>
+        <div class="form-group">
+        <label for="status">Status:</label>
+            <select class="form-control" id="status" name="status" required>
+            <option value="" disabled selected>Select Status</option>
+            <option value="pending">Pending</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected</option>
+        </select>
+</div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </div>
 </form>                     

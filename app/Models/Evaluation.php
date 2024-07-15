@@ -20,6 +20,7 @@ class Evaluation extends Model
         'qaMarks',
         'demoMarks',
         'feedback',
+        'status',
     ];
 
     public function project()

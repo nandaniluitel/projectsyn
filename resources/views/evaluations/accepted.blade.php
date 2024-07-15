@@ -1,10 +1,9 @@
-{{-- resources/views/evaluations/index.blade.php --}}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Project Synergy | Evaluations Index</title>
+  <title>Project Synergy | Accepted Evaluations</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -29,12 +28,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Evaluations Index</h1>
+            <h1>Accepted Evaluations</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Evaluations Index</li>
+              <li class="breadcrumb-item active">Accepted Evaluations</li>
             </ol>
           </div>
         </div>
@@ -48,16 +47,10 @@
           <div class="col-md-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">List of Evaluations</h3>
+                <h3 class="card-title">List of Accepted Evaluations</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                @if (session('success'))
-                  <div class="alert alert-success">
-                    {{ session('success') }}
-                  </div>
-                @endif
-
                 <table class="table table-bordered">
                   <thead>
                     <tr>
@@ -76,10 +69,8 @@
                   <tbody>
                     @foreach ($evaluations as $evaluation)
                       <tr>
-                      <tr>
-        <td>{{ $evaluation->evaluator->teacher->user->name }}</td>
-        <td>{{ $evaluation->project->group->title }}</td>
-                        
+                        <td>{{ $evaluation->evaluator->teacher->user->name }}</td>
+                        <td>{{ $evaluation->project->group->title }}</td>
                         <td>{{ $evaluation->phase }}</td>
                         <td>{{ $evaluation->reportMarks }}</td>
                         <td>{{ $evaluation->presentationMarks }}</td>
@@ -92,10 +83,6 @@
                     @endforeach
                   </tbody>
                 </table>
-                 <!-- Buttons for filtering evaluations -->
-                 <div class="mt-3">
-                  <a href="{{ route('evaluations.rejected') }}" class="btn btn-danger">View Rejected Projects</a>
-                  <a href="{{ route('evaluations.accepted') }}" class="btn btn-success">View Accepted Projects</a>
               </div>
               <!-- /.card-body -->
             </div>
@@ -114,22 +101,4 @@
   <!-- Main Footer -->
   <footer class="main-footer">
     <!-- To the right -->
-    <div class="float-right d-none d-sm-inline">
-      Anything you want
-    </div>
-    <!-- Default to the left -->
-    <strong>Footer information &copy; 2024 </strong>
-  </footer>
-</div>
-<!-- ./wrapper -->
-
-<!-- REQUIRED SCRIPTS -->
-
-<!-- jQuery -->
-<script src="/adminlte/plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE App -->
-<script src="/adminlte/dist/js/adminlte.min.js"></script>
-</body>
-</html>
+    <div

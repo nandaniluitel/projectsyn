@@ -190,6 +190,10 @@ Route::middleware(['auth', 'student'])->group(function () {
     Route::get('uploadfiles/create', [UploadfilesController::class, 'showUploadForm'])->name('uploadfiles.create');
     Route::post('uploadfiles/create', [UploadfilesController::class, 'handleFileUpload'])->name('uploadfiles.store');
     Route::get('/supervisor/profile', [SupervisorProfileController::class, 'index'])->name('supervisor.profile');
+    Route::get('/upload/create', [UploadfilesController::class, 'create'])->name('upload.create');
+
+
+Route::get('/uploadfiles/create', [UploadfilesController::class, 'create'])->name('uploadfiles.create');
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -231,6 +235,10 @@ Route::middleware(['auth','coordinator'])->group(function () {
     
     Route::get('/projects/{id}/edit', [ProjectController::class, 'edit'])->name('projects.edit');
     Route::put('/projects/{id}', [ProjectController::class, 'update'])->name('projects.update');
+
+    Route::get('/evaluations/rejected', [EvaluationController::class, 'viewRejected'])->name('evaluations.rejected');
+    Route::get('/evaluations/accepted', [EvaluationController::class, 'viewAccepted'])->name('evaluations.accepted');
+
 
     // Route::get('/notification/index', [NotificationsController::class, 'index'])->name('notification.index');
     // Route::get('/notification/create', [NotificationsController::class, 'create'])->name('notification.create');

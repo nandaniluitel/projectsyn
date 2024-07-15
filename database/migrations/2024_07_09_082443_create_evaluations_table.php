@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('qaMarks')->nullable();
             $table->string('demoMarks')->nullable();
             $table->string('feedback')->nullable();
+            // $table->string('status')->default('pending');
 
             $table->timestamps();
         });

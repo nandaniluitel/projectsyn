@@ -37,6 +37,21 @@ class EvaluationController extends Controller
         
             return view('evaluations.index', compact('evaluations'));
     }
+
+    // app/Http/Controllers/EvaluationController.php
+
+    public function viewRejected()
+    {
+        $evaluations = Evaluation::where('status', 'rejected')->get();
+        return view('evaluations.rejected', compact('evaluations'));
+    }
+
+    public function viewAccepted()
+    {
+        $evaluations = Evaluation::where('status', 'approved')->get();
+        return view('evaluations.accepted', compact('evaluations'));
+    }
+
     public function store(Request $request)
     {
         \Log::info($request->all());
@@ -49,6 +64,7 @@ class EvaluationController extends Controller
             'qaMarks' => 'required|integer',
             'demoMarks' => 'required|integer',
             'feedback' => 'required',
+            'status' => 'required',
         ]);
 
         Evaluation::create([
@@ -60,6 +76,7 @@ class EvaluationController extends Controller
             'qaMarks' => $request->qaMarks,
             'demoMarks' => $request->demoMarks,
             'feedback' => $request->feedback,
+            'status' => $request->status,
         ]);
 
         return redirect()->back()->with('success', 'Evaluation form registered successfully.');
