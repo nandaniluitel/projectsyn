@@ -90,12 +90,7 @@
         </section>
     </div>
 
-    <footer class="main-footer">
-        <div class="float-right d-none d-sm-inline">
-            Anything you want
-        </div>
-        <strong>Footer Text</strong>
-    </footer>
+
 </div>
 
 <script src="/adminlte/plugins/jquery/jquery.min.js"></script>

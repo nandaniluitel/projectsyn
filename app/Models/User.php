@@ -15,6 +15,7 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
     use Notifiable;
+
     // public function hasRole($role)
     // {
     //     switch ($role) {
@@ -50,7 +51,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name', 'Photo', 'Phone_number', 'semester', 'email', 'password',
+       'id', 'name', 'Photo', 'Phone_number', 'semester', 'email', 'password',
     ];
 
     /**

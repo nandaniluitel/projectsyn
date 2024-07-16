@@ -21,8 +21,8 @@ class UsersTableSeeder extends Seeder
         for ($i = 0; $i < 10; $i++) {
             $users[] = [
                 'id' => 20319 + $i,
-                'name' => 'User ' . (20319 + $i),
-                'email' => 'user' . (20319 + $i) . '@example.com',
+                'name' => 'Student ' . (20319 + $i),
+                'email' => 'student' . (20319 + $i) . '@example.com',
                 'password' => Hash::make('password123'),
                 'email_verified_at' => now(),
                 'remember_token' => Str::random(10),
@@ -38,8 +38,8 @@ class UsersTableSeeder extends Seeder
         for ($i = 2; $i <= 10; $i++) {
             $users[] = [
                 'id' => $i,
-                'name' => 'User ' . $i,
-                'email' => 'user' . $i . '@example.com',
+                'name' => 'Teacher ' . $i,
+                'email' => 'teacher' . $i . '@example.com',
                 'password' => Hash::make('password123'),
                 'email_verified_at' => now(),
                 'remember_token' => Str::random(10),
