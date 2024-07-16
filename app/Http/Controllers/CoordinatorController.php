@@ -94,6 +94,7 @@ class CoordinatorController extends Controller
             if ($evaluation) {
                 // Find the project related to this evaluation
                 $project = $projects->where('id', $evaluation->projectId)->first();
+                
                 if ($project) {
                     $evaluationDetails[] = [
                         'project' => $project,
