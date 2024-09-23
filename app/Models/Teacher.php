@@ -13,7 +13,7 @@ class Teacher extends Model
 {
     use HasFactory;
     protected $table = 'teachers';
-    protected $fillable = [ 'userId'];
+    protected $fillable = ['id', 'userId'];
     public function user()
     {
         return $this->belongsTo(User::class, 'userId');

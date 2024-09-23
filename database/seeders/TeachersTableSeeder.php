@@ -26,6 +26,7 @@ class TeachersTableSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
+        }for ($i = 1; $i <= 10; $i++) {
 
             $teachers[] = [
                 'userId' => $i,
