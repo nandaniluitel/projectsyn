@@ -50,4 +50,24 @@ class ProfileController extends Controller
 
         return redirect()->route('profile.show')->with('success', 'Profile updated successfully.');
     }
+public function showByRollNo($rollno)
+{
+    // Assuming 'id' in 'users' table is the roll number
+    $user = \App\Models\User::where('id', $rollno)->first();
+
+    if (!$user) {
+        abort(404, 'Student not found');
+    }
+
+    $isTeacher = \App\Models\Teacher::where('userId', $user->id)->exists();
+    $isStudent = \App\Models\Student::where('userId', $user->id)->exists();
+
+    return view('profile.show', [
+        'user' => $user,
+        'isTeacher' => $isTeacher,
+        'isStudent' => $isStudent
+    ]);
+}
+
+    
 }

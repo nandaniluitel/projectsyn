@@ -193,6 +193,14 @@
         <a href="{{ route('Supervisor.assignedgroups') }}" class="cardBtn">Navigate</a>
         </div>
       </div>
+
+      <div class="card">
+        <div class="card-body text-center">
+        <h5 class="card-title">Scan Student ID</h5>
+        <a href="{{ route('scanner.capture') }}" class="btn btn-primary">Open Scanner</a>
+        </div>
+      </div>
+
     
       <!-- <div class="card">
         <img height="150px" width="200px" src="https://img.freepik.com/free-vector/online-image-upload-landing-page_23-2148282428.jpg?size=626&ext=jpg&ga=GA1.1.1700460183.1713398400&semt=ais" alt="Project Upload" class="cardMedia">

@@ -160,6 +160,14 @@
         <a href="{{ route('evaluations.create') }}" class="cardBtn">Navigate</a>
         </div>
       </div>
+
+      <div class="card">
+        <div class="card-body text-center">
+        <h5 class="card-title">Scan Student ID</h5>
+        <a href="{{ route('scanner.capture') }}" class="btn btn-primary">Open Scanner</a>
+        </div>
+      </div>
+
      
      
       <!-- <div class="card">

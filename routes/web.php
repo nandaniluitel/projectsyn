@@ -20,6 +20,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\teacherDashboardController;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\ScannerController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -198,6 +199,9 @@ Route::middleware(['auth', 'student'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile/{rollno}', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/check-student/{rollno}', [ProfileController::class, 'showByRollNo'])->name('profile.showByRollNo');
+
         Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::get('/notification/index', [NotificationsController::class, 'index'])->name('notification.index');
         Route::post('/notification', [NotificationsController::class, 'store'])->name('notification.store');
@@ -309,6 +313,9 @@ Route::middleware(['auth','supervisor'])->group(function () {
 Route::get('/notice', function () {
     return view('notice');
 });
+
+Route::get('/scanner/capture', [ScannerController::class, 'showScanner'])->name('scanner.capture');
+Route::post('/scanner/redirect', [ScannerController::class, 'redirectToProfile'])->name('scanner.redirect');
 
 // Route::get('/quiz', function () {
 //     $categories = Category::all();
