@@ -36,7 +36,7 @@
   text-align: center;
   margin: 50px;
   font-size: 2em;
-  color: #008c9e; /* Adjusted to match the form's header color */
+  color:#190087 ; /* Adjusted to match the form's header color */
 }
 
 .landingCard {
@@ -90,7 +90,7 @@
 }
 
 .cardBtn {
-  background-color: #008c9e; /* Blue color for the button matching the form */
+  background-color: #190087; /* Blue color for the button matching the form */
   color: white;
   border: none;
   padding: 10px 20px;
@@ -101,11 +101,12 @@
 
 .cardBtn:hover {
   background-color: #00677d; /* Darker blue on hover */
+  color: white;
 }
 
 
 .header {
-  background-color: #17a2b8; /* Teal color */
+  background-color: #190087; /* Teal color */
   color: white;
   padding: 20px;
   text-align: center;

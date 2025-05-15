@@ -90,7 +90,7 @@
 }
 
 .cardBtn {
-  background-color: #008c9e; /* Blue color for the button matching the form */
+  background-color: #190087; /* Blue color for the button matching the form */
   color: white;
   border: none;
   padding: 10px 20px;
@@ -100,12 +100,13 @@
 }
 
 .cardBtn:hover {
-  background-color: #00677d; /* Darker blue on hover */
+  background-color: #00677d;
+  color: white; /* Darker blue on hover */
 }
 
 
 .header {
-  background-color: #17a2b8; /* Teal color */
+  background-color: #190087; /* Teal color */
   color: white;
   padding: 20px;
   text-align: center;
@@ -153,7 +154,7 @@
       <div class="card">
         <img height="150px" width="200px" src="https://img.freepik.com/free-vector/online-image-upload-landing-page_23-2148282428.jpg?size=626&ext=jpg&ga=GA1.1.1700460183.1713398400&semt=ais" alt="Project Upload" class="cardMedia">
         <div class="cardContent">
-          <h5 class="cardTitle">View Project Files has are in status pending to view.</h5>
+          <h5 class="cardTitle">View Project Files which are in pending status.</h5>
           <p class="cardText">View the  files uploaded by respective groups including proposal,slides and reports which has not been accepted or rejected after submission.</p>
         </div>
         <div class="cardActions">
@@ -163,7 +164,7 @@
       <div class="card">
         <img height="150px" width="200px" src="https://img.freepik.com/free-vector/online-image-upload-landing-page_23-2148282428.jpg?size=626&ext=jpg&ga=GA1.1.1700460183.1713398400&semt=ais" alt="Project Upload" class="cardMedia">
         <div class="cardContent">
-          <h5 class="cardTitle">View Project Files has has been accepted by you.</h5>
+          <h5 class="cardTitle">View Project Files that have been accepted by you.</h5>
           <p class="cardText">View the  files uploaded by respective groups including proposal,slides and reports which has  been accepted after submission.</p>
         </div>
         <div class="cardActions">
@@ -173,7 +174,7 @@
       <div class="card">
         <img height="150px" width="200px" src="https://img.freepik.com/free-vector/online-image-upload-landing-page_23-2148282428.jpg?size=626&ext=jpg&ga=GA1.1.1700460183.1713398400&semt=ais" alt="Project Upload" class="cardMedia">
         <div class="cardContent">
-          <h5 class="cardTitle">View Project Files has has been rejected by you.</h5>
+          <h5 class="cardTitle">View Project Files that have been rejected by you.</h5>
           <p class="cardText">View the  files uploaded by respective groups including proposal,slides and reports which has  been rejected after submission.</p>
         </div>
         <div class="cardActions">
