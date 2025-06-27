@@ -34,5 +34,10 @@ public function supervisor()
 {
     return $this->belongsTo(Supervisor::class, 'supervisor_id');
 }
+
+public function evaluations() {
+    return $this->hasMany(\App\Models\Evaluation::class, 'projectId');
+}
+
 }
 

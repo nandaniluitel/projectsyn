@@ -17,14 +17,13 @@
 <div class="wrapper">
   <!-- Navbar -->
   @include('nav.create')
-  <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
   @include('teachersidebar.create')
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
+    <!-- Page header -->
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
@@ -38,19 +37,20 @@
             </ol>
           </div>
         </div>
-      </div><!-- /.container-fluid -->
+      </div>
     </section>
 
-    <!-- Main content -->
+    <!-- Main content section -->
     <section class="content">
       <div class="container-fluid">
         <div class="row">
           <div class="col-md-12">
+
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">List of Uploaded Files</h3>
               </div>
-              <!-- /.card-header -->
+
               <div class="card-body">
                 @if (session('success'))
                   <div class="alert alert-success">
@@ -59,8 +59,8 @@
                 @endif
 
                 @if ($projects->count() > 0)
-                  <table class="table table-bordered">
-                    <thead>
+                  <table class="table table-bordered table-striped">
+                    <thead class="thead-dark">
                       <tr>
                         <th>ID</th>
                         <th>Project Title</th>
@@ -76,19 +76,36 @@
                         <tr>
                           <td>{{ $project->id }}</td>
                           <td>{{ $project->group->title }}</td>
+
+                          {{-- Report File --}}
                           <td>
-                            <a href="{{ Storage::url($project->report_file) }}" target="_blank">View Report</a>
-                          </td>
-                          <td>
-                            @if ($project->slides_file)
-                              <a href="{{ Storage::url($project->slides_file) }}" target="_blank">View Slides</a>
+                            @if ($project->report_file)
+                              <a href="{{ asset('storage/' . $project->report_file) }}" 
+                                 target="_blank" 
+                                 class="btn btn-outline-primary btn-sm">
+                                📄 View Report
+                              </a>
                             @else
-                              No Slides
+                              <span class="text-muted">No Report</span>
                             @endif
                           </td>
-                          <td>{{ $project->report_type }}</td>
-                          <td>{{ $project->supervisor_id }}</td>
-                          <td>{{ $project->created_at }}</td>
+
+                          {{-- Slides File --}}
+                          <td>
+                            @if ($project->slides_file)
+                              <a href="{{ asset('storage/' . $project->slides_file) }}" 
+                                 target="_blank" 
+                                 class="btn btn-outline-success btn-sm">
+                                📊 View Slides
+                              </a>
+                            @else
+                              <span class="text-muted">No Slides</span>
+                            @endif
+                          </td>
+
+                          <td>{{ ucfirst($project->report_type) }}</td>
+                          <td>{{ $project->supervisor_id ?? 'N/A' }}</td>
+                          <td>{{ $project->created_at->format('Y-m-d H:i') }}</td>
                         </tr>
                       @endforeach
                     </tbody>
@@ -96,42 +113,27 @@
                 @else
                   <p>No files uploaded yet.</p>
                 @endif
-
-                
               </div>
-              <!-- /.card-body -->
             </div>
-            <!-- /.card -->
-          </div>
-          <!-- /.col -->
-        </div>
-        <!-- /.row -->
-      </div>
-      <!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
 
-  <!-- Main Footer -->
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Footer -->
   <footer class="main-footer">
-    <!-- To the right -->
     <div class="float-right d-none d-sm-inline">
-      Anything you want
+      Empowering Innovation
     </div>
-    <!-- Default to the left -->
-    <strong>Footer information &copy; 2024 </strong>
+    <strong>&copy; 2024 Project Synergy</strong>
   </footer>
 </div>
-<!-- ./wrapper -->
 
 <!-- REQUIRED SCRIPTS -->
-
-<!-- jQuery -->
 <script src="/adminlte/plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
 <script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE App -->
 <script src="/adminlte/dist/js/adminlte.min.js"></script>
 </body>
 </html>

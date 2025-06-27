@@ -252,6 +252,10 @@ Route::middleware(['auth','coordinator'])->group(function () {
 
     Route::get('/evaluations/rejected', [EvaluationController::class, 'viewRejected'])->name('evaluations.rejected');
     Route::get('/evaluations/accepted', [EvaluationController::class, 'viewAccepted'])->name('evaluations.accepted');
+
+    Route::get('/evaluations', [EvaluationController::class, 'index'])->name('evaluations.index');
+Route::get('/evaluations/{evaluation}/edit', [EvaluationController::class, 'edit'])->name('evaluations.edit');
+Route::post('/evaluations/{evaluation}/update', [EvaluationController::class, 'update'])->name('evaluations.update');
       
     Route::get('/notification/create', [NotificationsController::class, 'create'])->name('notification.create');
     // Route::get('/notification/{notification}/edit', [NotificationsController::class, 'edit'])->name('notification.edit');
@@ -268,7 +272,12 @@ Route::middleware(['auth','coordinator'])->group(function () {
     
 
     Route::get('/coordinator/search', [CoordinatorController::class, 'search'])->name('coordinator.search');
-    
+    // Show evaluated marks and allow editing
+Route::get('/coordinator/evaluations', [CoordinatorController::class, 'viewEvaluatedMarks'])->name('coordinator.evaluations');
+
+// Form submission for updating evaluation status
+Route::post('/coordinator/evaluations/update', [CoordinatorController::class, 'updateEvaluationStatus'])->name('coordinator.evaluations.update');
+
 
 
     Route::get('/Coordinator/index', function () {
@@ -458,3 +467,6 @@ Auth::routes();
 // Route::get('/login/google', [GoogleController::class, 'redirect']);
 // Route::get('/login/google/callback', [GoogleController::class, 'login']);
 
+//Route::get('/student/rejected-projects', [App\Http\Controllers\StudentsController::class, 'rejectedProjects'])
+ //   ->name('student.rejected-projects')
+  //  ->middleware(['auth', 'student']); // use your actual middleware

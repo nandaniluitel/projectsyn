@@ -15,16 +15,10 @@
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
-  <!-- Navbar -->
   @include('nav.create')
-  <!-- /.navbar -->
-
-  <!-- Main Sidebar Container -->
   @include('teachersidebar.create')
 
-  <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
@@ -38,10 +32,9 @@
             </ol>
           </div>
         </div>
-      </div><!-- /.container-fluid -->
+      </div>
     </section>
 
-    <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
         <div class="row">
@@ -50,7 +43,7 @@
               <div class="card-header">
                 <h3 class="card-title">List of Evaluations</h3>
               </div>
-              <!-- /.card-header -->
+
               <div class="card-body">
                 @if (session('success'))
                   <div class="alert alert-success">
@@ -64,72 +57,68 @@
                       <th>Evaluator Name</th>
                       <th>Project Title</th>
                       <th>Phase</th>
-                      <th>Report Marks</th>
-                      <th>Presentation Marks</th>
-                      <th>QA Marks</th>
-                      <th>Demo Marks</th>
+                      <th>Report</th>
+                      <th>Presentation</th>
+                      <th>QA</th>
+                      <th>Demo</th>
                       <th>Feedback</th>
                       <th>Status</th>
-                      <th>Created At</th>
+                      <th>Created</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
                     @foreach ($evaluations as $evaluation)
                       <tr>
-                      <tr>
-        <td>{{ $evaluation->evaluator->teacher->user->name }}</td>
-        <td>{{ $evaluation->project->group->title }}</td>
-                        
-                        <td>{{ $evaluation->phase }}</td>
+                        <td>{{ $evaluation->evaluator->teacher->user->name ?? 'N/A' }}</td>
+                        <td>{{ $evaluation->project->group->title ?? 'N/A' }}</td>
+                        <td>{{ ucfirst($evaluation->phase) }}</td>
                         <td>{{ $evaluation->reportMarks }}</td>
                         <td>{{ $evaluation->presentationMarks }}</td>
                         <td>{{ $evaluation->qaMarks }}</td>
                         <td>{{ $evaluation->demoMarks }}</td>
                         <td>{{ $evaluation->feedback }}</td>
-                        <td>{{ $evaluation->status }}</td>
-                        <td>{{ $evaluation->created_at }}</td>
+                        <td>
+                          <span class="badge 
+                            @if($evaluation->status == 'approved') badge-success 
+                            @elseif($evaluation->status == 'rejected') badge-danger 
+                            @else badge-warning @endif">
+                            {{ ucfirst($evaluation->status) }}
+                          </span>
+                        </td>
+                        <td>{{ $evaluation->created_at->format('Y-m-d') }}</td>
+                        <td>
+                          <a href="{{ route('evaluations.edit', $evaluation->id) }}" class="btn btn-sm btn-primary">
+                            Edit
+                          </a>
+                        </td>
                       </tr>
                     @endforeach
                   </tbody>
                 </table>
-                 <!-- Buttons for filtering evaluations -->
-                 <div class="mt-3">
+
+                <!-- Filter Buttons -->
+                <div class="mt-4">
                   <a href="{{ route('evaluations.rejected') }}" class="btn btn-danger">View Rejected Projects</a>
                   <a href="{{ route('evaluations.accepted') }}" class="btn btn-success">View Accepted Projects</a>
+                </div>
               </div>
-              <!-- /.card-body -->
             </div>
-            <!-- /.card -->
           </div>
-          <!-- /.col -->
         </div>
-        <!-- /.row -->
       </div>
-      <!-- /.container-fluid -->
     </section>
-    <!-- /.content -->
   </div>
-  <!-- /.content-wrapper -->
 
-  <!-- Main Footer -->
   <footer class="main-footer">
-    <!-- To the right -->
-    <div class="float-right d-none d-sm-inline">
-      Anything you want
-    </div>
-    <!-- Default to the left -->
-    <strong>Footer information &copy; 2024 </strong>
+    <div class="float-right d-none d-sm-inline">Powered by Laravel</div>
+    <strong>Project Synergy &copy; 2024</strong>
   </footer>
 </div>
-<!-- ./wrapper -->
 
-<!-- REQUIRED SCRIPTS -->
-
-<!-- jQuery -->
+<!-- Scripts -->
 <script src="/adminlte/plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
 <script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE App -->
 <script src="/adminlte/dist/js/adminlte.min.js"></script>
 </body>
 </html>

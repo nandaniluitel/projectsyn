@@ -1,57 +1,161 @@
+<!-- Paste this entire code in your resources/views/profile/show.blade.php -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .progress-bar { min-width: 60px; font-weight: bold; }
+    </style>
 </head>
 <body style="background-color: #f4f6f9; font-family: 'Source Sans Pro', sans-serif;">
 
+@include('nav.create')
 
-<!-- <div class="wrapper"> -->
-    @include('nav.create')
-    @if($isTeacher)
-        @include('teachersidebar.create')
-    @elseif($isStudent)
-        @include('sidebar.create')
+@if($isTeacher)
+    @include('teachersidebar.create')
+@elseif($isStudent)
+    @include('sidebar.create')
+@endif
+
+<div class="content-wrapper" style="margin: 20px auto; max-width: 900px; background: #fff; padding: 20px; border-radius: 10px;">
+    <h1 class="text-center font-weight-bold mb-4">User Profile</h1>
+
+    @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
     @endif
-    <div class="content-wrapper" style="margin: 20px auto; max-width: 800px; background: #fff; padding: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); border-radius: 10px;">
-        <div class="content-header">
-            <h1 class="text-center" style="font-weight: 700; margin-bottom: 20px;">User Profile</h1>
-        </div>
 
-        @if(session('success'))
-            <div class="alert alert-success" style="margin-bottom: 20px;">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        <div class="profile-info" style="border-top: 1px solid #ddd; padding-top: 20px;">
-            <div class="text-center" style="margin-bottom: 20px; margin-top:20px;">
-                @if($user->Photo)
-                    <img src="{{ asset('images/' . $user->Photo) }}" alt="User Photo" style="border-radius: 50%; width: 150px; height: 150px; object-fit: cover; border: 3px solid #007bff;">
-                @else
-                    <img src="{{ asset('images/images.png') }}" alt="Default Photo" style="border-radius: 50%; width: 150px; height: 150px; object-fit: cover; border: 3px solid #007bff;">
-                @endif
-            </div>
-
-            <p style="font-size: 18px; line-height: 1.6; padding-top:20px;"><strong>Name:</strong> {{ $user->name }}</p>
-            <p style="font-size: 18px; line-height: 1.6;"><strong>Email:</strong> {{ $user->email }}</p>
-            <p style="font-size: 18px; line-height: 1.6;"><strong>Phone Number:</strong> {{ $user->Phone_number }}</p>
-           
-        </div>
-
-        <div class="text-center" style="margin-top: 20px;">
-            
-        </div>
+    <div class="profile-info border-top pt-4 text-center">
+        <img src="{{ asset('images/' . ($user->Photo ?? 'images.png')) }}" alt="User Photo" class="rounded-circle" style="width: 150px; height: 150px; border: 3px solid #007bff;">
+        <p class="mt-3"><strong>Name:</strong> {{ $user->name }}</p>
+        <p><strong>Email:</strong> {{ $user->email }}</p>
+        <p><strong>Phone:</strong> {{ $user->Phone_number }}</p>
     </div>
-<!-- </div> -->
+
+    @if(isset($projects) && $projects->count())
+        <div class="mt-5">
+            <h4 class="mb-3">📊 Overall Project Progress</h4>
+            @php $overallPercent = round(($completedLevels / $totalLevels) * 100); @endphp
+            <div class="progress mb-4" style="height: 25px;">
+                <div class="progress-bar bg-success" role="progressbar" style="width: {{ $overallPercent }}%;">
+                    {{ $overallPercent }}% ({{ $completedLevels }}/{{ $totalLevels }} Levels Completed)
+                </div>
+            </div>
+
+            @foreach($projects as $project)
+                @php $phases = ['proposal', 'midterm', 'final']; @endphp
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">{{ $project->title }} - Level {{ $project->level }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Slides:</strong>
+                            @if($project->slides_file)
+                                <a href="{{ asset($project->slides_file) }}" target="_blank">View Slides</a>
+                            @else Not uploaded @endif
+                        </p>
+
+                        <p><strong>Report:</strong>
+                            @if($project->report_file)
+                                <a href="{{ asset($project->report_file) }}" target="_blank">View Report</a>
+                            @else Not uploaded @endif
+                        </p>
+
+                        <p><strong>Supervisor:</strong> {{ $project->supervisorName }}</p>
+
+                        <p><strong>Group Members:</strong>
+                            @if($project->members->count()) {{ $project->members->implode(', ') }}
+                            @else No other members @endif
+                        </p>
+
+                        <ul class="list-group mt-3">
+                            @foreach($phases as $phase)
+                                @php $eval = $project->phases[$phase] ?? null; @endphp
+                                <li class="list-group-item">
+                                    <strong>{{ ucfirst($phase) }}</strong><br>
+                                    <span class="badge badge-{{ $eval?->status === 'approved' ? 'success' : ($eval?->status === 'rejected' ? 'danger' : 'secondary') }}">
+                                        Status: {{ $eval->status ?? 'Not submitted' }}
+                                    </span>
+                                    <p class="mt-2 text-muted">🗨 Feedback: {{ $eval->feedback ?? 'No feedback' }}</p>
+
+                                    @if($isTeacher && $eval)
+                                        <div class="ml-3">
+                                            <strong>Marks:</strong><br>
+                                            Report: {{ $eval->reportMarks ?? '-' }}<br>
+                                            Presentation: {{ $eval->presentationMarks ?? '-' }}<br>
+                                            QA: {{ $eval->qaMarks ?? '-' }}<br>
+                                            Demo: {{ $eval->demoMarks ?? '-' }}
+                                        </div>
+                                    @endif
+                                </li>
+                            @endforeach
+                        </ul>
+
+                        <canvas class="level-graph mt-4"
+                            id="chart-level-{{ $project->level }}-{{ $loop->index }}"
+                            data-title="{{ $project->title }} - Level {{ $project->level }}"
+                            data-proposal="{{ $project->phases['proposal']?->status === 'approved' ? 1 : 0 }}"
+                            data-midterm="{{ $project->phases['midterm']?->status === 'approved' ? 1 : 0 }}"
+                            data-final="{{ $project->phases['final']?->status === 'approved' ? 1 : 0 }}">
+                        </canvas>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    @endif
+</div>
 
 <script src="/adminlte/plugins/jquery/jquery.min.js"></script>
 <script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="/adminlte/dist/js/adminlte.min.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.level-graph').forEach(canvas => {
+        const ctx = canvas.getContext('2d');
+        const title = canvas.dataset.title;
+        const proposal = parseInt(canvas.dataset.proposal);
+        const midterm = parseInt(canvas.dataset.midterm);
+        const final = parseInt(canvas.dataset.final);
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Proposal', 'Midterm', 'Final'],
+                datasets: [{
+                    label: 'Status',
+                    data: [proposal, midterm, final],
+                    backgroundColor: [
+                        proposal ? '#28a745' : '#dee2e6',
+                        midterm ? '#ffc107' : '#dee2e6',
+                        final ? '#17a2b8' : '#dee2e6'
+                    ],
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    title: { display: true, text: title }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 1,
+                        ticks: {
+                            callback: value => value === 1 ? 'Approved' : ''
+                        }
+                    }
+                }
+            }
+        });
+    });
+});
+</script>
 </body>
 </html>
