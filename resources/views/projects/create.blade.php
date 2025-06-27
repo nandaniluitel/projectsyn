@@ -32,6 +32,15 @@
                     <form method="POST" action="{{ route('projects.store') }}" class="form-horizontal">
                         @csrf
                         <div class="card-body" id="maincard">
+                        @if (session('success'))
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                {{ session('success') }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        @endif
+                            
                             <div class="form-group row">
                                 <label for="title" class="col-sm-2 col-form-label">Project Title</label>
                                 <div class="col-sm-10">
@@ -74,7 +83,13 @@
                                 <div class="form-group row" id="crn-0-group">
                                     <label for="crn-0" class="col-sm-2 col-form-label">TEAM MEMBER CRN:</label>
                                     <div class="col-sm-10">
-                                        <input type="number" class="form-control mb-2 crn-input" name="crns[]" id="crn-0" placeholder="CRN (e.g., 020319)" required>
+                                    <select class="form-control mb-2 crn-input" name="crns[]" id="crn-0" required>
+                                        <option value="">Select CRN</option>
+                                        @foreach ($students as $student)
+                                            <option value="{{ $student->id }}">{{ $student->id }} - {{ $student->name }}</option>
+                                        @endforeach
+                                    </select>
+
                                         @error('crns.*')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -117,29 +132,33 @@
 <!-- Page specific script -->
 <script>
     $(document).ready(function() {
-        $('#submitBtn').click(function() {
-            alert('Submitting form...'); // You can replace alert with any other method
-        });
-
+        
         var maxCrns = 3; // Maximum number of CRNs allowed
         var crnIndex = 1; // To ensure unique IDs for dynamically added fields
 
         // Function to add CRN field
         $('.addCrnField').click(function() {
-            if (crnIndex < maxCrns) {
-                var newField = '<div class="form-group row" id="crn-' + crnIndex + '-group">'+
-                               '<label for="crn-' + crnIndex + '" class="col-sm-2 col-form-label">TEAM MEMBER CRN:</label>'+
-                               '<div class="col-sm-10">'+
-                               '<input type="number" class="form-control mb-2 crn-input" name="crns[]" id="crn-' + crnIndex + '" placeholder="CRN (e.g., 020319)" required>'+
-                               '</div>'+
-                               '</div>';
+    if (crnIndex < maxCrns) {
+        var newField = `
+            <div class="form-group row" id="crn-${crnIndex}-group">
+                <label for="crn-${crnIndex}" class="col-sm-2 col-form-label">TEAM MEMBER CRN:</label>
+                <div class="col-sm-10">
+                    <select class="form-control mb-2 crn-input" name="crns[]" id="crn-${crnIndex}" required>
+                        <option value="">Select CRN</option>
+                        @foreach ($students as $student)
+                            <option value="{{ $student->id }}">{{ $student->id }} - {{ $student->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+        `;
+        $('#crnFields').append(newField);
+        crnIndex++;
+    } else {
+        alert('You can only add up to ' + maxCrns + ' CRNs.');
+    }
+});
 
-                $('#crnFields').append(newField);
-                crnIndex++;
-            } else {
-                alert('You can only add up to ' + maxCrns + ' CRNs.');
-            }
-        });
     });
 </script>
 </body>

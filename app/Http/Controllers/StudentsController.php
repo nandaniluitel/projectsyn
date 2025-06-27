@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Students;
 use App\Http\Requests\StoreStudentsRequest;
 use App\Http\Requests\UpdateStudentsRequest;
+use App\Models\Evaluation;
+use Illuminate\Support\Facades\Auth;
 
 class StudentsController extends Controller
 {
@@ -83,4 +85,34 @@ class StudentsController extends Controller
     {
         //
     }
+    public function rejectedProjects()
+{
+    $user = Auth::user();
+
+    // Get the student record
+    $student = $user->student;
+
+    // Get all project groups the student belongs to
+    $projectGroups = $student->projectGroups()->with('projects.evaluations')->get();
+
+    // Flatten and filter only rejected evaluations
+    $rejectedProjects = collect();
+
+    foreach ($projectGroups as $group) {
+        foreach ($group->projects as $project) {
+            foreach ($project->evaluations as $evaluation) {
+                if ($evaluation->status === 'rejected') {
+                    $rejectedProjects->push([
+                        'title' => $project->title,
+                        'phase' => $evaluation->phase,
+                        'feedback' => $evaluation->feedback,
+                        'rejected_at' => $evaluation->created_at,
+                    ]);
+                }
+            }
+        }
+    }
+
+    return view('student.rejected_projects', compact('rejectedProjects'));
+}
 }

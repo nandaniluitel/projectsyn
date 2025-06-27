@@ -10,7 +10,7 @@ class Evaluator extends Model
 {
     use HasFactory;
     protected $table = 'evaluators';
-    protected $fillable = ['teacherId'];
+    protected $fillable = ['teacherId','assigned_date','room_no'];
     public function teacher()
     {
         return $this->belongsTo(Teacher::class,'teacherId');

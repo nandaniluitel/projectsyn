@@ -19,28 +19,85 @@ class CoordinatorController extends Controller
 
         return view('assignroles.create', compact('teachers'));
     }
+    public function viewEvaluatedMarks()
+{
+    $evaluations = Evaluation::with(['student.user', 'projectGroup'])
+                    ->orderBy('created_at', 'desc')->get();
+
+    return view('coordinator.evaluations.index', compact('evaluations'));
+}
+
+public function updateEvaluationStatus(Request $request)
+{
+    $request->validate([
+        'evaluation_id' => 'required|exists:evaluations,id',
+        'status' => 'required|in:pending,approved,rejected'
+    ]);
+
+    $evaluation = Evaluation::findOrFail($request->evaluation_id);
+    $evaluation->status = $request->status;
+    $evaluation->save();
+
+    return redirect()->route('coordinator.evaluations')->with('success', 'Evaluation status updated successfully.');
+}
+
+    // public function assignRoles(Request $request)
+    // {
+    //     $request->validate([
+    //         'evaluator_id' => 'nullable|exists:teachers,id',
+    //         'coordinator_id' => 'nullable|exists:teachers,id',
+    //     ]);
+
+    //     if ($request->has('evaluator_id')) {
+    //         // Logic to assign evaluator
+    //         $teacher = Teacher::findOrFail($request->evaluator_id);
+    //         Evaluator::firstOrCreate(['teacherId' => $teacher->id]);
+    //     }
+
+    //     if ($request->has('coordinator_id')) {
+    //         // Logic to assign coordinator
+    //         $teacher = Teacher::findOrFail($request->coordinator_id);
+    //         Coordinator::firstOrCreate(['teacherId' => $teacher->id]);
+    //     }
+
+    //     return redirect()->route('assignroles.create')->with('success', 'Roles assigned successfully.');
+    // }
 
     public function assignRoles(Request $request)
     {
         $request->validate([
             'evaluator_id' => 'nullable|exists:teachers,id',
+            'assigned_date' => 'required_with:evaluator_id|date',
+            'room_no' => 'nullable|string|max:50',
             'coordinator_id' => 'nullable|exists:teachers,id',
         ]);
-
-        if ($request->has('evaluator_id')) {
-            // Logic to assign evaluator
+    
+        // Assign evaluator with assigned_date and optional room_no
+        if ($request->filled('evaluator_id')) {
             $teacher = Teacher::findOrFail($request->evaluator_id);
-            Evaluator::firstOrCreate(['teacherId' => $teacher->id]);
+    
+            Evaluator::firstOrCreate([
+                'teacherId' => $teacher->id,
+                'assigned_date' => $request->assigned_date,
+            ], [
+                'room_no' => $request->room_no,
+            ]);
         }
-
-        if ($request->has('coordinator_id')) {
-            // Logic to assign coordinator
+    
+        // Assign coordinator
+        if ($request->filled('coordinator_id')) {
             $teacher = Teacher::findOrFail($request->coordinator_id);
-            Coordinator::firstOrCreate(['teacherId' => $teacher->id]);
+    
+            Coordinator::firstOrCreate([
+                'teacherId' => $teacher->id,
+            ]);
         }
-
+    
         return redirect()->route('assignroles.create')->with('success', 'Roles assigned successfully.');
     }
+    
+    
+
     public function showEvaluators()
     {
         $evaluators = Evaluator::with('teacher.user')->get();

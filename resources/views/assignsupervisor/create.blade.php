@@ -26,20 +26,48 @@
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Assign Supervisor</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Assign Supervisor</li>
-                    </ol>
-                </div>
+  <div class="container-fluid">
+    <div class="row mb-2 align-items-center">
+      <div class="col-sm-6">
+        <h1>Assign Supervisor</h1> {{-- or Assign Roles --}}
+      </div>
+      <div class="col-sm-6 text-right">
+        <!-- Toggle Filters Button -->
+        <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#filterForm" aria-expanded="false" aria-controls="filterForm">
+          Show Filters
+        </button>
+      </div>
+    </div>
+
+    <!-- Collapsible Filter Form -->
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="collapse" id="filterForm">
+          <form method="GET" action="{{ route('assignsupervisor.create') }}" class="form-inline mt-3 justify-content-end">
+            <div class="form-group mx-2">
+              <select name="year" class="form-control" onchange="this.form.submit()">
+                <option value="">-- Year --</option>
+                @foreach ($years as $year)
+                  <option value="{{ $year }}" {{ request('year') == $year ? 'selected' : '' }}>{{ $year }}</option>
+                @endforeach
+              </select>
             </div>
-        </div><!-- /.container-fluid -->
-    </section>
+            <div class="form-group mx-2">
+              <select name="level" class="form-control" onchange="this.form.submit()">
+                <option value="">-- Level --</option>
+                @foreach ($levels as $level)
+                  <option value="{{ $level }}" {{ request('level') == $level ? 'selected' : '' }}>{{ $level }}</option>
+                @endforeach
+              </select>
+            </div>
+            <a href="{{ route('assignsupervisor.create') }}" class="btn btn-secondary ml-2">Reset</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 
     <!-- Main content -->
     <section class="content">

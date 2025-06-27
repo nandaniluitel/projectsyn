@@ -11,15 +11,38 @@ use App\Models\Project;
 
 class SupervisorController extends Controller
 {
-    public function create()
+    
+    public function create(Request $request)
     {
-        $groups = ProjectGroup::select('id' , 'title')->get();
-        
+        // Get distinct years and levels for dropdown filters
+        $years = ProjectGroup::select('year')->distinct()->pluck('year');
+        $levels = ProjectGroup::select('level')->distinct()->pluck('level');
+    
+        // Start query and filter out groups that already have supervisors
+        $query = ProjectGroup::with('supervisors')
+            ->whereDoesntHave('supervisors') // only groups with no supervisors assigned
+            ->select('id', 'title', 'year', 'level');
+    
+        // Apply filters if present
+        if ($request->filled('year')) {
+            $query->where('year', $request->year);
+        }
+    
+        if ($request->filled('level')) {
+            $query->where('level', $request->level);
+        }
+    
+        $groups = $query->get();
+    
+        // Get supervisors (teacher + user name)
         $supervisors = Teacher::join('users', 'teachers.userId', '=', 'users.id')
-                               ->select('teachers.id as teacherId', 'users.name as supervisorName')
-                               ->get();
-        return view('assignsupervisor.create', compact('groups', 'supervisors'));
+            ->select('teachers.id as teacherId', 'users.name as supervisorName')
+            ->get();
+    
+        return view('assignsupervisor.create', compact('groups', 'supervisors', 'years', 'levels'));
     }
+    
+
 
     public function assign(Request $request)
     {
@@ -52,11 +75,32 @@ return redirect()->back()->with('error', 'Supervisor is already assigned to this
         ->with('assignedSupervisor', $assignedSupervisor);
     }
 
-    public function showAssignedGroups()
-{
-    $assignedGroups = Supervisor::with('teacher.user')->get();
-    return view('assignsupervisor.index', compact('assignedGroups'));
-}
+    public function showAssignedGroups(Request $request)
+    {
+        $query = Supervisor::with(['teacher.user', 'projectGroup']);
+    
+        // Apply filters if provided
+        if ($request->filled('year')) {
+            $query->whereHas('projectGroup', function ($q) use ($request) {
+                $q->where('year', $request->year);
+            });
+        }
+    
+        if ($request->filled('level')) {
+            $query->whereHas('projectGroup', function ($q) use ($request) {
+                $q->where('level', $request->level);
+            });
+        }
+    
+        $assignedGroups = $query->get();
+    
+        // Get unique years and levels for the filter dropdowns
+        $years = \App\Models\ProjectGroup::select('year')->distinct()->pluck('year');
+        $levels = \App\Models\ProjectGroup::select('level')->distinct()->pluck('level');
+    
+        return view('assignsupervisor.index', compact('assignedGroups', 'years', 'levels'));
+    }
+    
 
 public function removeSupervisor($groupId)
 {
@@ -70,18 +114,35 @@ public function removeSupervisor($groupId)
         return redirect()->route('assignsupervisor.index')->with('error', 'Supervisor not found.');
     }
 }
-public function viewAssignedGroups()
+public function viewAssignedGroups(Request $request)
 {
     // Get the currently authenticated supervisor
     $supervisor = Auth::user();
     $teacherId = $supervisor->id;
-    // Join the projects and project_groups tables to get the groups assigned to this supervisor
-    $assignedGroups = ProjectGroup::whereHas('supervisors', function ($query) use ($teacherId) {
-        $query->where('teacherId', $teacherId);
-    })->get();
 
-    return view('Supervisor.assignedgroups', compact('assignedGroups'));
+    // Start the query with filtering by supervisor
+    $query = ProjectGroup::whereHas('supervisors', function ($query) use ($teacherId) {
+        $query->where('teacherId', $teacherId);
+    });
+
+    // Apply filters
+    if ($request->filled('year')) {
+        $query->where('year', $request->year);
+    }
+
+    if ($request->filled('level')) {
+        $query->where('level', $request->level);
+    }
+
+    $assignedGroups = $query->get();
+
+    // Distinct years and levels for filter dropdowns
+    $years = ProjectGroup::select('year')->distinct()->pluck('year');
+    $levels = ProjectGroup::select('level')->distinct()->pluck('level');
+
+    return view('Supervisor.assignedgroups', compact('assignedGroups', 'years', 'levels'));
 }
+
 
 public function viewGroupReports($groupId)
 {

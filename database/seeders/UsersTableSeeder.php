@@ -72,8 +72,52 @@ class UsersTableSeeder extends Seeder
         } else {
             echo "User $id already exists, skipping...\n";
         }
+        for ($id = 21319; $id <= 21328; $id++) {
+            if (!User::find($id)) {
+                $users[] = [
+                    'id' => $id,
+                    'name' => 'User ' . $id,
+                    'email' => 'user' . $id . '@example.com',
+                    'password' => Hash::make('password123'),
+                    'email_verified_at' => now(),
+                    'remember_token' => Str::random(10),
+                    'Photo' => null,
+                    'Phone_number' => '1122334455',
+                    'semester' => '4',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            } else {
+                echo "User $id already exists, skipping...\n";
+            }
+        }
+        for ($id = 20301; $id <= 20318; $id++) {
+            if (!User::find($id)) {
+                $users[] = [
+                    'id' => $id,
+                    'name' => 'User ' . $id,
+                    'email' => 'user' . $id . '@example.com',
+                    'password' => Hash::make('password123'),
+                    'email_verified_at' => now(),
+                    'remember_token' => Str::random(10),
+                    'Photo' => null,
+                    'Phone_number' => '1122334455',
+                    'semester' => '4',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            } else {
+                echo "User $id already exists, skipping...\n";
+            }
+        }
     }
 
-        DB::table('users')->insert($users);
+    foreach ($users as $user) {
+        DB::table('users')->updateOrInsert(
+            ['id' => $user['id']],
+            $user
+        );
+    }
+    
     }
 }

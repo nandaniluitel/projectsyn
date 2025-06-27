@@ -36,5 +36,5 @@ class SupervisorProfileController extends Controller
 
         // Pass supervisors data to the view for display
         return view('assignsupervisor.profile', compact('supervisors'));
-    }
+    } 
 }

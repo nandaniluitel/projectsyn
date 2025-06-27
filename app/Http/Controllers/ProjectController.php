@@ -9,17 +9,47 @@ use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $project_groups = ProjectGroup::with('students')->get();
-        return view('projects.index', compact('project_groups'));
+        $query = ProjectGroup::with('students');
+    
+        if ($request->filled('year')) {
+            $query->where('year', $request->year);
+        }
+    
+        if ($request->filled('level')) {
+            $query->where('level', $request->level);
+        }
+    
+        // Sort by latest updated first
+        $project_groups = $query->orderBy('updated_at', 'desc')->get();
+    
+        $years = ProjectGroup::select('year')->distinct()->pluck('year');
+        $levels = ProjectGroup::select('level')->distinct()->pluck('level');
+        $view_mode = $request->input('view_mode', 'accordion'); // Default is accordion
+    
+        return view('projects.index', compact('project_groups', 'years', 'levels', 'view_mode'));
     }
+    
 
-    public function create()//left to see
+
+    public function create()
     {
-        $students = Student::all();
+        $studentUserId = auth()->id(); // current logged-in user id
+        $student = \App\Models\Student::where('userId', $studentUserId)->first();
+    
+        if (!$student) {
+            abort(403, 'Student record not found.');
+        }
+    
+        $batchPrefix = substr($student->id, 0, 2); // extract '20' from '20319'
+    
+        // Fetch only students whose ID starts with the same batch prefix
+        $students = Student::where('id', 'like', $batchPrefix . '%')->get();
+    
         return view('projects.create', compact('students'));
     }
+    
 
   
     public function store(Request $request)
@@ -32,6 +62,10 @@ class ProjectController extends Controller
             'crns' => 'required|array|max:3',
             'crns.*' => 'exists:students,id', // Ensure each CRN corresponds to a valid student ID
         ]);
+            // Extract year from the first student's ID
+    $firstCrn = $request->crns[0];
+    $year = substr($firstCrn, 0, 2); // e.g., '20' from 20319
+
             // Initialize an array to collect error messages
     $errors = [];
         // Check if any of the CRNs are already registered for the given level
@@ -60,6 +94,7 @@ class ProjectController extends Controller
         $project_groups->title = $request->title;
         $project_groups->description = $request->description;
         $project_groups->level = $request->level;
+        $project_groups->year = $year;
         $project_groups->save();
          //Add students to the project group
          foreach ($request->crns as $crn) {
@@ -71,11 +106,9 @@ class ProjectController extends Controller
                     'project_group_id' => $project_groups->id,
                     'student_id' => $student->id,
                 ]);
-            } else {
-                // Handle the case where a student with the given CRN doesn't exist
-                return redirect()->route('projects.index')->with('success', 'Project registered successfully.');
+            } 
     }
-        }
+        
     
         return redirect()->back()->with('success', 'Project registered successfully.');
     }

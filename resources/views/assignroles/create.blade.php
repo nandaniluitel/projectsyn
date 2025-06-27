@@ -73,18 +73,34 @@
                                 <tbody>
                                     <tr>
                                         <td>
-                                            <form action="{{ route('assignroles.store') }}" method="POST">
-                                                @csrf
-                                                <div class="form-group">
-                                                    <select name="evaluator_id" id="evaluator_id" class="form-control">
-                                                        <option value="" disabled selected>Choose Evaluator</option>
-                                                        @foreach($teachers as $teacher)
-                                                            <option value="{{ $teacher->id }}">{{ $teacher->user->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                                <button type="submit" class="btn btn-primary">Assign</button>
-                                            </form>
+                                        <form action="{{ route('assignroles.store') }}" method="POST">
+                                            @csrf
+                                            <div class="form-group">
+                                                <label for="evaluator_id">Choose Evaluator</label>
+                                                <select name="evaluator_id" class="form-control" required>
+                                                    <option value="" disabled selected>Choose Evaluator</option>
+                                                    @foreach($teachers as $teacher)
+                                                        <option value="{{ $teacher->id }}">{{ $teacher->user->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group mt-2">
+                                                <label for="assigned_date">Assign Date</label>
+                                                <input type="date" name="assigned_date" class="form-control" required>
+                                            </div>
+                                            <div class="form-group mt-2">
+                                                <label for="room_no">Room Number</label>
+                                                <input type="text" name="room_no" class="form-control" required>
+                                                @error('room_no')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+
+
+                                            <button type="submit" class="btn btn-primary">Assign</button>
+                                        </form>
+
                                         </td>
                                         <td>
                                             <form action="{{ route('assignroles.store') }}" method="POST">
