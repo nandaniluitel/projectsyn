@@ -21,6 +21,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\teacherDashboardController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\ScannerController;
+use App\Http\Controllers\ChatController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -325,6 +326,19 @@ Route::get('/notice', function () {
 
 Route::get('/scanner/capture', [ScannerController::class, 'showScanner'])->name('scanner.capture');
 Route::post('/scanner/redirect', [ScannerController::class, 'redirectToProfile'])->name('scanner.redirect');
+
+// routes/web.php
+
+Route::middleware('auth')->group(function(){
+    Route::get('/chat',            [ChatController::class,'index'])->name('chat.index');
+    Route::get('/chat/{id}',       [ChatController::class,'show'])->name('chat.show');
+    Route::delete('/chat/{roomId}/message/{messageId}', [ChatController::class, 'deleteMessage'])
+     ->name('chat.delete');
+    Route::get('/chat/{id}/messages',[ChatController::class,'fetchMessages'])->name('chat.fetch');
+    Route::post('/chat/{id}/send', [ChatController::class,'sendMessage'])->name('chat.send');
+});
+
+
 
 // Route::get('/quiz', function () {
 //     $categories = Category::all();

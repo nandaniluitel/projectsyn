@@ -75,36 +75,37 @@
                   </div>
                 @else
                   <table class="table table-bordered">
-                    <thead>
-                      <tr>
-                        <th>Group ID</th>
-                        <th>Supervisor Name</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      @foreach ($assignedGroups as $assignedGroup)
-                        <tr>
-                          <td>{{ $assignedGroup->groupId }}</td>
-                          <td>
-                            @if ($assignedGroup->teacher && $assignedGroup->teacher->user)
-                              {{ $assignedGroup->teacher->user->name }}
-                            @else
-                              No Supervisor Assigned
-                            @endif
-                          </td>
-                          <td>
-                            <!-- Action Buttons or Links -->
-                            <form action="{{ route('assignsupervisor.remove', $assignedGroup->groupId) }}" method="POST" onsubmit="return confirm('Are you sure you want to remove this supervisor?');">
-                              @csrf
-                              @method('DELETE')
-                              <button type="submit" class="btn btn-sm btn-danger">Remove</button>
-                            </form>
-                          </td>
-                        </tr>
-                      @endforeach
-                    </tbody>
-                  </table>
+  <thead>
+    <tr>
+      <th>Group ID</th>
+      <th>Project Title</th>
+      <th>Supervisor Name</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach ($assignedGroups as $assignedGroup)
+      <tr>
+        <td>{{ $assignedGroup->groupId }}</td>
+        <td>
+          {{ optional($assignedGroup->projectGroup)->title ?? '—' }}
+        </td>
+        <td>
+          {{ optional($assignedGroup->teacher->user)->name ?? 'No Supervisor Assigned' }}
+        </td>
+        <td>
+          <form action="{{ route('assignsupervisor.remove', $assignedGroup->groupId) }}"
+                method="POST"
+                onsubmit="return confirm('Are you sure you want to remove this supervisor?');">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-sm btn-danger">Remove</button>
+          </form>
+        </td>
+      </tr>
+    @endforeach
+  </tbody>
+</table>
                 @endif
               </div>
               <!-- /.card-body -->

@@ -7,7 +7,15 @@ use App\Models\Teacher;
 use App\Models\ProjectGroup;
 use App\Models\User;
 use App\Models\Supervisor;
+use App\Models\ChatRoom;
 use App\Models\Project;
+use App\Models\ProjectGroupStudent;
+use App\Models\Notification;
+use App\Models\Student;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Carbon;
+
+
 
 class SupervisorController extends Controller
 {
@@ -42,37 +50,144 @@ class SupervisorController extends Controller
         return view('assignsupervisor.create', compact('groups', 'supervisors', 'years', 'levels'));
     }
     
-
-
-    public function assign(Request $request)
+        /**public function store(Request $request)
     {
-        $request->validate([
-            'groupId' => 'required|exists:project_groups,id',
-            'supervisorId' => 'required|exists:teachers,id',
+        $data = $request->validate([
+            'groupId'      => 'required|exists:project_groups,id',
+            'supervisorId'=> 'required|exists:teachers,id',
         ]);
 
-    // Check if supervisor is already assigned to this group
-    $existingAssignment = Supervisor::where('groupId', $request->groupId)->exists();
+        // no double‐assign
+        if (Supervisor::where('groupId',$data['groupId'])->exists()) {
+            return back()->with('error','That group already has a supervisor.');
+        }
 
-if ($existingAssignment) {
-return redirect()->back()->with('error', 'Supervisor is already assigned to this group.');
-}
+        Supervisor::create([
+            'groupId'   => $data['groupId'],
+            'teacherId' => $data['supervisorId'],
+        ]);
 
+        // attach the supervisor’s *user* to the chat room
+        $room = ChatRoom::firstOrCreate(
+            ['project_group_id'=>$data['groupId']],
+            ['project_group_id'=>$data['groupId']]
+        );
 
-        $supervisor = new Supervisor();
-        $supervisor->teacherId = $request->supervisorId;
-        $supervisor->groupId = $request->groupId;
-        $supervisor->save();
+        $teacher = Teacher::find($data['supervisorId']);
+        if ($teacher && $teacher->userId) {
+            $room->users()->syncWithoutDetaching([$teacher->userId]);
+        }
 
-        // Retrieve the assigned supervisor's details
-        
-        $assignedSupervisor = Teacher::join('users', 'teachers.userId', '=', 'users.id')
-        ->select('users.name as supervisorName')
-        ->where('teachers.id', $request->supervisorId)
-        ->first();
+        return back()->with('success','Supervisor assigned and added to chat room.');
+    }
 
-        return redirect()->back()->with('success', 'Supervisor assigned successfully.')
-        ->with('assignedSupervisor', $assignedSupervisor);
+    /**
+     * List all existing assignments for the coordinator/admin.
+     * GET /assignsupervisor
+     */
+
+      public function destroy($groupId)
+    {
+        $deleted = Supervisor::where('groupId',$groupId)->delete();
+        if ($deleted) {
+            if ($room = ChatRoom::where('project_group_id',$groupId)->first()) {
+                // detach that supervisor only
+                $teacher = auth()->user()->teacher?->userId;
+                $room->users()->detach($teacher);
+            }
+            return back()->with('success','Supervisor removed.');
+        }
+        return back()->with('error','Nothing to remove.');
+    }
+
+    //
+    // — Supervisor’s own dashboard —
+    //
+
+    /**
+     * Show this logged-in supervisor’s assigned groups.
+     * GET /supervisor/assignedgroups
+     */
+
+   public function assign(Request $request)
+    {
+        $data = $request->validate([
+            'groupId'      => 'required|exists:project_groups,id',
+            'supervisorId'=> 'required|exists:teachers,id',
+        ]);
+
+        // 1) prevent double‐assign
+        if (Supervisor::where('groupId', $data['groupId'])->exists()) {
+            return back()->with('error','That group already has a supervisor.');
+        }
+
+        // 2) create the supervisor record
+        Supervisor::create([
+            'groupId'   => $data['groupId'],
+            'teacherId' => $data['supervisorId'],
+        ]);
+
+        // 3) ensure the chat room exists and attach supervisor (and students)
+        $room = ChatRoom::firstOrCreate(
+            ['project_group_id' => $data['groupId']],
+            ['project_group_id' => $data['groupId']]
+        );
+
+        // attach supervisor’s user
+        $teacher = Teacher::find($data['supervisorId']);
+        if ($teacher && $teacher->userId) {
+            $room->users()->syncWithoutDetaching([$teacher->userId]);
+        }
+
+        // (optional) re-attach all students, in case they aren’t already
+        $group = ProjectGroup::with('students')->find($data['groupId']);
+        foreach ($group->students as $student) {
+            if ($student->userId) {
+                $room->users()->syncWithoutDetaching([$student->userId]);
+            }
+        }
+
+        // 4) grab supervisor user details for notifications
+        $assignedSupervisor = Teacher::join('users','teachers.userId','=','users.id')
+            ->select('users.name as supervisorName','users.id as userId')
+            ->where('teachers.id', $data['supervisorId'])
+            ->first();
+
+        $supervisorName = $assignedSupervisor->supervisorName ?? 'your supervisor';
+
+        // fetch group title/level for message
+        $group = ProjectGroup::find($data['groupId']);
+
+        // 5) notify each student
+        $studentIds = ProjectGroupStudent::where('project_group_id', $data['groupId'])
+            ->pluck('student_id');
+
+        foreach ($studentIds as $sid) {
+            $stu = Student::find($sid);
+            if ($stu && $stu->userId) {
+                Notification::create([
+                    'user_id'         => $stu->userId,
+                    'message'         => "You have been assigned supervisor {$supervisorName} for project “{$group->title}”.",
+                    'target_audience' => 'students',
+                    'student_year'    => substr($stu->id, 0, 2),
+                    'is_important'    => true,
+                    'expires_at'      => Carbon::now()->addDays(7),
+                ]);
+            }
+        }
+
+        // 6) notify the supervisor
+        if ($assignedSupervisor && $assignedSupervisor->userId) {
+            Notification::create([
+                'user_id'         => $assignedSupervisor->userId,
+                'message'         => "You have been assigned as supervisor for project “{$group->title}” (Level {$group->level}).",
+                'target_audience' => 'teachers',
+                'is_important'    => true,
+                'expires_at'      => Carbon::now()->addDays(7),
+            ]);
+        }
+
+        return back()->with('success','Supervisor assigned, chat room updated, and notifications sent.');
     }
 
     public function showAssignedGroups(Request $request)
@@ -116,32 +231,39 @@ public function removeSupervisor($groupId)
 }
 public function viewAssignedGroups(Request $request)
 {
-    // Get the currently authenticated supervisor
-    $supervisor = Auth::user();
-    $teacherId = $supervisor->id;
+    // 1️⃣ Find the Teacher record for the logged-in user
+    $user       = Auth::user();
+    $teacher    = Teacher::where('userId', $user->id)->first();
+    if (! $teacher) {
+        return redirect()->back()
+                         ->with('error', 'No teacher profile found for your account.');
+    }
+    $teacherId  = $teacher->id;
 
-    // Start the query with filtering by supervisor
-    $query = ProjectGroup::whereHas('supervisors', function ($query) use ($teacherId) {
-        $query->where('teacherId', $teacherId);
+    // 2️⃣ Query groups via the supervisors pivot (filtering on teachers.id)
+    $query = ProjectGroup::whereHas('supervisors', function ($q) use ($teacherId) {
+        $q->where('teacherId', $teacherId);
     });
 
-    // Apply filters
+    // 3️⃣ Apply optional filters
     if ($request->filled('year')) {
         $query->where('year', $request->year);
     }
-
     if ($request->filled('level')) {
         $query->where('level', $request->level);
     }
 
     $assignedGroups = $query->get();
 
-    // Distinct years and levels for filter dropdowns
-    $years = ProjectGroup::select('year')->distinct()->pluck('year');
+    // 4️⃣ Fetch dropdown data
+    $years  = ProjectGroup::select('year')->distinct()->pluck('year');
     $levels = ProjectGroup::select('level')->distinct()->pluck('level');
 
-    return view('Supervisor.assignedgroups', compact('assignedGroups', 'years', 'levels'));
+    return view('Supervisor.assignedgroups', compact(
+        'assignedGroups', 'years', 'levels'
+    ));
 }
+
 
 
 public function viewGroupReports($groupId)
@@ -157,18 +279,24 @@ public function viewGroupReports($groupId)
 }
 public function viewAllGroupsWithReports()
 {
-    $supervisor = Auth::user();
-    $teacherId = $supervisor->id;
+    $user    = Auth::user();
+    $teacher = Teacher::where('userId', $user->id)->first();
+    if (! $teacher) {
+        return redirect()->back()
+                         ->with('error', 'No teacher profile found for your account.');
+    }
+    $teacherId = $teacher->id;
 
-    // Join the projects and project_groups tables to get the groups assigned to this supervisor
-    $assignedGroups = ProjectGroup::whereHas('supervisors', function ($query) use ($teacherId) {
-        $query->where('teacherId', $teacherId);
-    })->with(['projects' => function ($query) {
-        $query->orderBy('updated_at', 'desc'); // Sort projects by the latest date
-    }])->get();
+    $assignedGroups = ProjectGroup::whereHas('supervisors', function ($q) use ($teacherId) {
+        $q->where('teacherId', $teacherId);
+    })
+    ->with(['projects' => fn($q) => $q->orderBy('updated_at','desc')])
+    ->get();
 
     return view('Supervisor.allGroupsWithReports', compact('assignedGroups'));
 }
+
+    // Join the projects and project_groups tables to get the groups assigned to this supervisor
 public function viewLevelGroupsWithReports(Request $request)
 {
     $level = $request->query('level');
@@ -190,15 +318,15 @@ public function viewLevelGroupsWithReports(Request $request)
 
     return view('Supervisor.levelGroupsWithReports', compact('assignedGroups', 'level'));
 }
-
-
-
-
-
 public function viewPendingFiles()
     {
-        $supervisor = Auth::user();
-        $teacherId = $supervisor->id;
+    $user    = Auth::user();
+    $teacher = Teacher::where('userId', $user->id)->first();
+    if (! $teacher) {
+        return redirect()->back()
+                         ->with('error', 'No teacher profile found for your account.');
+    }
+    $teacherId = $teacher->id;
     
         // Fetch assigned groups where supervisor is assigned
         $assignedGroups = ProjectGroup::whereHas('supervisors', function ($query) use ($teacherId) {
@@ -237,8 +365,13 @@ public function viewPendingFiles()
     // Method to view accepted files for the supervisor
     public function viewAcceptedFiles()
     {
-        $supervisor = Auth::user();
-        $teacherId = $supervisor->id;
+        $user    = Auth::user();
+        $teacher = Teacher::where('userId', $user->id)->first();
+        if (! $teacher) {
+            return redirect()->back()
+                    ->with('error', 'No teacher profile found for your account.');
+    }
+    $teacherId = $teacher->id;
     
         $acceptedFiles = Project::whereHas('projectGroup.supervisors', function ($query) use ($teacherId) {
             $query->where('teacherId', $teacherId);
@@ -249,9 +382,13 @@ public function viewPendingFiles()
 
     public function viewRejectedFiles()
     {
-        $supervisor = Auth::user();
-    $teacherId = $supervisor->id;
-
+       $user    = Auth::user();
+    $teacher = Teacher::where('userId', $user->id)->first();
+    if (! $teacher) {
+        return redirect()->back()
+                         ->with('error', 'No teacher profile found for your account.');
+    }
+    $teacherId = $teacher->id;
     // Fetch assigned groups where supervisor is assigned
     $assignedGroups = ProjectGroup::whereHas('supervisors', function ($query) use ($teacherId) {
         $query->where('teacherId', $teacherId);

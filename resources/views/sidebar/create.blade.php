@@ -77,11 +77,9 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/student/rejected_projects" class="nav-link">
-                        <i class="nav-icon fas fa-tree"></i>
-                        <p>
-                            Rejected project 
-                        </p>
+                    <a href="{{ route('chat.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-comments"></i>
+                        <p>Chat</p>
                     </a>
                 </li>
             </ul>

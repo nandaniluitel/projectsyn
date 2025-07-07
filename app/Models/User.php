@@ -80,5 +80,20 @@ public function isStudent()
 {
     return Student::where('userId', $this->id)->exists();
 }
+public function chatRooms()
+{
+    return $this->belongsToMany(
+        ChatRoom::class,
+        'chat_room_users',
+        'user_id',
+        'chat_room_id'
+    );
+}
+
+public function messages()
+{
+    return $this->hasMany(Message::class, 'sender_id');
+}
+
 
 }
