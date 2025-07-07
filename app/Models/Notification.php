@@ -13,6 +13,10 @@ class Notification extends Model
         'user_id',
         'message',
         'file',
+        'target_audience',
+        'student_year',
+        'is_important',
+        'expires_at',
     ];
 
     public function user()

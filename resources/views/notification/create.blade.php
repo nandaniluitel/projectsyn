@@ -5,25 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Project Synergy | Notifications</title>
 
-  <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome -->
   <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
-  <!-- Theme style -->
   <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
-  <!-- Navbar -->
-  @include('nav.create')
-  <!-- /.navbar -->
 
-  <!-- Main Sidebar Container -->
+  @include('nav.create')
   @include('teachersidebar.create')
 
-  <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
@@ -37,10 +29,9 @@
             </ol>
           </div>
         </div>
-      </div><!-- /.container-fluid -->
+      </div>
     </section>
 
-    <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
         <div class="row">
@@ -49,10 +40,8 @@
               <div class="card-header">
                 <h3 class="card-title">Create Notification</h3>
               </div>
-              <!-- /.card-header -->
               <div class="card-body">
 
-                {{-- Display validation errors if there are any --}}
                 @if ($errors->any())
                   <div class="alert alert-danger">
                     <ul>
@@ -63,56 +52,96 @@
                   </div>
                 @endif
 
-                   {{-- Display success message if it exists --}}
-                   @if(session('success'))
-                  <div class="alert alert-success">
-                    {{ session('success') }}
-                  </div>
+                @if(session('success'))
+                  <div class="alert alert-success">{{ session('success') }}</div>
                 @endif
 
-                {{-- Notification creation form --}}
                 <form action="{{ route('notification.store') }}" method="POST" enctype="multipart/form-data">
                   @csrf
 
                   <div class="form-group">
-                    <label for="message" class="form-label">Message:</label>
+                    <label for="message">Message:</label>
                     <textarea class="form-control" id="message" name="message" rows="3" required>{{ old('message') }}</textarea>
                   </div>
 
                   <div class="form-group">
-                    <label for="file" class="form-label">File (Optional):</label>
+                    <label for="file">File (Optional):</label>
                     <input type="file" class="form-control-file" id="file" name="file">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="target_audience">Target Audience:</label>
+                    <select name="target_audience" id="target_audience" class="form-control">
+                      <option value="both" {{ old('target_audience') === 'both' ? 'selected' : '' }}>All (Teachers & Students)</option>
+                      <option value="students" {{ old('target_audience') === 'students' ? 'selected' : '' }}>Students Only</option>
+                      <option value="teachers" {{ old('target_audience') === 'teachers' ? 'selected' : '' }}>Teachers Only</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group" id="studentYearField">
+                    <label for="student_year">Student Batch Year (if applicable):</label>
+                    <select name="student_year" id="student_year" class="form-control">
+                      <option value="">All Batches</option>
+                      @foreach ($years as $year)
+                        <option value="{{ $year }}" {{ old('student_year') == $year ? 'selected' : '' }}>
+                          {{ $year }}
+                        </option>
+                      @endforeach
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label>
+                      <input type="checkbox" name="is_important" id="is_important" value="1" {{ old('is_important') ? 'checked' : '' }}>
+                      Mark as Important
+                    </label>
+                  </div>
+
+                  <div class="form-group" id="expiresAtField" style="display: none;">
+                    <label for="expires_at">Visible Until (for important notices)</label>
+                    <input type="datetime-local" class="form-control" name="expires_at" value="{{ old('expires_at') }}">
                   </div>
 
                   <button type="submit" class="btn btn-primary">Publish</button>
                 </form>
+
                 <div class="mt-3">
                   <a href="{{ route('notification.index') }}" class="btn btn-secondary">View Published Notifications</a>
                 </div>
               </div>
-              <!-- /.card-body -->
             </div>
-            <!-- /.card -->
           </div>
         </div>
-      </div><!-- /.container-fluid -->
+      </div>
     </section>
-    <!-- /.content -->
   </div>
-  <!-- /.content-wrapper -->
-
-  <!-- Main Footer -->
-  
 </div>
-<!-- ./wrapper -->
 
-<!-- REQUIRED SCRIPTS -->
-
-<!-- jQuery -->
 <script src="/adminlte/plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
 <script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE App -->
 <script src="/adminlte/dist/js/adminlte.min.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const targetSelect = document.getElementById('target_audience');
+    const yearField = document.getElementById('studentYearField');
+    const isImportant = document.getElementById('is_important');
+    const expiresAtField = document.getElementById('expiresAtField');
+
+    function toggleYearField() {
+      yearField.style.display = (targetSelect.value === 'students' || targetSelect.value === 'both') ? 'block' : 'none';
+    }
+
+    function toggleExpiresField() {
+      expiresAtField.style.display = isImportant.checked ? 'block' : 'none';
+    }
+
+    targetSelect.addEventListener('change', toggleYearField);
+    isImportant.addEventListener('change', toggleExpiresField);
+
+    toggleYearField();   // Initial on load
+    toggleExpiresField();
+  });
+</script>
 </body>
 </html>

@@ -10,6 +10,8 @@ use App\Models\Student;
 use App\Models\Project;
 use App\Models\ProjectGroup;
 use App\Models\Evaluation;
+use App\Models\Notification;
+use Carbon\Carbon;
 
 class CoordinatorController extends Controller
 {
@@ -41,27 +43,6 @@ public function updateEvaluationStatus(Request $request)
     return redirect()->route('coordinator.evaluations')->with('success', 'Evaluation status updated successfully.');
 }
 
-    // public function assignRoles(Request $request)
-    // {
-    //     $request->validate([
-    //         'evaluator_id' => 'nullable|exists:teachers,id',
-    //         'coordinator_id' => 'nullable|exists:teachers,id',
-    //     ]);
-
-    //     if ($request->has('evaluator_id')) {
-    //         // Logic to assign evaluator
-    //         $teacher = Teacher::findOrFail($request->evaluator_id);
-    //         Evaluator::firstOrCreate(['teacherId' => $teacher->id]);
-    //     }
-
-    //     if ($request->has('coordinator_id')) {
-    //         // Logic to assign coordinator
-    //         $teacher = Teacher::findOrFail($request->coordinator_id);
-    //         Coordinator::firstOrCreate(['teacherId' => $teacher->id]);
-    //     }
-
-    //     return redirect()->route('assignroles.create')->with('success', 'Roles assigned successfully.');
-    // }
 
     public function assignRoles(Request $request)
     {
@@ -71,30 +52,55 @@ public function updateEvaluationStatus(Request $request)
             'room_no' => 'nullable|string|max:50',
             'coordinator_id' => 'nullable|exists:teachers,id',
         ]);
-    
-        // Assign evaluator with assigned_date and optional room_no
+
+        // Assign evaluator
         if ($request->filled('evaluator_id')) {
-            $teacher = Teacher::findOrFail($request->evaluator_id);
-    
+            $teacher = Teacher::with('user')->findOrFail($request->evaluator_id);
+
             Evaluator::firstOrCreate([
                 'teacherId' => $teacher->id,
                 'assigned_date' => $request->assigned_date,
             ], [
                 'room_no' => $request->room_no,
             ]);
+
+            // ✅ Notify the evaluator
+            if ($teacher->user) {
+                Notification::create([
+                    'user_id' => $teacher->user->id,
+                    'message' => 'You have been assigned as an evaluator on ' . $request->assigned_date . '. Please check your dashboard for details.',
+                    'target_audience' => 'teachers',
+                    'student_year' => null,
+                    'is_important' => true,
+                    'expires_at' => Carbon::now()->addDays(7),
+                ]);
+            }
         }
-    
+
         // Assign coordinator
         if ($request->filled('coordinator_id')) {
-            $teacher = Teacher::findOrFail($request->coordinator_id);
-    
+            $teacher = Teacher::with('user')->findOrFail($request->coordinator_id);
+
             Coordinator::firstOrCreate([
                 'teacherId' => $teacher->id,
             ]);
+
+            // ✅ Notify the coordinator
+            if ($teacher->user) {
+                Notification::create([
+                    'user_id' => $teacher->user->id,
+                    'message' => 'You have been assigned as a coordinator. Please review your responsibilities on the coordinator dashboard.',
+                    'target_audience' => 'teachers',
+                    'student_year' => null,
+                    'is_important' => true,
+                    'expires_at' => Carbon::now()->addDays(7),
+                ]);
+            }
         }
-    
-        return redirect()->route('assignroles.create')->with('success', 'Roles assigned successfully.');
+
+        return redirect()->route('assignroles.create')->with('success', 'Roles assigned and notifications sent successfully.');
     }
+
     
     
 
