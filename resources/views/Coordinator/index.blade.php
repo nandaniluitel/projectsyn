@@ -3,309 +3,121 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Project Synergy | General Form Elements</title>
+  <title>ProjEase | Coordinator Dashboard</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="index.css">
   <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css">
-</head>
-
-  <!-- Navbar -->
-  @include('nav.create')
-  @include('teachersidebar.create')
-  <!-- Content Wrapper. Contains page content -->
-  
-    <!-- Content Header (Page header) -->
-    <style>
-  body {
-  font-family: 'Arial', sans-serif;
-  background-color: #f5f5f5;
-  margin: 0;
-  padding: 0;
-}
-
-.fullContainer {
-  padding: 20px;
-}
-
-.fontforhead {
-  text-align: center;
-  margin: 50px;
-  font-size: 2em;
-  color:#190087 ; /* Adjusted to match the form's header color */
-}
-
-.landingCard {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-top: 50px;
-}
-
-.card {
-  margin: 20px;
-  padding: 20px;
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  max-width: 300px;
-  transition: transform 0.3s;
-}
-
-.card:hover {
-  transform: translateY(-10px);
-}
-
-.cardMedia {
-  width: 100%;
-  height: 150px;
-  object-fit: cover;
-  border-bottom: 2px solid #ddd;
-}
-
-.cardContent {
-  padding: 16px;
-}
-
-.cardTitle {
-  margin: 0;
-  font-size: 1.5em;
-  font-weight: bold;
-  color: #333;
-}
-
-.cardText {
-  font-size: 1em;
-  color: #666;
-  margin: 10px 0;
-}
-
-.cardActions {
-  text-align: right;
-}
-
-.cardBtn {
-  background-color: #190087; /* Blue color for the button matching the form */
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: background-color 0.3s;
-}
-
-.cardBtn:hover {
-  background-color: #00677d; /* Darker blue on hover */
-  color: white;
-}
-
-
-.header {
-  background-color: #190087; /* Teal color */
-  color: white;
-  padding: 20px;
-  text-align: center;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.header h1 {
-  margin: 0;
-  font-size: 2em;
-}
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f8f9fa;
+      margin: 0;
+    }
+    .header {
+      background: linear-gradient(to right, #6a11cb, #2575fc);
+      color: white;
+      padding: 40px 20px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+      font-weight: 600;
+    }
+    .fullContainer {
+      padding: 40px 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+    .search-container {
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    .search-container input[type="text"] {
+        width: 300px;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        font-size: 1rem;
+    }
+    .search-container button {
+        padding: 10px 20px;
+        border-radius: 5px;
+        border: none;
+        background-color: #2575fc;
+        color: white;
+        font-size: 1rem;
+        cursor: pointer;
+    }
+    .actions-container {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 15px;
+    }
+    .action-button {
+      background-color: #ffffff;
+      color: #333;
+      border: 2px solid #e0e0e0;
+      padding: 15px 30px;
+      text-align: left;
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 500;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+    .action-button:hover {
+      background-color: #6a11cb;
+      color: white;
+      border-color: #6a11cb;
+      transform: translateY(-5px);
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    }
   </style>
 </head>
 <body class="hold-transition sidebar-mini">
-<div class="header">
+  @include('nav.create')
+  @include('teachersidebar.create')
+
+  <div class="header">
     <h1>Coordinator Page</h1>
   </div>
-<div class="wrapper">
-<div class="content-wrapper">
-  <div class="fullContainer">
-  <div class="search-container">
-          <form action="{{ route('coordinator.search') }}" method="GET">
-            <input type="text" name="student_id" placeholder="Enter Student ID">
-            <button type="submit">Search</button>
-          </form>
+  
+  <div class="content-wrapper">
+    <div class="fullContainer">
+        <div class="search-container">
+            <form action="{{ route('coordinator.search') }}" method="GET">
+                <input type="text" name="student_id" placeholder="Enter Student ID">
+                <button type="submit">Search</button>
+            </form>
         </div>
 
-    <div class="landingCard">
-    <div class="card">
-        <img height="150px" width="200px" src="https://img.freepik.com/free-vector/online-image-upload-landing-page_23-2148282428.jpg?size=626&ext=jpg&ga=GA1.1.1700460183.1713398400&semt=ais" alt="Project Upload" class="cardMedia">
-        <div class="cardContent">
-          <h5 class="cardTitle">Assign Roles </h5>
-          <p class="cardText">Assign roles to the teachers.</p>
-        </div>
-        <div class="cardActions">
-        <a href="{{ route('assignroles.index') }}" class="cardBtn">Navigate</a>
-        </div>
+      <div class="actions-container">
+        <a href="{{ route('assignroles.index') }}" class="action-button">Assign Roles</a>
+        <a href="{{ route('projects.index') }}" class="action-button">View Registered Groups</a>
+        <a href="{{ route('coordinator.accepted-projects') }}" class="action-button">View Accepted Projects</a>
+        <a href="{{ route('assignroles.coordinators') }}" class="action-button">View Coordinators</a>
+        <a href="{{ route('notification.create') }}" class="action-button">Send Notifications</a>
+        <a href="{{ route('scanner.capture') }}" class="action-button">Scan Student ID</a>
+        <a href="{{ route('assignroles.evaluators') }}" class="action-button">View Evaluators</a>
+        <a href="{{ route('assignsupervisor.index') }}" class="action-button">View Supervisors</a>
+        <a href="{{ route('evaluations.index') }}" class="action-button">View Evaluated Marks</a>
+        <a href="{{ route('coordinator.proposal-reports') }}" class="action-button">View Proposal and Slides</a>
       </div>
+    </div>
+  </div>
 
-      <div class="card">
-        <img height="150px" width="200px" src="https://img.freepik.com/free-vector/online-image-upload-landing-page_23-2148282428.jpg?size=626&ext=jpg&ga=GA1.1.1700460183.1713398400&semt=ais" alt="Project Upload" class="cardMedia">
-        <div class="cardContent">
-          <h5 class="cardTitle"> View Registered groups</h5>
-          <p class="cardText">View Registered groups with their Project names. </p>
-        </div>
-        <div class="cardActions">
-        <a href="{{ route('projects.index') }}" class="cardBtn">Navigate</a>
-        </div>
-      </div>
-      <div class="card">
-        <img height="150px" width="200px" src="https://img.freepik.com/free-vector/online-image-upload-landing-page_23-2148282428.jpg?size=626&ext=jpg&ga=GA1.1.1700460183.1713398400&semt=ais" alt="Project Upload" class="cardMedia">
-        <div class="cardContent">
-          <h5 class="cardTitle">View Proposal and slides.</h5>
-          <p class="cardText">View Proposal ans slides.This file has directly been sent to you by students as supervisor is not assigned yet.</p>
-        </div>
-        <div class="cardActions">
-        <a href="{{ route('coordinator.proposal-reports') }}" class="cardBtn">Navigate</a>
-        </div>
-      </div>
-      <div class="card">
-        <img height="150px" width="200px" src="https://img.freepik.com/free-vector/online-image-upload-landing-page_23-2148282428.jpg?size=626&ext=jpg&ga=GA1.1.1700460183.1713398400&semt=ais" alt="Project Upload" class="cardMedia">
-        <div class="cardContent">
-          <h5 class="cardTitle">View Files that has been accepted by supervisor.</h5>
-          <p class="cardText">View midtern and final reports with slides that has been accepted by supervisor.</p>
-        </div>
-        <div class="cardActions">
-        <a href="{{ route('coordinator.accepted-projects') }}" class="cardBtn">Navigate</a>
-        </div>
-      </div>
-      <div class="card">
-        <img height="150px" width="200px" src="https://img.freepik.com/free-vector/online-image-upload-landing-page_23-2148282428.jpg?size=626&ext=jpg&ga=GA1.1.1700460183.1713398400&semt=ais" alt="Project Upload" class="cardMedia">
-        <div class="cardContent">
-          <h5 class="cardTitle">View evaluators</h5>
-          <p class="cardText">View the respective evaluators.</p>
-        </div>
-        <div class="cardActions">
-        <a href="{{ route('assignroles.evaluators') }}" class="cardBtn">Navigate</a>
-        </div>
-      </div>
-      <div class="card">
-        <img height="150px" width="200px" src="https://img.freepik.com/free-vector/online-image-upload-landing-page_23-2148282428.jpg?size=626&ext=jpg&ga=GA1.1.1700460183.1713398400&semt=ais" alt="Project Upload" class="cardMedia">
-        <div class="cardContent">
-          <h5 class="cardTitle">View Coordinators</h5>
-          <p class="cardText">View the respective Coordinators.</p>
-        </div>
-        <div class="cardActions">
-        <a href="{{ route('assignroles.coordinators') }}" class="cardBtn">Navigate</a>
-        </div>
-      </div>
-
-      <div class="card">
-        <img height="150px" width="200px" src="https://img.freepik.com/free-vector/online-image-upload-landing-page_23-2148282428.jpg?size=626&ext=jpg&ga=GA1.1.1700460183.1713398400&semt=ais" alt="Project Upload" class="cardMedia">
-        <div class="cardContent">
-          <h5 class="cardTitle">View Supervisors</h5>
-          <p class="cardText">View Assigned supervisors.</p>
-        </div>
-        <div class="cardActions">
-        <a href="{{ route('assignsupervisor.index') }}" class="cardBtn">Navigate</a>
-        </div>
-      </div>
-      <div class="card">
-        <img height="150px" width="200px" src="https://img.freepik.com/free-vector/online-image-upload-landing-page_23-2148282428.jpg?size=626&ext=jpg&ga=GA1.1.1700460183.1713398400&semt=ais" alt="Project Upload" class="cardMedia">
-        <div class="cardContent">
-          <h5 class="cardTitle">Publish Notifications</h5>
-          <p class="cardText">Notify users about the upcoming events.</p>
-        </div>
-        <div class="cardActions">
-        <a href="{{ route('notification.create') }}" class="cardBtn">Navigate</a>
-        </div>
-      </div>
-      <div class="card">
-        <img height="150px" width="200px" src="https://img.freepik.com/free-vector/online-image-upload-landing-page_23-2148282428.jpg?size=626&ext=jpg&ga=GA1.1.1700460183.1713398400&semt=ais" alt="Project Upload" class="cardMedia">
-        <div class="cardContent">
-          <h5 class="cardTitle">View Evaluated Marks</h5>
-          <p class="cardText">View Evaluated marks of the respective groups.</p>
-        </div>
-        <div class="cardActions">
-        <a href="{{ route('evaluations.index') }}" class="cardBtn">Navigate</a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-body text-center">
-        <h5 class="card-title">Scan Student ID</h5>
-        <a href="{{ route('scanner.capture') }}" class="btn btn-primary">Open Scanner</a>
-        </div>
-      </div>
-
-      <!-- <div class="card">
-        <img height="150px" width="200px" src="https://img.freepik.com/free-vector/online-image-upload-landing-page_23-2148282428.jpg?size=626&ext=jpg&ga=GA1.1.1700460183.1713398400&semt=ais" alt="Project Upload" class="cardMedia">
-        <div class="cardContent">
-          <h5 class="cardTitle">Project Upload</h5>
-          <p class="cardText">Upload your project files here. Ensure all necessary documents are included before submission.</p>
-        </div>
-        <div class="cardActions">
-          <button class="cardBtn">Navigate</button>
-        </div>
-      </div> -->
-    
-            <!-- <div class="landingCard"  style="display: flex; margin-top:50px;">
-            <div class="card" style="margin:20px;">
-                <img height="100px" width="200px" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfKKQjnQuDakncTZEjmrXZIWid1r-sx6ONfA&usqp=CAU" alt="View Profile" class="cardMedia">
-                <div class="cardContent">
-                    <h5 class="cardTitle">View Profile</h5>
-                    <p class="cardText">View profile information. View your academic details, contact information, and other personal data.</p>
-                </div>
-                <div class="cardActions">
-                    <button class="cardBtn">Navigate</button>
-                </div>
-            </div>
-            <div class="card" style="margin:20px; padding:5px;">
-                <img height="100px" width="200px" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfKKQjnQuDakncTZEjmrXZIWid1r-sx6ONfA&usqp=CAU" alt="View Profile" class="cardMedia">
-                <div class="cardContent">
-                    <h5 class="cardTitle">View Profile</h5>
-                    <p class="cardText">View profile information. View your academic details, contact information, and other personal data.</p>
-                </div>
-                <div class="cardActions">
-                    <button class="cardBtn">Navigate</button>
-                </div>
-            </div>
-            <div class="card" style="margin:20px;padding:5px;">
-                <img height="150px" width="300px" style="display: block; margin: 0 auto;" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfKKQjnQuDakncTZEjmrXZIWid1r-sx6ONfA&usqp=CAU" alt="View Profile" class="cardMedia">
-                <div class="cardContent">
-                    <h5 class="cardTitle">View Profile</h5>
-                    <p class="cardText">View profile information. View your academic details, contact information, and other personal data.</p>
-                </div>
-                <div class="cardActions">
-                    <button class="cardBtn">Navigate</button>
-                </div>
-            </div>
-            
-        </div> -->
-            <!-- <div class="card" style="margin:20px;">
-                <img  height="100px" width="200px" src="https://img.freepik.com/premium-vector/back-view-businessman-looking-question-marks_77417-1081.jpg" alt="View Marks" class="cardMedia">
-                <div class="cardContent">
-                    <h5 class="cardTitle">View Marks</h5>
-                    <p class="cardText">Check your grades and feedback for all submitted assignments and projects. Stay updated with your academic progress.</p>
-                </div>
-                <div class="cardActions">
-                    <button class="cardBtn">Navigate</button>
-                </div>
-            </div> -->
-</div>
-
-        <!-- <div class="aboutUsContainer">
-            <div class="featuredSchoolsHeader">
-                <h3>About Us</h3>
-            </div>
-            <p>Welcome to our platform, a dedicated space designed to streamline the project submission and grading process for students and teachers alike. Our mission is to facilitate seamless interaction between students and educators, enhancing the learning experience through efficient project management and evaluation. From the moment students upload their projects to the time teachers provide their feedback and grades, we are here to support and simplify every step of the educational journey. We believe that a robust educational platform empowers both teaching and learning, and our goal is to provide the tools necessary to make managing educational tasks as straightforward as possible. Dive in and discover how easy and effective educational collaboration can be!</p>
-        </div>
-    </div> -->
-
-<!-- jQuery -->
-<script src="/adminlte/plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE App -->
-<script src="/adminlte/dist/js/adminlte.min.js"></script>
-<!-- Page specific script -->
+  <!-- jQuery -->
+  <script src="/adminlte/plugins/jquery/jquery.min.js"></script>
+  <!-- Bootstrap 4 -->
+  <script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- AdminLTE App -->
+  <script src="/adminlte/dist/js/adminlte.min.js"></script>
 </body>
 </html>
