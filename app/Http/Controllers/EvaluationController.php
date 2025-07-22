@@ -59,6 +59,11 @@ class EvaluationController extends Controller
         if ($request->filled('search')) {
             $query->where('project_groups.title', 'like', '%' . $request->search . '%');
         }
+
+        // Apply status filter if requested
+        if ($request->filled('status')) {
+            $query->where('evaluations.status', $request->status);
+        }
     
         $evaluations = $query->get();
     

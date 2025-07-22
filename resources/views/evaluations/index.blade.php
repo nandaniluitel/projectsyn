@@ -60,6 +60,14 @@
                             </select>
                         </div>
                         <div class="form-group mx-2 mb-2">
+                            <select name="status" class="form-control" onchange="this.form.submit()">
+                                <option value="">-- Status --</option>
+                                <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Approved</option>
+                                <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Rejected</option>
+                                <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                            </select>
+                        </div>
+                        <div class="form-group mx-2 mb-2">
                             <select name="level" class="form-control" onchange="this.form.submit()">
                                 <option value="">-- Level --</option>
                                 @foreach ($levels as $level)
