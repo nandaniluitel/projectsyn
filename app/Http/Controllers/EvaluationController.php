@@ -54,6 +54,11 @@ class EvaluationController extends Controller
         if ($request->filled('level')) {
             $query->where('project_groups.level', $request->level);
         }
+
+        // Apply search filter if requested
+        if ($request->filled('search')) {
+            $query->where('project_groups.title', 'like', '%' . $request->search . '%');
+        }
     
         $evaluations = $query->get();
     

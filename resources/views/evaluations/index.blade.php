@@ -49,6 +49,9 @@
                 <div class="collapse" id="filterForm">
                     <form method="GET" action="{{ route('evaluations.index') }}" class="form-inline mt-3 justify-content-end">
                         <div class="form-group mx-2 mb-2">
+                            <input type="text" name="search" class="form-control" placeholder="Search by project title..." value="{{ request('search') }}">
+                        </div>
+                        <div class="form-group mx-2 mb-2">
                             <select name="year" class="form-control" onchange="this.form.submit()">
                                 <option value="">-- Year --</option>
                                 @foreach ($years as $year)
@@ -65,6 +68,7 @@
                             </select>
                         </div>
                         <input type="hidden" name="view_mode" value="{{ request('view_mode', 'table') }}">
+                        <button type="submit" class="btn btn-primary mb-2">Search</button>
                         <a href="{{ route('evaluations.index') }}" class="btn btn-secondary mb-2">Reset</a>
                     </form>
                      <div class="mt-2 text-right">
