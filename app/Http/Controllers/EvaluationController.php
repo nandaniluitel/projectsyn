@@ -30,10 +30,12 @@ class EvaluationController extends Controller
     }
 
     // Show only the latest evaluation per project and phase
-    public function index()
+    public function index(Request $request)
     {
-        $evaluations = Evaluation::with(['project.group', 'evaluator.teacher.user'])
-            ->select('evaluations.*')
+        $query = Evaluation::with(['project.group', 'evaluator.teacher.user'])
+            ->select('evaluations.*', 'project_groups.year', 'project_groups.level')
+            ->join('projects', 'evaluations.projectId', '=', 'projects.id')
+            ->join('project_groups', 'projects.groupId', '=', 'project_groups.id')
             ->join(DB::raw('(SELECT projectId, phase, MAX(created_at) as latest
                              FROM evaluations
                              GROUP BY projectId, phase) as latest_evals'),
@@ -41,11 +43,28 @@ class EvaluationController extends Controller
                     $join->on('evaluations.projectId', '=', 'latest_evals.projectId')
                          ->on('evaluations.phase', '=', 'latest_evals.phase')
                          ->on('evaluations.created_at', '=', 'latest_evals.latest');
-                })
-            ->get();
-
-        return view('evaluations.index', compact('evaluations'));
+                });
+    
+        // Apply year filter if requested
+        if ($request->filled('year')) {
+            $query->where('project_groups.year', $request->year);
+        }
+    
+        // Apply level filter if requested
+        if ($request->filled('level')) {
+            $query->where('project_groups.level', $request->level);
+        }
+    
+        $evaluations = $query->get();
+    
+        // Pass distinct years and levels for filter dropdowns
+        $years = DB::table('project_groups')->distinct()->pluck('year');
+        $levels = DB::table('project_groups')->distinct()->pluck('level');
+    
+        return view('evaluations.index', compact('evaluations', 'years', 'levels'));
     }
+    
+    
 
     // View rejected evaluations
     public function viewRejected()

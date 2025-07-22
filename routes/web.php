@@ -199,9 +199,24 @@ Route::middleware(['auth', 'student'])->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     
-    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
-    Route::get('/profile/{rollno}', [ProfileController::class, 'show'])->name('profile.show');
-    Route::get('/check-student/{rollno}', [ProfileController::class, 'showByRollNo'])->name('profile.showByRollNo');
+    // 1) Your own profile:
+Route::get('/profile', [ProfileController::class, 'show'])
+     ->name('profile.show');
+
+// 2) Viewing *any* student’s profile by roll-no:
+Route::get('/profile/{rollno}', [ProfileController::class, 'showByRollNo'])
+     ->name('profile.showByRollNo');
+
+// 3) Your “shortcut” URL that you want to redirect INTO:
+Route::get('/check-student/{rollno}', [ProfileController::class, 'showByRollNo'])
+     ->name('check-student');
+
+// For coordinator → teacher lookups
+Route::get('/profile/teacher/{userId}', 
+    [ProfileController::class, 'showByTeacherUserId'])
+  ->name('profile.showByTeacher');
+
+
 
         Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::get('/notification/index', [NotificationsController::class, 'index'])->name('notification.index');
@@ -294,7 +309,7 @@ Route::middleware(['auth','supervisor'])->group(function () {
     Route::get('/Supervisor/assignedgroups/{groupId}/reports', 'App\Http\Controllers\SupervisorController@viewGroupReports')->name('Supervisor.assignedgroups.reports');
     Route::get('/Supervisor/assignedgroups/{groupId}/reports', [SupervisorController::class, 'viewGroupReports'])->name('Supervisor.assignedgroups.reports');
     Route::get('/supervisor/all-groups-with-reports', [SupervisorController::class, 'viewAllGroupsWithReports'])->name('Supervisor.allGroupsWithReports');
-    Route::get('/supervisor/pending-files', [SupervisorController::class, 'viewPendingFiles'])->name('Supervisor.pendingFiles');
+    Route::get('/supervisor/pending-files', [SupervisorController::class, 'viewPendingFiles'])->name('supervisor.pendingFiles');
     Route::put('/supervisor/accept-project/{id}', [SupervisorController::class, 'acceptProject'])->name('supervisor.acceptProject');
     Route::put('/supervisor/reject-project/{id}', [SupervisorController::class, 'rejectProject'])->name('supervisor.rejectProject');
     Route::get('/supervisor/accepted-files', [SupervisorController::class, 'viewAcceptedFiles'])->name('supervisor.acceptedFiles');

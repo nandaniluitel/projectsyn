@@ -44,11 +44,29 @@ class UploadfilesController extends Controller
         return view('Supervisor.reports', compact('reports'));
     }
 
-    public function coordinatorView()
+    public function coordinatorView(Request $request)
     {
-        $projects = Project::where('status', 'accepted')->get();
-        $group = ProjectGroup::first();
-        return view('coordinator.accepted-projects', compact('projects', 'group'));
+        $query = Project::where('status', 'accepted')->with('group');
+
+        if ($request->filled('year')) {
+            $query->whereHas('group', function ($q) use ($request) {
+                $q->where('year', $request->year);
+            });
+        }
+
+        if ($request->filled('level')) {
+            $query->whereHas('group', function ($q) use ($request) {
+                $q->where('level', $request->level);
+            });
+        }
+
+        $projects = $query->get();
+
+        $years = ProjectGroup::select('year')->distinct()->pluck('year');
+        $levels = ProjectGroup::select('level')->distinct()->pluck('level');
+        $view_mode = $request->input('view_mode', 'accordion');
+
+        return view('coordinator.accepted-projects', compact('projects', 'years', 'levels', 'view_mode'));
     }
 
     public function viewProposalReports()
