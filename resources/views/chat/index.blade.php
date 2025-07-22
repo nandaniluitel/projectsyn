@@ -1,6 +1,34 @@
+<!-- Paste this entire code in your resources/views/profile/show.blade.php -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Rooms</title>
+    <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .progress-bar { min-width: 60px; font-weight: bold; }
+    </style>
+</head>
+<body style="background-color: #f4f6f9; font-family: 'Source Sans Pro', sans-serif;">
+
+@include('nav.create')
+
+
+    @if(auth()->user()->role === 'teacher')
+        @include('teachersidebar.create')
+    @elseif(auth()->user()->role === 'student')
+        @include('sidebar.create')
+    @endif
+
 @extends('layouts.app')
 
-@section('content')
+<div class="content-wrapper" style="margin: 20px auto; max-width: 900px; background: #fff; padding: 20px; border-radius: 10px;">
+  </body>
+
 <style>
   .chat-sidebar {
     width: 300px;
@@ -28,6 +56,7 @@
     color: #888;
   }
 </style>
+
 
 <div class="d-flex">
   {{-- Sidebar --}}
@@ -64,4 +93,4 @@
     </div>
   @endif
 </div>
-@endsection
+

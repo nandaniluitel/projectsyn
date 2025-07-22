@@ -136,45 +136,24 @@ public function updateEvaluationStatus(Request $request)
     
 
 
-    public function search(Request $request)
+public function search(Request $request)
 {
-    $studentId = $request->input('student_id');
-    $student = Student::where('id', $studentId)->first();
+    $id = $request->query('student_id');
 
-    if ($student) {
-        // Fetching project group IDs associated with the student
-        $projectGroupIds = $student->projectGroups()->pluck('project_groups.id')->toArray();
-        $projectTitles = ProjectGroup::whereIn('id', $projectGroupIds)->pluck('title', 'id');
-
-        // Fetch IDs of projects associated with the student
-        $projects = Project::whereIn('groupId', $projectGroupIds)->get();
-
-        $evaluationIds = Evaluation::whereIn('projectId', $projects->pluck('id'))->pluck('id');
-        $evaluationDetails = [];
-
-        foreach ($evaluationIds as $evaluationId) {
-            $evaluation = Evaluation::find($evaluationId);
-            if ($evaluation) {
-                // Find the project related to this evaluation
-                $project = $projects->where('id', $evaluation->projectId)->first();
-                
-                if ($project) {
-                    $evaluationDetails[] = [
-                        'project' => $project,
-                        'phase' => $evaluation->phase,
-                        'status' => $evaluation->status,
-                    ];
-                }
-            }
-        }
-
-        // Pass $evaluationDetails to your view along with other data
-        return view('coordinator.search_results', compact('student', 'evaluationDetails', 'projectTitles'));
-
-    } else {
-        return view('coordinator.search_results', compact('student'));
+    // 1) If it’s a student, send them to check-student/{rollno}
+    if (Student::where('userId', $id)->exists()) {
+        return redirect()->route('check-student', ['rollno' => $id]);
     }
+
+    // 2) If it’s a teacher, send them to profile/teacher/{userId}
+    if (Teacher::where('userId', $id)->exists()) {
+        return redirect()->route('profile.showByTeacher', ['userId' => $id]);
+    }
+
+    // 3) Otherwise, back with an error
+    return back()->withErrors(['student_id' => 'No student or teacher found with that ID.']);
 }
+
 
 
 

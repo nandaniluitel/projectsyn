@@ -14,6 +14,7 @@ use App\Models\Notification;
 use App\Models\Student;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
+use Illuminate\Database\QueryException;
 
 
 
@@ -218,17 +219,36 @@ class SupervisorController extends Controller
     
 
 public function removeSupervisor($groupId)
-{
-    // Find the supervisor assignment by group ID
-    $assignment = Supervisor::where('groupId', $groupId)->first();
+    {
+        try {
+            // findOrFail so we can catch "not found" too if you like
+            $assignment = Supervisor::where('groupId', $groupId)->firstOrFail();
 
-    if ($assignment) {
-        $assignment->delete(); // Remove the supervisor assignment
-        return redirect()->route('assignsupervisor.index')->with('success', 'Supervisor removed successfully.');
-    } else {
-        return redirect()->route('assignsupervisor.index')->with('error', 'Supervisor not found.');
+            $assignment->delete();
+
+            // detach the user from the chat room
+            if ($room = ChatRoom::where('project_group_id', $groupId)->first()) {
+                $teacherUserId = auth()->user()->teacher?->userId;
+                $room->users()->detach($teacherUserId);
+            }
+
+            return redirect()
+                ->route('assignsupervisor.index')
+                ->with('success', 'Supervisor removed successfully.');
+
+        } catch (QueryException $ex) {
+            // MySQL error code 1451 = FK constraint violation
+            if (isset($ex->errorInfo[1]) && $ex->errorInfo[1] == 1451) {
+                return redirect()
+                    ->back()
+                    ->with('error',
+                        'You can’t remove a supervisor who’s already been involved in accepting a project report.'
+                    );
+            }
+            // re-throw other DB errors
+            throw $ex;
+        }
     }
-}
 public function viewAssignedGroups(Request $request)
 {
     // 1️⃣ Find the Teacher record for the logged-in user
