@@ -6,7 +6,8 @@
   <title>ProjEase | Evaluator Dashboard</title>
 
   <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
   <!-- Theme style -->
@@ -17,17 +18,36 @@
       background-color: #f8f9fa;
       margin: 0;
     }
+    /* Header now stacked vertically */
     .header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       background: linear-gradient(to right, #6a11cb, #2575fc);
       color: white;
-      padding: 40px 20px;
-      text-align: center;
+      padding: 20px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
     .header h1 {
       margin: 0;
-      font-size: 2.5rem;
+      font-size: 2rem;
       font-weight: 600;
+    }
+    .header a.scan-btn {
+      margin-top: 15px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 5px;
+      background-color: #28a745;
+      color: white;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: background-color 0.3s;
+    }
+    .header a.scan-btn:hover {
+      background-color: #218838;
     }
     .fullContainer {
       padding: 40px 20px;
@@ -69,13 +89,18 @@
     <h1>Evaluator Page</h1>
   </div>
   
+
+
   <div class="content-wrapper">
     <div class="fullContainer">
       <div class="actions-container">
+        <a href="{{ route('scanner.capture') }}" class="scan-btn">
+      <i class="fas fa-qrcode"></i> Scan Student ID
+    </a>
         <a href="{{ route('projects.index') }}" class="action-button">View Registered Groups</a>
         <a href="{{ route('uploadfiles.index1') }}" class="action-button">View Project Files</a>
         <a href="{{ route('evaluations.create') }}" class="action-button">Evaluate Group</a>
-        <a href="{{ route('scanner.capture') }}" class="action-button">Scan Student ID</a>
+        {{-- Scan link removed from here --}}
       </div>
     </div>
   </div>

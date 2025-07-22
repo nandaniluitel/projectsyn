@@ -95,12 +95,7 @@
 
   </div>
 
-  <footer class="main-footer">
-    <div class="float-right d-none d-sm-inline">
-      Project Synergy
-    </div>
-    <strong>&copy; 2024 Project Synergy</strong> All rights reserved.
-  </footer>
+
 
 </div>
 

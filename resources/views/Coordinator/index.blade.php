@@ -6,7 +6,8 @@
   <title>ProjEase | Coordinator Dashboard</title>
 
   <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
   <!-- Theme style -->
@@ -34,26 +35,50 @@
       max-width: 1200px;
       margin: auto;
     }
+
+    /* Updated search + scan container */
     .search-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
       margin-bottom: 30px;
-      text-align: center;
+    }
+    .search-container form {
+      display: flex;
     }
     .search-container input[type="text"] {
-        width: 300px;
-        padding: 10px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-        font-size: 1rem;
+      width: 300px;
+      padding: 10px;
+      border-radius: 5px 0 0 5px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      border-right: none;
     }
-    .search-container button {
-        padding: 10px 20px;
-        border-radius: 5px;
-        border: none;
-        background-color: #2575fc;
-        color: white;
-        font-size: 1rem;
-        cursor: pointer;
+    .search-container button.search-btn {
+      padding: 10px 20px;
+      border-radius: 0 5px 5px 0;
+      border: 1px solid #2575fc;
+      background-color: #2575fc;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
     }
+    .search-container a.scan-btn {
+      padding: 10px 20px;
+      border-radius: 5px;
+      border: none;
+      background-color: #28a745;
+      color: white;
+      font-size: 1rem;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .search-container a.scan-btn:hover {
+      background-color: #218838;
+    }
+
     .actions-container {
       display: flex;
       flex-direction: column;
@@ -91,12 +116,17 @@
   
   <div class="content-wrapper">
     <div class="fullContainer">
-        <div class="search-container">
-            <form action="{{ route('coordinator.search') }}" method="GET">
-                <input type="text" name="student_id" placeholder="Enter Student ID">
-                <button type="submit">Search</button>
-            </form>
-        </div>
+
+      {{-- SEARCH + SCAN BAR --}}
+      <div class="search-container">
+        <form action="{{ route('coordinator.search') }}" method="GET">
+          <input type="text" name="student_id" placeholder="Enter User ID">
+          <button type="submit" class="search-btn">Search</button>
+        </form>
+        <a href="{{ route('scanner.capture') }}" class="scan-btn">
+          <i class="fas fa-qrcode"></i> Scan Student ID
+        </a>
+      </div>
 
       <div class="actions-container">
         <a href="{{ route('assignroles.index') }}" class="action-button">Assign Roles</a>
@@ -104,7 +134,7 @@
         <a href="{{ route('coordinator.accepted-projects') }}" class="action-button">View Accepted Projects</a>
         <a href="{{ route('assignroles.coordinators') }}" class="action-button">View Coordinators</a>
         <a href="{{ route('notification.create') }}" class="action-button">Send Notifications</a>
-        <a href="{{ route('scanner.capture') }}" class="action-button">Scan Student ID</a>
+        {{-- Removed Scan button from here since it’s now in the top bar --}}
         <a href="{{ route('assignroles.evaluators') }}" class="action-button">View Evaluators</a>
         <a href="{{ route('assignsupervisor.index') }}" class="action-button">View Supervisors</a>
         <a href="{{ route('evaluations.index') }}" class="action-button">View Evaluated Marks</a>

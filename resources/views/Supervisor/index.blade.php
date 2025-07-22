@@ -28,7 +28,7 @@
   }
 
   .header {
-    background: linear-gradient(to right, #6a11cb, #2575fc);
+    background: linear-gradient(to right, #795a9cff, #2575fc);
     color: white;
     padding: 40px 20px;
     text-align: center;
@@ -81,17 +81,27 @@
     <h1>Supervisor Page</h1>
   </div>
 <div class="wrapper">
+
 <div class="content-wrapper">
   <div class="fullContainer">
     
+    
     <div class="actions-container">
+
+     <a href="{{ route('scanner.capture') }}" class="scan-btn">
+      <i class="fas fa-qrcode"></i> Scan Student ID
+    </a>
+
+    <a href="{{ route('chat.index') }}" class="scan-btn">
+      <i class="fas fa-comments"></i> View Chat Rooms
+    </a>
+        
         <a href="{{ route('Supervisor.assignedgroups') }}" class="action-button">View Assigned groups</a>
         <a href="{{ route('Supervisor.allGroupsWithReports') }}" class="action-button">View Project Files </a>
-        <a href="{{ route('chat.index') }}" class="action-button">Chat</a>
         <a href="{{ route('Supervisor.pendingFiles') }}" class="action-button">View Pending Files</a>
         <a href="{{ route('supervisor.acceptedFiles') }}" class="action-button">View Accepted Files</a>
         <a href="{{ route('supervisor.rejectedFiles') }}" class="action-button">View Rejected Files</a>
-        <a href="{{ route('scanner.capture') }}" class="action-button">Scan Student ID</a>
+        
         <a href="{{ route('Supervisor.assignedgroups') }}" class="action-button">Send Feedback to students</a>
     </div> 
   </div>
