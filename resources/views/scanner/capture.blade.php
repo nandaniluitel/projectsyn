@@ -1,6 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .progress-bar { min-width: 60px; font-weight: bold; }
+    </style>
+</head>
+<body style="background-color: #f4f6f9; font-family: 'Source Sans Pro', sans-serif;">
+
 @extends('layouts.app')
 
 @section('content')
+
+
+@include('nav.create')
+
+
+@include('teachersidebar.create')
+
 <div class="container text-center">
     <h2>Scan Student ID</h2>
     <video id="webcam" width="480" autoplay></video>
@@ -8,6 +30,8 @@
     <button class="btn btn-success mt-2" onclick="capture()">Capture</button>
     <canvas id="canvas" style="display:none;"></canvas>
 </div>
+
+
 
 <script>
     let video = document.getElementById('webcam');

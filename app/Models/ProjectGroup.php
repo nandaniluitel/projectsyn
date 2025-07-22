@@ -15,7 +15,7 @@ class ProjectGroup extends Model
     use HasFactory;
 
     protected $table = 'project_groups';
-    protected $fillable = ['title', 'description', 'level'];
+    protected $fillable = ['title', 'description', 'level', 'year'];
 
     // Relationship with students (many-to-many)
 
