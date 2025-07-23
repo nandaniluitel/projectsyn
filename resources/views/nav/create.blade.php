@@ -4,6 +4,15 @@
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
+
+      <li class="nav-item">
+  <a href="{{ url()->previous() }}"
+     class="nav-link">
+    <i class="fas fa-arrow-left"></i>
+    
+      
+  </a>
+</li>
       <li class="nav-item d-none d-sm-inline-block">
         
     @if (auth()->check())

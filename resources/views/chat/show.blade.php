@@ -1,6 +1,13 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chat Rooms</title>
 
-@section('content')
+  <!-- AdminLTE & FontAwesome -->
+  <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css">
 <style>
   .chat-container { display: flex; flex-direction: column; height: calc(100vh - 80px); border: 1px solid #ddd; border-radius: 5px; overflow: hidden; }
   .chat-header    { padding: 15px; background: #f7f7f7; border-bottom: 1px solid #ddd; }
@@ -41,8 +48,30 @@
   }
 </style>
 
+</head>
+
+<body class="hold-transition sidebar-mini">
+  <div class="wrapper">
+    {{-- Navbar --}}
+    @include('nav.create')
+
+    {{-- Sidebar --}}
+    @if(!empty($isTeacher) && $isTeacher)
+      @include('teachersidebar.create')
+    @elseif(!empty($isStudent) && $isStudent)
+      @include('sidebar.create')
+    @endif
+
+    {{-- Page content --}}
+    <div class="content-wrapper">
+
 <div class="chat-container">
+
+
+
   <div class="chat-header">
+
+
     <h2>
       <i class="fas fa-comments mr-2"></i>
       {{ $room->projectGroup->title }}
@@ -72,6 +101,9 @@
     </div>
   </div>
 </div>
+</div>
+</div>
+
 
 <script>
   const roomId = {{ $room->id }};
@@ -176,4 +208,10 @@
     setInterval(fetchMessages, 3000);
   });
 </script>
-@endsection
+
+  <script src="/adminlte/plugins/jquery/jquery.min.js"></script>
+  <script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/adminlte/dist/js/adminlte.min.js"></script>
+
+</body>
+
