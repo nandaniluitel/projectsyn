@@ -26,17 +26,41 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <div class="container-fluid">
-                <div class="row mb-2">
+                <div class="row mb-2 align-items-center">
                     <div class="col-sm-6">
                         <h1>Proposal Reports</h1>
                     </div>
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('Supervisor.assignedgroups') }}">Assigned Groups</a></li>
-                            <li class="breadcrumb-item active">Proposal Reports</li>
-                        </ol>
+                    <div class="col-sm-6 text-right">
+                        <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#filterForm" aria-expanded="false" aria-controls="filterForm">
+                            Show/Hide Filters
+                        </button>
                     </div>
+                </div>
+
+                <div class="collapse" id="filterForm">
+                    <form method="GET" action="{{ route('coordinator.proposal-reports') }}" class="form-inline mt-3 justify-content-end">
+                        <div class="form-group mx-2 mb-2">
+                            <input type="text" name="title" class="form-control" placeholder="Search by Title" value="{{ request('title') }}">
+                        </div>
+                        <div class="form-group mx-2 mb-2">
+                            <select name="year" class="form-control">
+                                <option value="">-- Year --</option>
+                                @foreach ($years as $year)
+                                    <option value="{{ $year }}" {{ request('year') == $year ? 'selected' : '' }}>{{ $year }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group mx-2 mb-2">
+                            <select name="level" class="form-control">
+                                <option value="">-- Level --</option>
+                                @foreach ($levels as $level)
+                                    <option value="{{ $level }}" {{ request('level') == $level ? 'selected' : '' }}>{{ $level }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary mb-2">Filter</button>
+                        <a href="{{ route('coordinator.proposal-reports') }}" class="btn btn-secondary mb-2 ml-2">Reset</a>
+                    </form>
                 </div>
             </div><!-- /.container-fluid -->
         </section>

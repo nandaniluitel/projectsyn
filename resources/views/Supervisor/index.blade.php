@@ -96,13 +96,12 @@
       <i class="fas fa-comments"></i> View Chat Rooms
     </a>
         
-        <a href="{{ route('Supervisor.assignedgroups') }}" class="action-button">View Assigned groups</a>
-        <a href="{{ route('Supervisor.allGroupsWithReports') }}" class="action-button">View Project Files </a>
-        <a href="{{ route('Supervisor.pendingFiles') }}" class="action-button">View Pending Files</a>
-        <a href="{{ route('supervisor.acceptedFiles') }}" class="action-button">View Accepted Files</a>
+        <a href="{{ route('supervisor.assignedgroups') }}" class="action-button">View Assigned groups</a>
+        <a href="{{ route('supervisor.reports.all') }}" class="action-button">View Project Files </a>
+        <a href="{{ route('supervisor.pendingFiles') }}" class="action-button">View Pending Files</a>
         <a href="{{ route('supervisor.rejectedFiles') }}" class="action-button">View Rejected Files</a>
         
-        <a href="{{ route('Supervisor.assignedgroups') }}" class="action-button">Send Feedback to students</a>
+        <a href="{{ route('supervisor.assignedgroups') }}" class="action-button">Send Feedback to students</a>
     </div> 
   </div>
 

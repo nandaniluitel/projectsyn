@@ -48,19 +48,49 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">List of Assigned Groups and Reports</h3>
-                                <div class="card-tools">
-                                    <form action="{{ route('supervisor.levelGroups') }}" method="GET" class="input-group input-group-sm" style="width: 150px;">
-                                        <input type="number" name="level" class="form-control float-right" placeholder="Enter Level">
-                                        <div class="input-group-append">
-                                            <button type="submit" class="btn btn-default">
-                                                <i class="fas fa-search"></i>
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
                             </div>
-                            <!-- /.card-header -->
                             <div class="card-body">
+                                <form method="GET" action="{{ route('supervisor.reports.all') }}" class="form-inline mb-3">
+                                    <div class="form-group mr-2">
+                                        <input type="text" name="title" class="form-control" placeholder="Search by title" value="{{ request('title') }}">
+                                    </div>
+                                    <div class="form-group mr-2">
+                                        <select name="year" class="form-control">
+                                            <option value="">-- Year --</option>
+                                            @foreach ($years as $year)
+                                                <option value="{{ $year }}" {{ request('year') == $year ? 'selected' : '' }}>{{ $year }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form-group mr-2">
+                                        <select name="level" class="form-control">
+                                            <option value="">-- Level --</option>
+                                            @foreach ($levels as $level)
+                                                <option value="{{ $level }}" {{ request('level') == $level ? 'selected' : '' }}>{{ $level }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form-group mr-2">
+                                        <select name="report_type" class="form-control">
+                                            <option value="">-- Project Type --</option>
+                                            @foreach ($report_types as $report_type)
+                                                <option value="{{ $report_type }}" {{ request('report_type') == $report_type ? 'selected' : '' }}>{{ ucfirst($report_type) }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form-group mr-2">
+                                        <select name="status" class="form-control">
+                                            <option value="">-- Status --</option>
+                                            @foreach ($statuses as $status)
+                                                <option value="{{ $status }}" {{ request('status') == $status ? 'selected' : '' }}>{{ ucfirst($status) }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Filter</button>
+                                    <a href="{{ route('supervisor.reports.all') }}" class="btn btn-secondary ml-2">Reset</a>
+                                </form>
+                            <!-- /.card-header -->
+                            
                                 @if (session('success'))
                                     <div class="alert alert-success">
                                         {{ session('success') }}

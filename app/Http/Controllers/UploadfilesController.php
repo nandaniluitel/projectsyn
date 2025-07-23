@@ -14,10 +14,30 @@ use Illuminate\Support\Facades\Auth;
 
 class UploadfilesController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $projects = Project::all();
-        return view('uploadfiles.index1', compact('projects'));
+        $query = Project::with('group');
+
+        // Apply filters
+        if ($request->filled('year')) {
+            $query->whereHas('group', function ($q) use ($request) {
+                $q->where('year', $request->year);
+            });
+        }
+
+        if ($request->filled('level')) {
+            $query->whereHas('group', function ($q) use ($request) {
+                $q->where('level', $request->level);
+            });
+        }
+
+        $projects = $query->get();
+
+        // Get distinct years and levels for filters
+        $years = ProjectGroup::select('year')->distinct()->pluck('year');
+        $levels = ProjectGroup::select('level')->distinct()->pluck('level');
+
+        return view('uploadfiles.index1', compact('projects', 'years', 'levels'));
     }
 
     public function create()
@@ -48,6 +68,12 @@ class UploadfilesController extends Controller
     {
         $query = Project::where('status', 'accepted')->with('group');
 
+        if ($request->filled('title')) {
+            $query->whereHas('group', function ($q) use ($request) {
+                $q->where('title', 'like', '%' . $request->title . '%');
+            });
+        }
+
         if ($request->filled('year')) {
             $query->whereHas('group', function ($q) use ($request) {
                 $q->where('year', $request->year);
@@ -60,19 +86,48 @@ class UploadfilesController extends Controller
             });
         }
 
+        if ($request->filled('report_type')) {
+            $query->where('report_type', $request->report_type);
+        }
+
         $projects = $query->get();
 
         $years = ProjectGroup::select('year')->distinct()->pluck('year');
         $levels = ProjectGroup::select('level')->distinct()->pluck('level');
+        $report_types = Project::select('report_type')->distinct()->pluck('report_type');
         $view_mode = $request->input('view_mode', 'accordion');
 
-        return view('coordinator.accepted-projects', compact('projects', 'years', 'levels', 'view_mode'));
+        return view('coordinator.accepted-projects', compact('projects', 'years', 'levels', 'report_types', 'view_mode'));
     }
 
-    public function viewProposalReports()
+    public function viewProposalReports(Request $request)
     {
-        $proposalReports = Project::where('report_type', 'proposal')->get();
-        return view('coordinator.proposal-reports', compact('proposalReports'));
+        $query = Project::where('report_type', 'proposal')->with('group');
+
+        if ($request->filled('title')) {
+            $query->whereHas('group', function ($q) use ($request) {
+                $q->where('title', 'like', '%' . $request->title . '%');
+            });
+        }
+
+        if ($request->filled('year')) {
+            $query->whereHas('group', function ($q) use ($request) {
+                $q->where('year', $request->year);
+            });
+        }
+
+        if ($request->filled('level')) {
+            $query->whereHas('group', function ($q) use ($request) {
+                $q->where('level', $request->level);
+            });
+        }
+
+        $proposalReports = $query->get();
+
+        $years = ProjectGroup::select('year')->distinct()->pluck('year');
+        $levels = ProjectGroup::select('level')->distinct()->pluck('level');
+
+        return view('coordinator.proposal-reports', compact('proposalReports', 'years', 'levels'));
     }
 
     public function indexCategory($cname)

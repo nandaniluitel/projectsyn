@@ -104,9 +104,16 @@ public function updateEvaluationStatus(Request $request)
     
     
 
-    public function showEvaluators()
+    public function showEvaluators(Request $request)
     {
-        $evaluators = Evaluator::with('teacher.user')->get();
+        $query = Evaluator::with('teacher.user');
+
+        if ($request->filled('assigned_date')) {
+            $query->whereDate('assigned_date', $request->assigned_date);
+        }
+
+        $evaluators = $query->get();
+
         return view('assignroles.show_evaluators', compact('evaluators'));
     }
 

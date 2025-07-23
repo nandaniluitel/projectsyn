@@ -305,11 +305,10 @@ Route::middleware(['auth','supervisor'])->group(function () {
     Route::get('/Supervisor/index', function () {
         return view('Supervisor.index');
     });
-    Route::get('/Supervisor/assignedgroups', [SupervisorController::class, 'viewAssignedGroups'])->name('Supervisor.assignedgroups');
-    Route::get('/Supervisor/assignedgroups/{groupId}/reports', 'App\Http\Controllers\SupervisorController@viewGroupReports')->name('Supervisor.assignedgroups.reports');
-    Route::get('/Supervisor/assignedgroups/{groupId}/reports', [SupervisorController::class, 'viewGroupReports'])->name('Supervisor.assignedgroups.reports');
-    Route::get('/supervisor/all-groups-with-reports', [SupervisorController::class, 'viewAllGroupsWithReports'])->name('Supervisor.allGroupsWithReports');
-    Route::get('/supervisor/pending-files', [SupervisorController::class, 'viewPendingFiles'])->name('Supervisor.pendingFiles');
+    Route::get('/supervisor/assigned-groups', [SupervisorController::class, 'viewAssignedGroups'])->name('supervisor.assignedgroups');
+    Route::get('/supervisor/reports/all', [SupervisorController::class, 'viewAllGroupsWithReports'])->name('supervisor.reports.all');
+    Route::get('/Supervisor/assignedgroups/{groupId}/reports', [SupervisorController::class, 'viewGroupReports'])->name('supervisor.assignedgroups.reports');
+    Route::get('/supervisor/pending-files', [SupervisorController::class, 'viewPendingFiles'])->name('supervisor.pendingFiles');
     Route::put('/supervisor/accept-project/{id}', [SupervisorController::class, 'acceptProject'])->name('supervisor.acceptProject');
     Route::put('/supervisor/reject-project/{id}', [SupervisorController::class, 'rejectProject'])->name('supervisor.rejectProject');
     Route::get('/supervisor/accepted-files', [SupervisorController::class, 'viewAcceptedFiles'])->name('supervisor.acceptedFiles');

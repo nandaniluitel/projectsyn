@@ -1,98 +1,84 @@
-<!-- assignsupervisor.profile.blade.php -->
+@extends('layouts.master')
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
-    <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css">
-    <style>
-        body {
-            background-color: #f4f6f9;
-            font-family: 'Source Sans Pro', sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        .content-header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .alert {
-            margin-bottom: 20px;
-            padding: 10px;
-            background-color: #d4edda;
-            color: #155724;
-            border-radius: 5px;
-        }
-        .profile-info {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            text-align: center; /* Center-aligning profile info */
-        }
-        .profile-info img {
-            border-radius: 50%;
-            width: 150px;
-            height: 150px;
-            object-fit: cover;
-            border: 3px solid #007bff;
-            margin: 0 auto 15px;
-            display: block;
-        }
-        .profile-info p {
-            font-size: 18px;
-            line-height: 1.6;
-            margin-bottom: 10px;
-        }
-    </style>
-</head>
-<body>
-
-@include('nav.create')
-@include('sidebar.create')
-
-<div class="content-wrapper" style="margin: 20px auto; max-width: 800px; background: #fff; padding: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); border-radius: 10px;">
+@section('content')
+<div class="container-fluid">
+    <!-- Content Header (Page header) -->
     <div class="content-header">
-        <h1 class="text-center" style="font-weight: 700; margin-bottom: 20px;">Supervisors</h1>
-    </div>
-
-    @if(session('success'))
-        <div class="alert">
-            {{ session('success') }}
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-12">
+                    <h1 class="m-0 text-center">Assigned Supervisors</h1>
+                </div>
+            </div>
         </div>
-    @endif
-
-    <div class="container">
-        @foreach ($supervisors as $projectTitle => $projectSupervisors)
-            <h2>Project: {{ $projectTitle }}</h2>
-            @if ($projectSupervisors->isEmpty())
-                <p>No supervisors found for this project group.</p>
-            @else
-                @foreach ($projectSupervisors as $supervisor)
-                    <div class="profile-info">
-                        <div>
-                            @if($supervisor->Photo)
-                                <img src="{{ asset('images/' . $supervisor->Photo) }}" alt="User Photo">
-                            @else
-                                <img src="{{ asset('images/images.png') }}" alt="Default Photo">
-                            @endif
-                        </div>
-                        <p><strong>Name:</strong> {{ $supervisor->name }}</p>
-                        <p><strong>Email:</strong> {{ $supervisor->email }}</p>
-                        <p><strong>Phone Number:</strong> {{ $supervisor->Phone_number }}</p>
-                    </div>
-                @endforeach
-            @endif
-        @endforeach
     </div>
-</div>
+    <!-- /.content-header -->
 
-<script src="/adminlte/plugins/jquery/jquery.min.js"></script>
-<script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/adminlte/dist/js/adminlte.min.js"></script>
-</body>
-</html>
+    <!-- Main content -->
+    <div class="content">
+        <div class="container-fluid">
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
+
+            @forelse ($supervisors as $projectTitle => $projectSupervisors)
+                <div class="card card-primary card-outline mb-4">
+                    <div class="card-header">
+                        <h3 class="card-title">Project: {{ $projectTitle }}</h3>
+                    </div>
+                    <div class="card-body">
+                        @if ($projectSupervisors->isEmpty())
+                            <p class="text-muted">No supervisors found for this project group.</p>
+                        @else
+                            <div class="row">
+                                @foreach ($projectSupervisors as $supervisor)
+                                    <div class="col-md-6 col-lg-4">
+                                        <!-- Widget: user widget style 1 -->
+                                        <div class="card card-widget widget-user shadow-sm">
+                                            <!-- Add the bg color to the header using any of the bg-* classes -->
+                                            <div class="widget-user-header bg-light-indigo text-white" style="background: #6610f2; color: #fff;">
+                                                <h3 class="widget-user-username text-center">{{ $supervisor->name }}</h3>
+                                                <h5 class="widget-user-desc text-center">{{ $supervisor->email }}</h5>
+                                            </div>
+                                            <div class="widget-user-image">
+                                                @if($supervisor->Photo)
+                                                    <img class="img-circle elevation-2" src="{{ asset('images/' . $supervisor->Photo) }}" alt="User Photo">
+                                                @else
+                                                    <img class="img-circle elevation-2" src="{{ asset('images/images.png') }}" alt="Default Photo">
+                                                @endif
+                                            </div>
+                                            <div class="card-footer">
+                                                <div class="row">
+                                                    <div class="col-12 text-center">
+                                                        <div class="description-block">
+                                                            <h5 class="description-header">Phone</h5>
+                                                            <span>{{ $supervisor->Phone_number ?? 'Not Available' }}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            @empty
+                <div class="card">
+                    <div class="card-body text-center">
+                        <p class="text-muted">No projects with assigned supervisors found.</p>
+                    </div>
+                </div>
+            @endforelse
+        </div>
+    </div>
+    <!-- /.content -->
+</div>
+@endsection
+

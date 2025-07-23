@@ -1,91 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Synergy |Assign Roles</title>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- Font Awesome CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <!-- AdminLTE CSS -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ProjEase | Assign Roles</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <!-- Theme style -->
     <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .header {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 600;
+        }
+        .fullContainer {
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: auto;
+        }
+        .actions-container {
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        .action-card {
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            width: 350px;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            padding: 25px;
+        }
+        .action-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+        }
+        .action-card .card-icon {
+            font-size: 3rem;
+            color: #6a11cb;
+            margin-bottom: 20px;
+        }
+        .action-card .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: auto;
+            padding-bottom: 20px;
+        }
+        .action-card .btn {
+            font-weight: bold;
+            border-radius: 8px;
+            margin-top: 15px;
+            background-color: #ffffff;
+            color: #333;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .action-card .btn:hover {
+            background-color: #6a11cb;
+            border-color: #6a11cb;
+            color: #ffffff;
+        }
+    </style>
 </head>
 <body class="hold-transition sidebar-mini">
-    <div class="wrapper">
-        <!-- Navbar -->
-        @include('nav.create')
-        <!-- Main Sidebar Container -->
-        @include('teachersidebar.create')
-        
-        <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper">
-            <!-- Content Header (Page header) -->
-            <section class="content-header">
-                <div class="container-fluid">
-                    <div class="row mb-2">
-                        <div class="col-sm-6">
-                            <h1>Assign Roles</h1>
-                        </div>
-                        <div class="col-sm-6">
-                            <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active">Assign Roles</li>
-                            </ol>
-                        </div>
+<div class="wrapper">
+    @include('nav.create')
+    @include('teachersidebar.create')
+
+    <div class="content-wrapper">
+        <div class="header">
+            <h1>Assign Roles</h1>
+        </div>
+
+        <section class="content">
+            <div class="fullContainer">
+                <div class="actions-container">
+                    <!-- Assign Supervisors Card -->
+                    <div class="action-card">
+                        <div class="card-icon"><i class="fas fa-user-tie"></i></div>
+                        <h2 class="card-title">Assign Supervisors</h2>
+                        <a href="{{ route('assignsupervisor.create') }}" class="btn btn-primary">Go to Assignment</a>
                     </div>
-                </div><!-- /.container-fluid -->
-            </section>
-        
-            <!-- Main content -->
-            <section class="content">
-                <div class="container-fluid">
-                    <div class="row justify-content-center">
-                        <div class="col-md-6">
-                            <div class="custom-card mb-3" style="width: 300px; height: 300px; margin: 2px; text-align: center; padding: 20px; box-shadow: 0 0 15px rgba(0,0,0,0.2);">
-                                <div class="card-body d-flex flex-column justify-content-between">
-                                    <h1 class="card-title mb-4">Assign Supervisor</h1>
-                                    <!-- Link to assign supervisors -->
-                                    <a href="{{ route('assignsupervisor.create') }}" class="btn btn-primary">Assign Supervisors</a>
-                                </div>
-                            </div>
-                        </div>
-        
-                        <div class="col-md-6">
-                            <div class="custom-card mb-3" style="width: 300px; height: 300px; margin: 2px; text-align: center; padding: 20px; box-shadow: 0 0 15px rgba(0,0,0,0.2);">
-                                <div class="card-body d-flex flex-column justify-content-between">
-                                    <h1 class="card-title mb-4">Assign Evaluator and Coordinator</h1>
-                                    <!-- Link to assign evaluators and coordinators -->
-                                    <a href="{{ route('assignroles.create') }}" class="btn btn-primary">Assign Evaluator and Coordinators</a>
-                                </div>
-                            </div>
-                        </div>
+
+                    <!-- Assign Evaluator and Coordinator Card -->
+                    <div class="action-card">
+                        <div class="card-icon"><i class="fas fa-users-cog"></i></div>
+                        <h2 class="card-title">Assign Evaluator & Coordinator</h2>
+                        <a href="{{ route('assignroles.create') }}" class="btn btn-primary">Go to Assignment</a>
                     </div>
                 </div>
-            </section>
-            <!-- /.content -->
-        </div>
-        <!-- /.content-wrapper -->
-        
-        <!-- Main Footer -->
-        <footer class="main-footer">
-            <!-- To the right -->
-            <div class="float-right d-none d-sm-inline">
-                Anything you want
             </div>
-            <!-- Default to the left -->
-            <strong>Footer information &copy; 2024 </strong>
-        </footer>
+        </section>
     </div>
-    <!-- ./wrapper -->
-    
-    <!-- REQUIRED SCRIPTS -->
-    
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <!-- Bootstrap 4 -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="/adminlte/dist/js/adminlte.min.js"></script>
+
+    <footer class="main-footer">
+        <div class="float-right d-none d-sm-inline">
+            ProjEase
+        </div>
+        <strong>Copyright &copy; 2023-2024 <a href="#">ProjEase</a>.</strong> All rights reserved.
+    </footer>
+</div>
+
+<!-- REQUIRED SCRIPTS -->
+<script src="/adminlte/plugins/jquery/jquery.min.js"></script>
+<script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/adminlte/dist/js/adminlte.min.js"></script>
 </body>
 </html>

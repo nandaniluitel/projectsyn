@@ -19,7 +19,7 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
-<body>
+<body class="hold-transition sidebar-mini layout-fixed">
     <div id="app">
         
 

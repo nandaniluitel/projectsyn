@@ -272,6 +272,9 @@ public function viewAssignedGroups(Request $request)
     if ($request->filled('level')) {
         $query->where('level', $request->level);
     }
+    if ($request->filled('title')) {
+        $query->where('title', 'like', '%' . $request->title . '%');
+    }
 
     $assignedGroups = $query->get();
 
@@ -279,86 +282,142 @@ public function viewAssignedGroups(Request $request)
     $years  = ProjectGroup::select('year')->distinct()->pluck('year');
     $levels = ProjectGroup::select('level')->distinct()->pluck('level');
 
+    $view_mode = $request->input('view_mode', 'accordion');
+
     return view('Supervisor.assignedgroups', compact(
-        'assignedGroups', 'years', 'levels'
+        'assignedGroups', 'years', 'levels', 'view_mode'
     ));
 }
 
+    public function viewGroupReports($groupId)
+    {
+        $group = ProjectGroup::where('id', $groupId)->first();
+        if (!$group) {
+            return redirect()->route('Supervisor.assignedgroups')->with('error', 'Group not found.');
+        }
 
+        $reports = Project::where('groupId', $groupId)->get();
 
-public function viewGroupReports($groupId)
-{
-    $group = ProjectGroup::where('id', $groupId)->first();
-    if (!$group) {
-        return redirect()->route('Supervisor.assignedgroups')->with('error', 'Group not found.');
+        return view('Supervisor.reports', compact('group', 'reports'));
     }
 
-    $reports = Project::where('groupId', $groupId)->get();
+    public function viewAllGroupsWithReports(Request $request)
+    {
+        $user = Auth::user();
+        $teacher = Teacher::where('userId', $user->id)->first();
+        if (!$teacher) {
+            return redirect()->back()->with('error', 'No teacher profile found for your account.');
+        }
+        $teacherId = $teacher->id;
 
-    return view('Supervisor.reports', compact('group', 'reports'));
-}
-public function viewAllGroupsWithReports()
-{
-    $user    = Auth::user();
-    $teacher = Teacher::where('userId', $user->id)->first();
-    if (! $teacher) {
-        return redirect()->back()
-                         ->with('error', 'No teacher profile found for your account.');
+        // Base query for groups assigned to the supervisor, eager load all projects
+        $assignedGroupsQuery = ProjectGroup::whereHas('supervisors', function ($query) use ($teacherId) {
+            $query->where('teacherId', $teacherId);
+        })->with('projects');
+
+        // Get all projects from these groups to populate filters
+        $allAssignedGroups = (clone $assignedGroupsQuery)->get();
+        $allProjects = $allAssignedGroups->pluck('projects')->flatten();
+
+        // Get distinct values for filters from the complete dataset
+        $years = $allAssignedGroups->pluck('year')->unique()->sort();
+        $levels = $allAssignedGroups->pluck('level')->unique()->sort();
+        $report_types = $allProjects->pluck('report_type')->unique()->sort();
+        $statuses = $allProjects->pluck('status')->unique()->sort();
+
+        // Start with all groups and apply filters
+        $filteredGroups = $allAssignedGroups;
+
+        // Apply filters to the groups collection
+        if ($request->filled('year')) {
+            $filteredGroups = $filteredGroups->where('year', $request->year);
+        }
+        if ($request->filled('level')) {
+            $filteredGroups = $filteredGroups->where('level', $request->level);
+        }
+
+        // Apply filters to the projects within the groups
+        if ($request->filled('title') || $request->filled('report_type') || $request->filled('status')) {
+            $filteredGroups = $filteredGroups->map(function ($group) use ($request) {
+                $filteredProjects = $group->projects;
+
+                if ($request->filled('title')) {
+                    $filteredProjects = $filteredProjects->filter(function ($project) use ($request) {
+                        return stripos($project->title, $request->title) !== false;
+                    });
+                }
+
+                if ($request->filled('report_type')) {
+                    $filteredProjects = $filteredProjects->where('report_type', $request->report_type);
+                }
+
+                if ($request->filled('status')) {
+                    $filteredProjects = $filteredProjects->where('status', $request->status);
+                }
+
+                $group->setRelation('projects', $filteredProjects);
+                return $group;
+            })->filter(function ($group) {
+                return $group->projects->isNotEmpty(); // Remove groups with no matching projects
+            });
+        }
+
+        return view('Supervisor.allGroupsWithReports', [
+            'assignedGroups' => $filteredGroups,
+            'years' => $years,
+            'levels' => $levels,
+            'report_types' => $report_types,
+            'statuses' => $statuses
+        ]);
     }
-    $teacherId = $teacher->id;
-
-    $assignedGroups = ProjectGroup::whereHas('supervisors', function ($q) use ($teacherId) {
-        $q->where('teacherId', $teacherId);
-    })
-    ->with(['projects' => fn($q) => $q->orderBy('updated_at','desc')])
-    ->get();
-
-    return view('Supervisor.allGroupsWithReports', compact('assignedGroups'));
-}
 
     // Join the projects and project_groups tables to get the groups assigned to this supervisor
-public function viewLevelGroupsWithReports(Request $request)
-{
-    $level = $request->query('level');
-    $supervisor = Auth::user();
-    $teacherId = $supervisor->id;
-
-    $query = ProjectGroup::query();
-
-    if ($level) {
-        $levelString = 'level' . $level;
-        $query->where('level', $levelString);
-    }
-
-    $assignedGroups = $query->whereHas('supervisors', function ($query) use ($teacherId) {
-        $query->where('teacherId', $teacherId);
-    })->with(['projects' => function ($query) {
-        $query->orderBy('created_at', 'desc');
-    }])->get();
-
-    return view('Supervisor.levelGroupsWithReports', compact('assignedGroups', 'level'));
-}
-public function viewPendingFiles()
+    public function viewLevelGroupsWithReports(Request $request)
     {
-    $user    = Auth::user();
-    $teacher = Teacher::where('userId', $user->id)->first();
-    if (! $teacher) {
-        return redirect()->back()
-                         ->with('error', 'No teacher profile found for your account.');
+        $user = Auth::user();
+        $teacher = Teacher::where('userId', $user->id)->first();
+        if (!$teacher) {
+            return redirect()->back()->with('error', 'No teacher profile found for your account.');
+        }
+        $teacherId = $teacher->id;
+        $level = $request->input('level');
+
+        $query = ProjectGroup::query();
+
+        if ($level) {
+            $query->where('level', $level);
+        }
+
+        $assignedGroups = $query->whereHas('supervisors', function ($query) use ($teacherId) {
+            $query->where('teacherId', $teacherId);
+        })->with(['projects' => function ($query) {
+            $query->orderBy('created_at', 'desc');
+        }])->get();
+
+        return view('Supervisor.levelGroupsWithReports', compact('assignedGroups', 'level'));
     }
-    $teacherId = $teacher->id;
-    
+
+    public function viewPendingFiles()
+    {
+        $user    = Auth::user();
+        $teacher = Teacher::where('userId', $user->id)->first();
+        if (!$teacher) {
+            return redirect()->back()
+                ->with('error', 'No teacher profile found for your account.');
+        }
+        $teacherId = $teacher->id;
+
         // Fetch assigned groups where supervisor is assigned
         $assignedGroups = ProjectGroup::whereHas('supervisors', function ($query) use ($teacherId) {
             $query->where('teacherId', $teacherId);
         })->pluck('id')->toArray();
-    
+
         // Retrieve pending projects for the assigned groups
         $pendingProjects = Project::whereIn('groupId', $assignedGroups)
-                                  ->where('status', 'pending')
-                                  ->with('projectGroup') // Eager load projectGroup relationship
-                                  ->get();
-    
+            ->where('status', 'pending')
+            ->with('projectGroup') // Eager load projectGroup relationship
+            ->get();
+
         return view('supervisor.pendingFiles', compact('pendingProjects'));
     }
 
@@ -379,7 +438,8 @@ public function viewPendingFiles()
         $project->status = 'rejected';
         $project->save();
 
-        return redirect()->back()->with('success', 'Project rejected successfully');
+        return redirect()->route('feedback.create', ['groupId' => $project->projectGroup->id])
+            ->with('info', 'Project has been rejected. Please provide necessary feedback.');
     }
 
     // Method to view accepted files for the supervisor
@@ -387,50 +447,51 @@ public function viewPendingFiles()
     {
         $user    = Auth::user();
         $teacher = Teacher::where('userId', $user->id)->first();
-        if (! $teacher) {
+        if (!$teacher) {
             return redirect()->back()
-                    ->with('error', 'No teacher profile found for your account.');
-    }
-    $teacherId = $teacher->id;
-    
+                ->with('error', 'No teacher profile found for your account.');
+        }
+        $teacherId = $teacher->id;
+
         $acceptedFiles = Project::whereHas('projectGroup.supervisors', function ($query) use ($teacherId) {
             $query->where('teacherId', $teacherId);
         })->where('status', 'accepted')->with('projectGroup')->get();
-    
+
         return view('supervisor.acceptedFiles', compact('acceptedFiles'));
     }
 
     public function viewRejectedFiles()
     {
-       $user    = Auth::user();
-    $teacher = Teacher::where('userId', $user->id)->first();
-    if (! $teacher) {
-        return redirect()->back()
-                         ->with('error', 'No teacher profile found for your account.');
-    }
-    $teacherId = $teacher->id;
-    // Fetch assigned groups where supervisor is assigned
-    $assignedGroups = ProjectGroup::whereHas('supervisors', function ($query) use ($teacherId) {
-        $query->where('teacherId', $teacherId);
-    })->pluck('id')->toArray();
+        $user    = Auth::user();
+        $teacher = Teacher::where('userId', $user->id)->first();
+        if (!$teacher) {
+            return redirect()->back()
+                ->with('error', 'No teacher profile found for your account.');
+        }
+        $teacherId = $teacher->id;
+        // Fetch assigned groups where supervisor is assigned
+        $assignedGroups = ProjectGroup::whereHas('supervisors', function ($query) use ($teacherId) {
+            $query->where('teacherId', $teacherId);
+        })->pluck('id')->toArray();
 
-    // Retrieve rejected projects for the assigned groups
-    $rejectedProjects = Project::whereIn('groupId', $assignedGroups)
-                               ->where('status', 'rejected')
-                               ->with('projectGroup') // Eager load projectGroup relationship
-                               ->get();
+        // Retrieve rejected projects for the assigned groups
+        $rejectedProjects = Project::whereIn('groupId', $assignedGroups)
+            ->where('status', 'rejected')
+            ->with('projectGroup') // Eager load projectGroup relationship
+            ->get();
 
-    return view('supervisor.rejectedFiles', compact('rejectedProjects'));
+        return view('supervisor.rejectedFiles', compact('rejectedProjects'));
     }
+
     public function processReject(Request $request, $id)
     {
         $project = Project::findOrFail($id);
-        
+
         // Perform rejection action here, e.g., update status to 'rejected'
         $project->update(['status' => 'rejected']);
 
         // Redirect to feedback creation page with necessary details
         return redirect()->route('feedback.create', ['groupId' => $project->projectGroup->id])
-                         ->with('error', 'Project has been rejected. Please provide necessary feedback.');
+            ->with('info', 'Project has been rejected. Please provide necessary feedback.');
     }
 }

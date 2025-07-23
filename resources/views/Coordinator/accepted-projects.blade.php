@@ -55,7 +55,10 @@
                     <div class="collapse" id="filterForm">
                       <form method="GET" action="{{ route('coordinator.accepted-projects') }}" class="form-inline mt-3 justify-content-end" id="filterFormElement">
                         <div class="form-group mx-2 mb-2">
-                          <select name="year" class="form-control" onchange="this.form.submit()">
+                            <input type="text" name="title" class="form-control" placeholder="Search by Title" value="{{ request('title') }}">
+                        </div>
+                        <div class="form-group mx-2 mb-2">
+                          <select name="year" class="form-control">
                             <option value="">-- Year --</option>
                             @foreach ($years as $year)
                               <option value="{{ $year }}" {{ request('year') == $year ? 'selected' : '' }}>{{ $year }}</option>
@@ -63,15 +66,24 @@
                           </select>
                         </div>
                         <div class="form-group mx-2 mb-2">
-                          <select name="level" class="form-control" onchange="this.form.submit()">
+                          <select name="level" class="form-control">
                             <option value="">-- Level --</option>
                             @foreach ($levels as $level)
                               <option value="{{ $level }}" {{ request('level') == $level ? 'selected' : '' }}>{{ $level }}</option>
                             @endforeach
                           </select>
                         </div>
+                        <div class="form-group mx-2 mb-2">
+                          <select name="report_type" class="form-control">
+                            <option value="">-- Report Type --</option>
+                            @foreach ($report_types as $report_type)
+                              <option value="{{ $report_type }}" {{ request('report_type') == $report_type ? 'selected' : '' }}>{{ $report_type }}</option>
+                            @endforeach
+                          </select>
+                        </div>
                         <input type="hidden" name="view_mode" value="{{ request('view_mode', 'accordion') }}">
-                        <a href="{{ route('coordinator.accepted-projects') }}" class="btn btn-secondary mb-2">Reset</a>
+                        <button type="submit" class="btn btn-primary mb-2">Filter</button>
+                        <a href="{{ route('coordinator.accepted-projects') }}" class="btn btn-secondary mb-2 ml-2">Reset</a>
                       </form>
                     </div>
                   </div>

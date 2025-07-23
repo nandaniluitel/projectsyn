@@ -51,13 +51,24 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
+                <form method="GET" action="{{ route('assignroles.evaluators') }}" class="form-inline mb-3">
+                  <div class="form-group mx-2">
+                      <label for="assigned_date" class="mr-2">Assigned Date:</label>
+                      <input type="date" name="assigned_date" id="assigned_date" class="form-control" value="{{ request('assigned_date') }}">
+                  </div>
+                  <button type="submit" class="btn btn-primary">Filter</button>
+                  <a href="{{ route('assignroles.evaluators') }}" class="btn btn-secondary ml-2">Reset</a>
+                </form>
+
                 <table class="table table-bordered">
                   <thead>
                     <tr>
                       <th>ID</th>
                       <th>Name</th>
                       <th>Email</th>
-                      <th>Action</th> <!-- Added action column -->
+                      <th>Assigned Date</th>
+                      <th>Room No</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -66,6 +77,8 @@
                         <td>{{ $evaluator->id }}</td>
                         <td>{{ $evaluator->teacher->user->name }}</td>
                         <td>{{ $evaluator->teacher->user->email }}</td>
+                        <td>{{ $evaluator->assigned_date }}</td>
+                        <td>{{ $evaluator->room_no }}</td>
                         <td>
                         <form action="{{ route('remove.evaluator', ['id' => $evaluator->id]) }}" method="POST">
                             @csrf
