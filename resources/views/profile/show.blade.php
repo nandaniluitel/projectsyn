@@ -100,9 +100,15 @@
               @else Not uploaded @endif
             </p>
             <p><strong>Report:</strong>
-              @if($project->report_file)
-                <a href="{{ asset($project->report_file) }}" target="_blank">View Report</a>
-              @else Not uploaded @endif
+@if ($project->report_file)
+    <a href="{{ route('projects.report.view', $project->id) }}" target="_blank" class="btn btn-sm btn-outline-primary">
+        📄 View Report
+    </a>
+@else
+    <span class="text-danger">Not Uploaded</span>
+@endif
+
+
             </p>
 
             {{-- Supervisor & Members --}}

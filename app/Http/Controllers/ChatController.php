@@ -63,7 +63,7 @@ class ChatController extends Controller
     {
         $data = $request->validate([
             'message'    => 'nullable|string|max:1000',
-            'attachment' => 'nullable|file|max:5120|mimes:jpg,jpeg,png,gif,pdf,doc,docx,txt|required_without:message',
+            'attachment' => 'nullable|file|max:20480|mimes:jpg,jpeg,png,gif,pdf,doc,docx,txt|required_without:message',
         ]);
 
         $room = ChatRoom::findOrFail($id);

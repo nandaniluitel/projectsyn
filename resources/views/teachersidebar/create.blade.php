@@ -75,6 +75,14 @@
             </a>
           </li>
 
+          <li class="nav-item">
+    <a href="{{ url('/report-format') }}" class="nav-link {{ request()->is('report-format') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-file-alt"></i>
+        <p>Report Format</p>
+    </a>
+</li>
+
+
 
           <li class="nav-header">ACCOUNT</li>
           <li class="nav-item">

@@ -58,6 +58,14 @@
                         </p>
             </a>
           </li>
+
+          <li class="nav-item">
+    <a href="{{ url('/report-format') }}" class="nav-link {{ request()->is('report-format') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-file-alt"></i>
+        <p>Report Format</p>
+    </a>
+</li>
+
           <li class="nav-item">
           <a href="/supervisor/profile" class="nav-link {{ request()->is('supervisor/profile') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-chart-pie"></i>

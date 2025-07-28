@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Project;
 use App\Models\ProjectGroup;
 use App\Models\ProjectGroupStudent;
 use App\Models\Student;
 use App\Models\ChatRoom;          // ← NEW
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
@@ -31,6 +32,15 @@ class ProjectController extends Controller
 
         return view('projects.index', compact('project_groups', 'years', 'levels', 'view_mode'));
     }
+
+public function viewReport(Project $project)
+{
+    if (!$project->report_file || !Storage::disk('public')->exists($project->report_file)) {
+        return back()->with('error', 'Report not found.');
+    }
+
+    return response()->file(storage_path('app/public/' . $project->report_file));
+}
 
     public function create()
     {
