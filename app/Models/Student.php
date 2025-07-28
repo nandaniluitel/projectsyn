@@ -11,8 +11,13 @@ use App\Models\User;
 class Student extends Model
 {
     use HasFactory;
+
     protected $table = 'students';
-    protected $fillable = ['id','userId'];
+
+    protected $fillable = ['id', 'userId', 'year'];
+
+    public $incrementing = false;
+    protected $keyType = 'int';
 
     public function project_groups()
     {

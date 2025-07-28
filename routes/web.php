@@ -22,6 +22,9 @@ use App\Http\Controllers\teacherDashboardController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\ScannerController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\UserImportController;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -151,6 +154,8 @@ Route::get('/', function () {
 
 
 
+Route::get('/projects/{project}/report', [ProjectController::class, 'viewReport'])->name('projects.report.view');
+
 
 
 Route::get('/frontpage/index', function () {
@@ -239,6 +244,9 @@ Route::get('/profile/teacher/{userId}',
 });
 //coordinator
 Route::middleware(['auth','coordinator'])->group(function () {
+    Route::get('/users/import', [UserImportController::class, 'showImportForm'])->name('users.import.form');
+Route::post('/users/import', [UserImportController::class, 'import'])->name('users.import');
+
     Route::get('/assign-roles', [CoordinatorController::class, 'showAssignRolesForm'])->name('coordinator.assignRolesForm');
     Route::post('/assign-roles', [CoordinatorController::class, 'assignRoles'])->name('coordinator.assignRoles');
 

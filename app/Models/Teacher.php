@@ -12,8 +12,13 @@ use App\Models\Supervisor;
 class Teacher extends Model
 {
     use HasFactory;
+
     protected $table = 'teachers';
-    protected $fillable = [ 'userId'];
+
+    protected $fillable = ['id', 'userId'];
+
+    public $incrementing = false;
+    protected $keyType = 'int';
     public function user()
     {
         return $this->belongsTo(User::class, 'userId');

@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('students', function (Blueprint $table) {
-            $table->id(); // Big integer auto-incrementing primary key
+            $table->bigInteger('id')->primary();
             $table->unsignedBigInteger('userId');
             $table->foreign('userId')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();

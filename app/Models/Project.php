@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Supervisor;
 use App\Models\User;
 
-class project extends Model
+class Project extends Model
 {
     use HasFactory;
     protected $table = 'projects';

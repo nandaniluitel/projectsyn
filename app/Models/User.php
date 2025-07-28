@@ -10,6 +10,8 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Models\Teacher;
 use App\Models\Student;
 use App\Models\ProjectGroup;
+use App\Imports\UsersImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class User extends Authenticatable
 {
@@ -29,6 +31,21 @@ class User extends Authenticatable
     //     }
     // }
 
+    public function showImportForm()
+    {
+        return view('users.import');
+    }
+    
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:xlsx,csv',
+        ]);
+    
+        Excel::import(new UsersImport, $request->file('file'));
+    
+        return redirect()->back()->with('success', 'Users imported successfully!');
+    }
     public function teacher()
     {
         return $this->hasOne(Teacher::class, 'userId');
@@ -50,8 +67,10 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name', 'Photo', 'Phone_number', 'semester', 'email', 'password',
+        'id', 'name', 'Photo', 'Phone_number', 'semester', 'email', 'password',
     ];
+    public $incrementing = false;
+    protected $keyType = 'int';
 
     /**
      * The attributes that should be hidden for serialization.

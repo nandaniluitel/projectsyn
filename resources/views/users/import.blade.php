@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -115,33 +116,22 @@
   </div>
   
   <div class="content-wrapper">
-    <div class="fullContainer">
+  @if(session('success'))
+        <div class="alert alert-success mt-3">
+            {{ session('success') }}
+        </div>
+    @endif
 
-      {{-- SEARCH + SCAN BAR --}}
-      <div class="search-container">
-        <form action="{{ route('coordinator.search') }}" method="GET">
-          <input type="text" name="student_id" placeholder="Enter User ID">
-          <button type="submit" class="search-btn">Search</button>
-        </form>
-        <a href="{{ route('scanner.capture') }}" class="scan-btn">
-          <i class="fas fa-qrcode"></i> Scan Student ID
-        </a>
-      </div>
+    <form action="{{ route('users.import') }}" method="POST" enctype="multipart/form-data">
+        @csrf
 
-      <div class="actions-container">
-        <a href="{{ route('assignroles.index') }}" class="action-button">Assign Roles</a>
-        <a href="{{ route('projects.index') }}" class="action-button">View Registered Groups</a>
-        <a href="{{ route('coordinator.accepted-projects') }}" class="action-button">View Accepted Reports</a>
-        <a href="{{ route('assignroles.coordinators') }}" class="action-button">View Coordinators</a>
-        <a href="{{ route('notification.create') }}" class="action-button">Send Notifications</a>
-        {{-- Removed Scan button from here since it’s now in the top bar --}}
-        <a href="{{ route('assignroles.evaluators') }}" class="action-button">View Evaluators</a>
-        <a href="{{ route('assignsupervisor.index') }}" class="action-button">View Supervisors</a>
-        <a href="{{ route('evaluations.index') }}" class="action-button">View Evaluated Marks</a>
-        <a href="{{ route('coordinator.proposal-reports') }}" class="action-button">View Proposal and Slides</a>
-        <a href="{{ route('users.import.form') }}" class="action-button">Add Users</a>
-      </div>
-    </div>
+        <div class="form-group">
+            <label for="file">Select Excel or CSV File:</label>
+            <input type="file" name="file" id="file" class="form-control" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-2">Import</button>
+    </form>
   </div>
 
   <!-- jQuery -->
@@ -152,3 +142,4 @@
   <script src="/adminlte/dist/js/adminlte.min.js"></script>
 </body>
 </html>
+
